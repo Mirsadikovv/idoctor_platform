@@ -1,0 +1,1484 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Inspector Service API.",
+        "title": "Inspector Service API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/contact/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "contact",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contact"
+                ],
+                "summary": "contact",
+                "operationId": "create-contact",
+                "parameters": [
+                    {
+                        "description": "contact information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ContactCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ID64"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/contact/page": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent all contact with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contact"
+                ],
+                "summary": "GetContent all contact with pagination",
+                "operationId": "get-all-contact",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "1",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "10",
+                        "description": "Number of items per page",
+                        "name": "perpage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "inspectorId",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "PHONE",
+                            "EMAIL"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "PHONE",
+                            "EMAIL"
+                        ],
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "value",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Contact"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/contact/search": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent all contact with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contact"
+                ],
+                "summary": "GetContent all contact with pagination",
+                "operationId": "search-contact",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "Limit the number of results",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "inspectorId",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "PHONE",
+                            "EMAIL"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "PHONE",
+                            "EMAIL"
+                        ],
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "value",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Contact"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/contact/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent contact by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contact"
+                ],
+                "summary": "GetContent contact by ID",
+                "operationId": "get-contact-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "contact ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Contact"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "contact",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contact"
+                ],
+                "summary": "contact",
+                "operationId": "update-contact",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "contact ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "contact information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ContactUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/inspector/create/v2": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "inspector",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inspector"
+                ],
+                "summary": "inspector",
+                "operationId": "create-inspector-v2",
+                "parameters": [
+                    {
+                        "description": "inspector information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/InspectorCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ID64"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/inspector/page": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent all inspector with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inspector"
+                ],
+                "summary": "GetContent all inspector with pagination",
+                "operationId": "get-all-inspector",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "X-Auth header",
+                        "name": "X-Auth",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "1",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "10",
+                        "description": "Number of items per page",
+                        "name": "perpage",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "TRUE",
+                            "FALSE"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "TRUE",
+                            "FALSE"
+                        ],
+                        "name": "active",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "fullname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "language_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "organization_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "UserId         int64     `json:\"user_id\" query:\"user_id\"`",
+                        "name": "pinfl",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "position_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "soato_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Inspector"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/inspector/search": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent all inspector with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inspector"
+                ],
+                "summary": "GetContent all inspector with pagination",
+                "operationId": "search-inspector",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "X-Auth header",
+                        "name": "X-Auth",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "Limit the number of results",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "TRUE",
+                            "FALSE"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "TRUE",
+                            "FALSE"
+                        ],
+                        "name": "active",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "fullname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "language_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "organization_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "UserId         int64     `json:\"user_id\" query:\"user_id\"`",
+                        "name": "pinfl",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "position_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "soato_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Inspector"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/inspector/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent inspector by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inspector"
+                ],
+                "summary": "GetContent inspector by ID",
+                "operationId": "get-inspector-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "inspector ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "X-Auth header",
+                        "name": "X-Auth",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "language_id",
+                        "name": "language_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Inspector"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "inspector",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inspector"
+                ],
+                "summary": "inspector",
+                "operationId": "update-inspector",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "inspector ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "inspector information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/InspectorUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/position/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "position",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position"
+                ],
+                "summary": "position",
+                "operationId": "create-position",
+                "parameters": [
+                    {
+                        "description": "position information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PositionCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ID64"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/position/page": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent all position with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position"
+                ],
+                "summary": "GetContent all position with pagination",
+                "operationId": "get-all-position",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "1",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "10",
+                        "description": "Number of items per page",
+                        "name": "perpage",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "ACTIVE",
+                            "INACTIVE"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "ACTIVE",
+                            "INACTIVE"
+                        ],
+                        "name": "active",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "language_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "MAIN",
+                            "OPERATOR",
+                            "REPUBLIC",
+                            "ORDINARY"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "MAIN",
+                            "OPERATOR",
+                            "REPUBLIC",
+                            "ORDINARY"
+                        ],
+                        "name": "positionKey",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Position"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/position/search": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent all position with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position"
+                ],
+                "summary": "GetContent all position with pagination",
+                "operationId": "search-position",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "Limit the number of results",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "ACTIVE",
+                            "INACTIVE"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "ACTIVE",
+                            "INACTIVE"
+                        ],
+                        "name": "active",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "language_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "MAIN",
+                            "OPERATOR",
+                            "REPUBLIC",
+                            "ORDINARY"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "MAIN",
+                            "OPERATOR",
+                            "REPUBLIC",
+                            "ORDINARY"
+                        ],
+                        "name": "positionKey",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Position"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/position/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent position by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position"
+                ],
+                "summary": "GetContent position by ID",
+                "operationId": "get-position-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "language_id",
+                        "name": "language_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Position"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "position",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position"
+                ],
+                "summary": "position",
+                "operationId": "update-position",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "position information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PositionUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/position/{id}/translation/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create position translation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position-translation"
+                ],
+                "summary": "Create position translation",
+                "operationId": "create-position-translation",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "position ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "position information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PositionTranslationCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ID64"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/position/{id}/translation/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent position translations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position-translation"
+                ],
+                "summary": "GetContent position translations",
+                "operationId": "get-position-translations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PositionTranslation"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/position/{id}/translation/{translation_id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "GetContent position translation by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position-translation"
+                ],
+                "summary": "GetContent position translation by ID",
+                "operationId": "get-position-translation-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "position translation ID",
+                        "name": "translation_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/PositionTranslation"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update position translation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "position-translation"
+                ],
+                "summary": "Update position translation",
+                "operationId": "update-position-translation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "position translation ID",
+                        "name": "translation_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "position information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PositionTranslationUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Contact": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "inspector": {
+                    "$ref": "#/definitions/sharedutil.JsonObject"
+                },
+                "inspectorId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "ContactCreate": {
+            "type": "object",
+            "properties": {
+                "inspectorId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "$ref": "#/definitions/inspector_model.ContactType"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "ContactUpdate": {
+            "type": "object",
+            "properties": {
+                "inspectorId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "$ref": "#/definitions/inspector_model.ContactType"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "ID64": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Inspector": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "$ref": "#/definitions/enum.Bool"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "organization": {
+                    "$ref": "#/definitions/sharedutil.JsonObject"
+                },
+                "organizationId": {
+                    "type": "integer"
+                },
+                "pinfl": {
+                    "type": "integer"
+                },
+                "position": {
+                    "$ref": "#/definitions/sharedutil.JsonObject"
+                },
+                "positionId": {
+                    "type": "integer"
+                },
+                "user": {
+                    "$ref": "#/definitions/sharedutil.JsonObject"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "InspectorCreate": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "$ref": "#/definitions/enum.Bool"
+                },
+                "organizationId": {
+                    "type": "integer"
+                },
+                "pinfl": {
+                    "type": "integer"
+                },
+                "positionId": {
+                    "type": "integer"
+                },
+                "roleId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "InspectorUpdate": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "description": "UserId     *int64     `json:\"userId\"`\nPINFL      int64      `json:\"pinfl\"`\nPositionId *int64     `json:\"positionId\"`",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.Bool"
+                        }
+                    ]
+                }
+            }
+        },
+        "Position": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "$ref": "#/definitions/enum.ActivityStatus"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "languageId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "positionKey": {
+                    "$ref": "#/definitions/inspector_model.PositionKey"
+                }
+            }
+        },
+        "PositionCreate": {
+            "type": "object",
+            "properties": {
+                "languageId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "positionKey": {
+                    "$ref": "#/definitions/inspector_model.PositionKey"
+                }
+            }
+        },
+        "PositionTranslation": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "industryId": {
+                    "type": "integer"
+                },
+                "languageId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "PositionTranslationCreate": {
+            "type": "object",
+            "properties": {
+                "languageId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "PositionTranslationUpdate": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "PositionUpdate": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "$ref": "#/definitions/enum.ActivityStatus"
+                },
+                "positionKey": {
+                    "$ref": "#/definitions/inspector_model.PositionKey"
+                }
+            }
+        },
+        "enum.ActivityStatus": {
+            "type": "string",
+            "enum": [
+                "ACTIVE",
+                "INACTIVE"
+            ],
+            "x-enum-varnames": [
+                "ACTIVE",
+                "INACTIVE"
+            ]
+        },
+        "enum.Bool": {
+            "type": "string",
+            "enum": [
+                "TRUE",
+                "FALSE"
+            ],
+            "x-enum-varnames": [
+                "TRUE",
+                "FALSE"
+            ]
+        },
+        "inspector_model.ContactType": {
+            "type": "string",
+            "enum": [
+                "PHONE",
+                "EMAIL"
+            ],
+            "x-enum-varnames": [
+                "PHONE",
+                "EMAIL"
+            ]
+        },
+        "inspector_model.PositionKey": {
+            "type": "string",
+            "enum": [
+                "MAIN",
+                "OPERATOR",
+                "REPUBLIC",
+                "ORDINARY"
+            ],
+            "x-enum-varnames": [
+                "MAIN",
+                "OPERATOR",
+                "REPUBLIC",
+                "ORDINARY"
+            ]
+        },
+        "sharedutil.JsonObject": {
+            "type": "object",
+            "additionalProperties": {}
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

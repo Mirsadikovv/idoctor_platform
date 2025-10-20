@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - prod
+
+jobs:
+  build:
+    runs-on: [dmi_api_prod]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Docker build
+        env:
+          CI_JOB_LOGIN: x
+          CI_JOB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          JWT_SECRET: ${{ secrets.DEV_JWT_SECRET }}
+          ONEID_CLIENT_SECRET: ${{ secrets.PROD_ONEID_CLIENT_SECRET }}
+          ONEID_CLIENT_ID: ${{ vars.PROD_ONEID_CLIENT_ID }}
+          ONEID_CLIENT_REDIRECT_URL: ${{ vars.PROD_ONEID_CLIENT_REDIRECT_URL }}
+          ONEID_DASHBOARD_REDIRECT_URL: ${{ vars.PROD_ONEID_DASHBOARD_REDIRECT_URL }}
+          ONEID_BASE_URL: ${{ secrets.ONEID_BASE_URL }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          JWT_EXPIRED: ${{ vars.DEV_JWT_EXPIRED }}
+          JWT_REFRESH_EXPIRED: ${{ vars.DEV_JWT_REFRESH_EXPIRED }}
+          HTTP_PORT: ${{ vars.DEV_HTTP_PORT }}
+          REDIS_ADDR: ${{ vars.DEV_REDIS_ADDR }}
+          POSTGRES_DB: ${{ vars.PROD_POSTGRES_DB }}
+          POSTGRES_HOST: ${{ vars.PROD_POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ vars.PROD_POSTGRES_PORT }}
+          POSTGRES_USER: ${{ vars.PROD_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.PROD_POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ vars.DEV_POSTGRES_SSL_MODE }}
+          POSTGRES_TIME_ZONE: ${{ vars.DEV_POSTGRES_TIME_ZONE }}
+          GATEWAY_BASE_URL: ${{ vars.PROD_GATEWAY_BASE_URL }}
+          ADMINS: ${{ vars.BOT_ADMINS }}
+        run: |
+          docker compose -f docker-compose-prod.yml up --build --force-recreate -d 2>&1 | awk '!seen[$0]++'

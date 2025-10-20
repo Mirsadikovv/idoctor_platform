@@ -1,0 +1,136 @@
+networks:
+    traefik-network:
+        external: true
+    stack:
+        name: stack
+
+services:
+    inspector-mehnat:
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.inspector-mehnat.rule=Host(`dmi-api.mehnat.uz`)"
+            - "traefik.http.routers.inspector-mehnat.entrypoints=web"
+            - "traefik.http.services.inspector-mehnat.loadbalancer.server.port=${HTTP_PORT}"
+            - "traefik.docker.network=traefik-network"
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+            args:
+                - CI_JOB_LOGIN=${CI_JOB_LOGIN}
+                - CI_JOB_TOKEN=${CI_JOB_TOKEN}
+                - HTTP_PORT=${HTTP_PORT}
+                - MODE=prod
+        restart: always
+        environment:
+            - CI_JOB_LOGIN=${CI_JOB_LOGIN}
+            - CI_JOB_TOKEN=${CI_JOB_TOKEN}
+            - JWT_SECRET=${JWT_SECRET}
+            - ONEID_CLIENT_SECRET=${ONEID_CLIENT_SECRET}
+            - ONEID_CLIENT_ID=${ONEID_CLIENT_ID}
+            - ONEID_CLIENT_REDIRECT_URL=${ONEID_CLIENT_REDIRECT_URL}
+            - ONEID_DASHBOARD_REDIRECT_URL=${ONEID_DASHBOARD_REDIRECT_URL}
+            - ONEID_BASE_URL=${ONEID_BASE_URL}
+            - JWT_EXPIRED=${JWT_EXPIRED}
+            - JWT_REFRESH_EXPIRED=${JWT_REFRESH_EXPIRED}
+            - HTTP_PORT=${HTTP_PORT}
+            - REDIS_ADDR=${REDIS_ADDR}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_HOST=${POSTGRES_HOST}
+            - POSTGRES_PORT=${POSTGRES_PORT}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_SSL_MODE=${POSTGRES_SSL_MODE}
+            - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
+            - GATEWAY_BASE_URL=${GATEWAY_BASE_URL}
+            - BOT_TOKEN=${BOT_TOKEN}
+        networks:
+            - traefik-network
+            - stack
+        working_dir: "/app"
+        volumes:
+            - /srv/inspector_mehnat/docker/app/files:/app/files
+        links:
+            - inspector-mehnat-redis-db
+            - e-imzo-server
+        depends_on:
+            - inspector-mehnat-redis-db
+            - e-imzo-server
+        command: "/app/main"
+
+    onlyoffice:
+        image: onlyoffice/documentserver:9.0
+        container_name: onlyoffice
+        restart: always
+        environment:
+        - JWT_ENABLED=false
+        - FORCE_SSL=true
+        - USE_UNAUTHORIZED_STORAGE=true
+        - ONLYOFFICE_HTTPS_HSTS_ENABLED=true
+        labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.onlyoffice.rule=Host(`dmi-docs.mehnat.uz`)"
+        - "traefik.http.routers.onlyoffice.entrypoints=web"
+        - "traefik.http.services.onlyoffice.loadbalancer.server.port=80"
+
+        # передача HTTPS-заголовков внутрь контейнера
+        - "traefik.http.middlewares.onlyoffice-headers.headers.customRequestHeaders.X-Forwarded-Proto=https"
+        - "traefik.http.middlewares.onlyoffice-headers.headers.customRequestHeaders.X-Forwarded-Ssl=on"
+
+        # сжатие + передача заголовков
+        - "traefik.http.routers.onlyoffice.middlewares=onlyoffice-headers,compresstraefik"
+        - "traefik.http.middlewares.compresstraefik.compress=true"
+
+        - "traefik.docker.network=traefik-network"
+        networks:
+        - traefik-network
+
+
+    inspector-mehnat-redis-db:
+        image: redis:7.2.4-alpine
+        restart: always
+        volumes:
+            - /srv/inspector_mehnat/docker/redis/data:/data
+        networks:
+            - stack
+    
+    e-imzo-server:
+        container_name: e-imzo-server
+        build:
+            context: ./e-imzo-server
+            dockerfile: ./Dockerfile
+        restart: always
+        environment:
+            - E_IMZO_LISTEN_IP=${E_IMZO_LISTEN_IP}
+            - E_IMZO_LISTEN_PORT=${E_IMZO_LISTEN_PORT}
+            - E_IMZO_VPN_TLS_ENABLED=${E_IMZO_VPN_TLS_ENABLED}
+            - E_IMZO_VPN_CONNECT_HOST=${E_IMZO_VPN_CONNECT_HOST}
+            - E_IMZO_VPN_CONNECT_PORT=${E_IMZO_VPN_CONNECT_PORT}
+            - E_IMZO_VPN_KEY_FILE_PATH=${E_IMZO_VPN_KEY_FILE_PATH}
+            - E_IMZO_VPN_KEY_PASSWORD=${E_IMZO_VPN_KEY_PASSWORD}
+            - E_IMZO_VPN_TRUSTSTORE_FILE_PATH=${E_IMZO_VPN_TRUSTSTORE_FILE_PATH}
+            - E_IMZO_TSP_JKS_FILE_PATH=${E_IMZO_TSP_JKS_FILE_PATH}
+        networks:
+            - stack
+    inspector_mehnat_bot:
+        restart: always
+        networks:
+            - stack
+        build:
+            context: ./dmi_bot
+            dockerfile: ./Dockerfile
+            args:
+                - CI_JOB_LOGIN=${CI_JOB_LOGIN}
+                - CI_JOB_TOKEN=${CI_JOB_TOKEN}
+        environment:
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_HOST=${POSTGRES_HOST}
+            - POSTGRES_PORT=${POSTGRES_PORT}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_SSL_MODE=${POSTGRES_SSL_MODE}
+            - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
+            - BOT_TOKEN=${BOT_TOKEN}
+            - ADMINS=${ADMINS}
+        volumes:
+            - /srv/inspector_mehnat/docker/app/files:/app/files
+        command: "/app/main"

@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker build
+        env:
+          CI_JOB_LOGIN: x
+          CI_JOB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          JWT_SECRET: ${{ secrets.DEV_JWT_SECRET }}
+          ONEID_CLIENT_SECRET: ${{ secrets.DEV_ONEID_CLIENT_SECRET }}
+          ONEID_CLIENT_ID: ${{ vars.DEV_ONEID_CLIENT_ID }}
+          ONEID_CLIENT_REDIRECT_URL: ${{ vars.DEV_ONEID_CLIENT_REDIRECT_URL }}
+          ONEID_DASHBOARD_REDIRECT_URL: ${{ vars.DEV_ONEID_DASHBOARD_REDIRECT_URL }}
+          ONEID_BASE_URL: ${{ secrets.ONEID_BASE_URL }}
+          BOT_TOKEN: ${{ secrets.DEV_BOT_TOKEN }}
+          JWT_EXPIRED: ${{ vars.DEV_JWT_EXPIRED }}
+          JWT_REFRESH_EXPIRED: ${{ vars.DEV_JWT_REFRESH_EXPIRED }}
+          HTTP_PORT: ${{ vars.DEV_HTTP_PORT }}
+          REDIS_ADDR: ${{ vars.DEV_REDIS_ADDR }}
+          POSTGRES_DB: ${{ vars.DEV_POSTGRES_DB }}
+          POSTGRES_HOST: ${{ vars.DEV_POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ vars.DEV_POSTGRES_PORT }}
+          POSTGRES_USER: ${{ vars.DEV_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DEV_POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ vars.DEV_POSTGRES_SSL_MODE }}
+          POSTGRES_TIME_ZONE: ${{ vars.DEV_POSTGRES_TIME_ZONE }}
+          GATEWAY_BASE_URL: ${{ vars.DEV_GATEWAY_BASE_URL }}
+          ADMINS: ${{ vars.DEV_BOT_ADMINS }}
+          E_IMZO_LISTEN_IP: ${{ vars.E_IMZO_LISTEN_IP }}
+          E_IMZO_LISTEN_PORT: ${{ vars.E_IMZO_LISTEN_PORT }}
+          E_IMZO_VPN_TLS_ENABLED: ${{ vars.E_IMZO_VPN_TLS_ENABLED }}
+          E_IMZO_VPN_CONNECT_HOST: ${{ vars.E_IMZO_VPN_CONNECT_HOST }}
+          E_IMZO_VPN_CONNECT_PORT: ${{ vars.E_IMZO_VPN_CONNECT_PORT }}
+          E_IMZO_VPN_KEY_FILE_PATH: ${{ secrets.E_IMZO_VPN_KEY_FILE_PATH }}
+          E_IMZO_VPN_KEY_PASSWORD: ${{ secrets.E_IMZO_VPN_KEY_PASSWORD }}
+          E_IMZO_VPN_TRUSTSTORE_FILE_PATH: ${{ secrets.E_IMZO_VPN_TRUSTSTORE_FILE_PATH }}
+          E_IMZO_TSP_JKS_FILE_PATH: ${{ secrets.E_IMZO_TSP_JKS_FILE_PATH }}
+        run: |
+          docker compose -f docker-compose.yml up --build --force-recreate --remove-orphans -d

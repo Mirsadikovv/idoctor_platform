@@ -1,0 +1,7880 @@
+definitions:
+  Address:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      langId:
+        type: integer
+      parentId:
+        type: integer
+      soatoId:
+        type: integer
+      title:
+        type: string
+    type: object
+  AddressPage:
+    properties:
+      currentPage:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/Address'
+        type: array
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  Appeal:
+    properties:
+      id:
+        type: integer
+      number:
+        type: integer
+    type: object
+  AppealByPasswordReq:
+    properties:
+      number:
+        type: integer
+      password:
+        type: string
+    required:
+    - number
+    - password
+    type: object
+  AppealWorkflow:
+    properties:
+      action:
+        $ref: '#/definitions/appeal_model.AppealWorkflowAction'
+      actionStatus:
+        $ref: '#/definitions/enum.AcceptionStatus'
+      appealId:
+        type: integer
+      callOperatorPinfl:
+        type: integer
+      comment:
+        type: string
+      createdAt:
+        type: string
+      currentInspectorPinfl:
+        type: integer
+      currentOrgId:
+        type: integer
+      fromInspectorPinfl:
+        type: integer
+      fromOrgId:
+        type: integer
+      id:
+        type: integer
+      systemComment:
+        items:
+          type: integer
+        type: array
+      toInspectorPinfl:
+        type: integer
+      toOrgId:
+        type: integer
+    type: object
+  Article:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      code:
+        type: string
+      content:
+        type: string
+      decree:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      decreeId:
+        type: integer
+      id:
+        type: integer
+      languageId:
+        type: integer
+      maxMultiplier:
+        type: number
+      maximumAmount:
+        type: number
+      minMultiplier:
+        type: number
+      minimumAmount:
+        type: number
+      order:
+        type: integer
+      title:
+        type: string
+    type: object
+  ArticleCreate:
+    properties:
+      code:
+        type: string
+      content:
+        type: string
+      decreeId:
+        type: integer
+      languageId:
+        type: integer
+      maxMultiplier:
+        type: number
+      minMultiplier:
+        type: number
+      order:
+        type: integer
+      title:
+        type: string
+    type: object
+  ArticleTranslation:
+    properties:
+      articleId:
+        type: integer
+      code:
+        type: string
+      content:
+        type: string
+      id:
+        type: integer
+      languageId:
+        type: integer
+      title:
+        type: string
+    type: object
+  ArticleTranslationCreate:
+    properties:
+      articleId:
+        type: integer
+      code:
+        type: string
+      content:
+        type: string
+      languageId:
+        type: integer
+      title:
+        type: string
+    type: object
+  ArticleTranslationUpdate:
+    properties:
+      code:
+        type: string
+      content:
+        type: string
+      title:
+        type: string
+    type: object
+  ArticleUpdate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      code:
+        type: string
+      content:
+        type: string
+      decreeId:
+        type: integer
+      languageId:
+        type: integer
+      maxMultiplier:
+        type: number
+      minMultiplier:
+        type: number
+      order:
+        type: integer
+      title:
+        type: string
+    type: object
+  Bot:
+    properties:
+      id:
+        type: integer
+      languageCode:
+        type: string
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      telegramId:
+        type: integer
+      username:
+        type: string
+    type: object
+  BotCreate:
+    properties:
+      languageCode:
+        type: string
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      telegramId:
+        type: integer
+      username:
+        type: string
+    type: object
+  BotUpdate:
+    properties:
+      languageCode:
+        type: string
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      telegramId:
+        type: integer
+      username:
+        type: string
+    type: object
+  Code:
+    properties:
+      code:
+        type: string
+    required:
+    - code
+    type: object
+  ComplaintType:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      id:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  ComplaintTypeCreate:
+    properties:
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  ComplaintTypeTranslation:
+    properties:
+      complaintTypeId:
+        type: integer
+      id:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  ComplaintTypeTranslationCreate:
+    properties:
+      complaintTypeId:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  ComplaintTypeTranslationUpdate:
+    properties:
+      name:
+        type: string
+    type: object
+  ComplaintTypeUpdate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+    type: object
+  Contact:
+    properties:
+      id:
+        type: integer
+      inspector:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      inspectorId:
+        type: integer
+      type:
+        type: string
+      value:
+        type: string
+    type: object
+  ContactCreate:
+    properties:
+      inspectorId:
+        type: integer
+      type:
+        $ref: '#/definitions/inspector_model.ContactType'
+      value:
+        type: string
+    type: object
+  ContactUpdate:
+    properties:
+      inspectorId:
+        type: integer
+      type:
+        $ref: '#/definitions/inspector_model.ContactType'
+      value:
+        type: string
+    type: object
+  CreateAddress:
+    properties:
+      description:
+        type: string
+      langId:
+        type: integer
+      parentId:
+        type: integer
+      soatoId:
+        type: integer
+      title:
+        type: string
+    type: object
+  CreateTemplate:
+    properties:
+      permissions:
+        items:
+          additionalProperties: {}
+          type: object
+        type: array
+      type:
+        type: string
+    type: object
+  Decree:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      approvedAt:
+        type: string
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      languageId:
+        type: integer
+      order:
+        type: integer
+      title:
+        type: string
+    type: object
+  DecreeCreate:
+    properties:
+      approvedAt:
+        type: string
+      content:
+        type: string
+      languageId:
+        type: integer
+      order:
+        type: integer
+      title:
+        type: string
+    type: object
+  DecreeTranslation:
+    properties:
+      content:
+        type: string
+      decreeId:
+        type: integer
+      id:
+        type: integer
+      languageId:
+        type: integer
+      title:
+        type: string
+    type: object
+  DecreeTranslationCreate:
+    properties:
+      content:
+        type: string
+      decreeId:
+        type: integer
+      languageId:
+        type: integer
+      title:
+        type: string
+    type: object
+  DecreeTranslationUpdate:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+    type: object
+  DecreeUpdate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      approvedAt:
+        type: string
+      order:
+        type: integer
+    type: object
+  Detail:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      category:
+        $ref: '#/definitions/detail_model.DetailCategory'
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      languageId:
+        type: integer
+      order:
+        type: integer
+      parentId:
+        type: integer
+      position:
+        $ref: '#/definitions/detail_model.DetailPosition'
+      title:
+        type: string
+      url:
+        type: string
+      urlType:
+        $ref: '#/definitions/detail_model.URLType'
+    type: object
+  DetailCreate:
+    properties:
+      category:
+        $ref: '#/definitions/detail_model.DetailCategory'
+      content:
+        type: string
+      languageId:
+        type: integer
+      order:
+        type: integer
+      parentId:
+        type: integer
+      position:
+        $ref: '#/definitions/detail_model.DetailPosition'
+      title:
+        type: string
+      url:
+        type: string
+      urlType:
+        $ref: '#/definitions/detail_model.URLType'
+    type: object
+  DetailTranslationCreate:
+    properties:
+      content:
+        type: string
+      detailId:
+        type: integer
+      languageId:
+        type: integer
+      title:
+        type: string
+    type: object
+  DetailTranslationUpdate:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+    type: object
+  DetailUpdate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      category:
+        $ref: '#/definitions/detail_model.DetailCategory'
+      createdAt:
+        type: string
+      languageId:
+        type: integer
+      order:
+        type: integer
+      parentId:
+        type: integer
+      position:
+        $ref: '#/definitions/detail_model.DetailPosition'
+      url:
+        type: string
+      urlType:
+        $ref: '#/definitions/detail_model.URLType'
+    type: object
+  File:
+    properties:
+      category:
+        type: string
+      dirName:
+        type: string
+      filename:
+        type: string
+      mimeType:
+        type: string
+      owner:
+        type: string
+      size:
+        type: integer
+    type: object
+  ID64:
+    properties:
+      id:
+        type: integer
+    type: object
+  Industry:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      id:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  IndustryCreate:
+    properties:
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  IndustryTranslation:
+    properties:
+      id:
+        type: integer
+      industryId:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  IndustryTranslationCreate:
+    properties:
+      industryId:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  IndustryTranslationUpdate:
+    properties:
+      name:
+        type: string
+    type: object
+  IndustryUpdate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+    type: object
+  InfoDto:
+    properties:
+      code:
+        type: integer
+      error:
+        type: string
+      method:
+        type: string
+      type:
+        type: string
+    type: object
+  Inspector:
+    properties:
+      active:
+        $ref: '#/definitions/enum.Bool'
+      id:
+        type: integer
+      organization:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      organizationId:
+        type: integer
+      position:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      positionId:
+        type: integer
+      user:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      userId:
+        type: integer
+    type: object
+  InspectorCreate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.Bool'
+      organizationId:
+        type: integer
+      positionId:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  InspectorUpdate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.Bool'
+      positionId:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  Invitation:
+    properties:
+      description:
+        type: string
+      organizationId:
+        type: integer
+      pin:
+        type: integer
+      roleId:
+        type: integer
+    type: object
+  InvitationDto:
+    properties:
+      blockedAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      organization:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      organizationId:
+        type: integer
+      pin:
+        type: integer
+      role:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      roleId:
+        type: integer
+      user:
+        $ref: '#/definitions/sharedutil.JsonObject'
+    type: object
+  LanguageContent:
+    properties:
+      category:
+        type: string
+      id:
+        type: integer
+      key:
+        type: string
+      language:
+        $ref: '#/definitions/language_dto.Language'
+      languageId:
+        type: integer
+      value:
+        type: string
+    type: object
+  Log:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      info:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      user:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      userId:
+        type: integer
+    type: object
+  LogAll:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      info:
+        $ref: '#/definitions/InfoDto'
+      user:
+        $ref: '#/definitions/UserDto'
+      userId:
+        type: integer
+    type: object
+  LogPageAll:
+    properties:
+      currentPage:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/LogAll'
+        type: array
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  MinimumWage:
+    properties:
+      amount:
+        type: number
+      id:
+        type: integer
+      validFrom:
+        type: string
+      validTo:
+        description: allows NULL
+        type: string
+    type: object
+  MinimumWageCreate:
+    properties:
+      amount:
+        type: number
+      validFrom:
+        type: string
+      validTo:
+        description: allows NULL
+        type: string
+    type: object
+  MinimumWageUpdate:
+    properties:
+      amount:
+        type: number
+      validFrom:
+        type: string
+      validTo:
+        description: allows NULL
+        type: string
+    type: object
+  Organization:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      districtId:
+        type: integer
+      districtName:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      orgRoles:
+        items:
+          type: integer
+        type: array
+      parentId:
+        type: integer
+      quarterId:
+        type: integer
+      quarterName:
+        type: string
+      regionId:
+        type: integer
+      regionName:
+        type: string
+      reviewRoleId:
+        type: integer
+      soatoId:
+        type: integer
+      soatoName:
+        type: string
+    type: object
+  OrganizationCreate:
+    properties:
+      description:
+        type: string
+      districtId:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+      orgRoles:
+        items:
+          type: integer
+        type: array
+      parentId:
+        type: integer
+      quarterId:
+        type: integer
+      regionId:
+        type: integer
+      reviewRoleId:
+        type: integer
+      soatoId:
+        type: integer
+    type: object
+  OrganizationDto:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      districtId:
+        type: integer
+      districtName:
+        type: string
+      id:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+      orgRoles:
+        items:
+          additionalProperties: {}
+          type: object
+        type: array
+      parent:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      parentId:
+        type: integer
+      quarterId:
+        type: integer
+      quarterName:
+        type: string
+      regionId:
+        type: integer
+      regionName:
+        type: string
+      reviewRole:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      reviewRoleId:
+        type: integer
+      soatoId:
+        type: integer
+      soatoName:
+        type: string
+    type: object
+  OrganizationTranslation:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+      organizationId:
+        type: integer
+    type: object
+  OrganizationTranslationCreate:
+    properties:
+      description:
+        type: string
+      languageId:
+        type: integer
+      name:
+        type: string
+      organizationId:
+        type: integer
+    type: object
+  OrganizationTranslationUpdate:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  OrganizationUpdate:
+    properties:
+      districtId:
+        type: integer
+      orgRoles:
+        items:
+          type: integer
+        type: array
+      parentId:
+        type: integer
+      quarterId:
+        type: integer
+      regionId:
+        type: integer
+      reviewRoleId:
+        type: integer
+      soatoId:
+        type: integer
+    type: object
+  Permission:
+    properties:
+      method:
+        type: string
+      path:
+        type: string
+      uuid:
+        type: string
+    type: object
+  Position:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+      id:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  PositionCreate:
+    properties:
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  PositionTranslation:
+    properties:
+      id:
+        type: integer
+      industryId:
+        type: integer
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  PositionTranslationCreate:
+    properties:
+      languageId:
+        type: integer
+      name:
+        type: string
+    type: object
+  PositionTranslationUpdate:
+    properties:
+      name:
+        type: string
+    type: object
+  PositionUpdate:
+    properties:
+      active:
+        $ref: '#/definitions/enum.ActivityStatus'
+    type: object
+  Role:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      pages:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      permissions:
+        $ref: '#/definitions/sharedutil.JsonObject'
+    type: object
+  RoleCreate:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      pages:
+        $ref: '#/definitions/sharedutil.JsonObject'
+      permissions:
+        $ref: '#/definitions/sharedutil.JsonObject'
+    type: object
+  RolePage:
+    properties:
+      currentPage:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/Role'
+        type: array
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  SiteSettingDto:
+    properties:
+      data:
+        items:
+          type: integer
+        type: array
+    type: object
+  SiteSettingUpdate:
+    properties:
+      data:
+        items:
+          type: integer
+        type: array
+    type: object
+  Template:
+    properties:
+      id:
+        type: integer
+      permissions:
+        items:
+          additionalProperties: {}
+          type: object
+        type: array
+      type:
+        type: string
+    type: object
+  TemplatePages:
+    properties:
+      currentPage:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/Template'
+        type: array
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  UpdateTemplate:
+    properties:
+      permissions:
+        items:
+          additionalProperties: {}
+          type: object
+        type: array
+      type:
+        type: string
+    type: object
+  User:
+    properties:
+      citizenship:
+        type: string
+      countryOfBirth:
+        type: string
+      dateOfBirth:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      gender:
+        $ref: '#/definitions/user_dto.Gender'
+      id:
+        type: integer
+      lastName:
+        type: string
+      lastVisit:
+        type: string
+      middleName:
+        type: string
+      nationality:
+        type: string
+      passportnumber:
+        type: string
+      photo:
+        type: string
+      pin:
+        type: integer
+      placeOfBirth:
+        type: string
+      roleId:
+        type: integer
+      sessionId:
+        type: string
+      userType:
+        type: string
+      username:
+        type: string
+      valid:
+        type: string
+    type: object
+  UserDto:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+      middleName:
+        type: string
+    type: object
+  Violation:
+    properties:
+      articleId:
+        type: integer
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      occurredAt:
+        type: string
+      penaltyAmount:
+        type: number
+      updatedAt:
+        type: string
+    type: object
+  ViolationCreate:
+    properties:
+      articleId:
+        type: integer
+      description:
+        type: string
+      occurredAt:
+        type: string
+      penaltyAmount:
+        type: number
+    type: object
+  ViolationUpdate:
+    properties:
+      articleId:
+        type: integer
+      description:
+        type: string
+      occurredAt:
+        type: string
+      penaltyAmount:
+        type: number
+    type: object
+  WorkflowCrateDto:
+    properties:
+      callOperatorPinfl:
+        type: integer
+      comment:
+        type: string
+      currentInspectorPinfl:
+        type: integer
+      currentOrgId:
+        type: integer
+      fromInspectorPinfl:
+        type: integer
+      fromOrgId:
+        type: integer
+      toInspectorPinfl:
+        type: integer
+      toOrgId:
+        type: integer
+    type: object
+  appeal_dto.AppealPage:
+    properties:
+      currentPage:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/Appeal'
+        type: array
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  appeal_model.AppealSource:
+    enum:
+    - CALL_CENTER
+    - WEB
+    - TELEGRAM
+    type: string
+    x-enum-varnames:
+    - CALL_CENTER
+    - WEB
+    - TELEGRAM
+  appeal_model.AppealWorkflowAction:
+    enum:
+    - ACCEPT
+    - FORWARD
+    - RETURN
+    - TRANSFER
+    - COMPLETE
+    - REJECT
+    type: string
+    x-enum-varnames:
+    - ACCEPT
+    - FORWARD
+    - RETURN
+    - TRANSFER
+    - COMPLETE
+    - REJECT
+  auth_dto.RefreshToken:
+    properties:
+      organizationId:
+        type: integer
+      roleId:
+        type: integer
+      token:
+        type: string
+    type: object
+  auth_dto.Token:
+    properties:
+      token:
+        type: string
+    type: object
+  bot_dto.BotUserPage:
+    properties:
+      currentPage:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/Bot'
+        type: array
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  detail_model.DetailCategory:
+    enum:
+    - FAQ
+    - MENU
+    - PARTNERS
+    - APPLICATION_TYPE
+    - PUBLIC_OFFER
+    - PAGES_CONTENT
+    type: string
+    x-enum-varnames:
+    - FAQ
+    - MENU
+    - PARTNERS
+    - APPLICATION_TYPE
+    - PUBLIC_OFFER
+    - PAGES_CONTENT
+  detail_model.DetailPosition:
+    enum:
+    - MAIN_CONTENT
+    - HEADER_NAVIGATION
+    - FOOTER_NAVIGATION
+    - FOOTER_CONTACTS
+    - SOCIALS
+    type: string
+    x-enum-varnames:
+    - MAIN_CONTENT
+    - HEADER_NAVIGATION
+    - FOOTER_NAVIGATION
+    - FOOTER_CONTACTS
+    - FOOTER_SOCIALS
+  detail_model.URLType:
+    enum:
+    - ROUTE
+    - WEB_LINK
+    - STATIC
+    type: string
+    x-enum-varnames:
+    - ROUTE
+    - WEB_LINK
+    - STATIC
+  enum.AcceptionStatus:
+    enum:
+    - UNDER_REVIEW
+    - IN_PROGRESS
+    - COMPLETED
+    - REJECTED
+    type: string
+    x-enum-varnames:
+    - UNDER_REVIEW
+    - IN_PROGRESS
+    - COMPLETED
+    - REJECTED
+  enum.ActivityStatus:
+    enum:
+    - ACTIVE
+    - INACTIVE
+    type: string
+    x-enum-varnames:
+    - ACTIVE
+    - INACTIVE
+  enum.Bool:
+    enum:
+    - "TRUE"
+    - "FALSE"
+    type: string
+    x-enum-varnames:
+    - "TRUE"
+    - "FALSE"
+  enum.Order:
+    enum:
+    - ASC
+    - DESC
+    type: string
+    x-enum-varnames:
+    - ASC
+    - DESC
+  inspector_model.ContactType:
+    enum:
+    - PHONE
+    - EMAIL
+    type: string
+    x-enum-varnames:
+    - PHONE
+    - EMAIL
+  language_dto.Language:
+    properties:
+      deletedAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  language_dto.LanguageContentCreate:
+    properties:
+      category:
+        type: string
+      key:
+        type: string
+      languageId:
+        type: integer
+      value:
+        type: string
+    type: object
+  language_dto.LanguageContentsCreateOrUpdate:
+    properties:
+      category:
+        type: string
+      contents:
+        items:
+          $ref: '#/definitions/language_dto.LanguageContentCreate'
+        type: array
+      languageId:
+        type: integer
+    type: object
+  language_dto.LanguageCreate:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  language_dto.LanguageUpdate:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  log_dto.LogTypes:
+    enum:
+    - ONEID
+    type: string
+    x-enum-varnames:
+    - ONEID
+  multipart.FileHeader:
+    properties:
+      filename:
+        type: string
+      header:
+        $ref: '#/definitions/textproto.MIMEHeader'
+      size:
+        type: integer
+    type: object
+  organization_dto.InvitationPage:
+    properties:
+      currentPage:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/InvitationDto'
+        type: array
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  sharedutil.JsonObject:
+    additionalProperties: {}
+    type: object
+  textproto.MIMEHeader:
+    additionalProperties:
+      items:
+        type: string
+      type: array
+    type: object
+  user_dto.Gender:
+    enum:
+    - male
+    - female
+    type: string
+    x-enum-varnames:
+    - Male
+    - Female
+info:
+  contact: {}
+paths:
+  /address/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent address by ID
+      operationId: get-address-by-id
+      parameters:
+      - description: address ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - default: "1"
+        description: Language ID
+        in: query
+        name: lang_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Address'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent address by ID
+      tags:
+      - address
+  /address/create:
+    post:
+      consumes:
+      - application/json
+      description: address
+      operationId: create-address
+      parameters:
+      - description: address information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/CreateAddress'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: address
+      tags:
+      - address
+  /address/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all address with pagination
+      operationId: get-all-address
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: description
+        type: string
+      - in: query
+        name: lang_id
+        type: integer
+      - in: query
+        name: parent_id
+        type: integer
+      - in: query
+        name: soato_id
+        type: integer
+      - in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/AddressPage'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all address with pagination
+      tags:
+      - address
+  /address/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all address with pagination
+      operationId: search-address
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: description
+        type: string
+      - in: query
+        name: lang_id
+        type: integer
+      - in: query
+        name: parent_id
+        type: integer
+      - in: query
+        name: soato_id
+        type: integer
+      - in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Address'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all address with pagination
+      tags:
+      - address
+  /appeal/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent appeal by ID
+      operationId: get-appeal-by-id
+      parameters:
+      - description: appeal ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: languageId
+        in: query
+        name: language_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Appeal'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent appeal by ID
+      tags:
+      - appeal
+  /appeal/{id}/action/{action}:
+    post:
+      consumes:
+      - application/json
+      description: appeal action
+      operationId: appeal-action
+      parameters:
+      - description: appeal ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: action
+        enum:
+        - ACCEPT
+        - FORWARD
+        - RETURN
+        - TRANSFER
+        - COMPLETE
+        - REJECT
+        in: path
+        name: action
+        required: true
+        type: string
+      - description: appeal information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/WorkflowCrateDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: appeal action
+      tags:
+      - appeal-action
+  /appeal/{id}/workflow:
+    get:
+      consumes:
+      - application/json
+      description: Get all workflow of appeal
+      operationId: appeal-workflow
+      parameters:
+      - description: appeal ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: language ID
+        in: query
+        name: language_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/AppealWorkflow'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get all workflow of appeal
+      tags:
+      - appeal-workflow
+  /appeal/{source}/create:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new appeal with file attachments using form data
+      operationId: create-appeal
+      parameters:
+      - description: appeal source
+        enum:
+        - CALL_CENTER
+        - WEB
+        - TELEGRAM
+        in: path
+        name: source
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: Multiple Files
+        in: formData
+        items:
+          type: file
+        name: files
+        required: true
+        type: array
+      - description: File category
+        in: formData
+        name: category
+        type: string
+      - description: File owner
+        in: formData
+        name: owner
+        type: string
+      - description: File sign
+        in: formData
+        name: sign
+        type: string
+      - description: PINFL
+        in: formData
+        name: pinfl
+        required: true
+        type: integer
+      - description: First name
+        in: formData
+        name: firstName
+        required: true
+        type: string
+      - description: Last name
+        in: formData
+        name: lastName
+        required: true
+        type: string
+      - description: Middle name
+        in: formData
+        name: middleName
+        required: true
+        type: string
+      - description: Phone number
+        in: formData
+        name: phoneNumber
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: Complaint type IDs
+        in: formData
+        items:
+          type: integer
+        name: complaintTypeIds
+        type: array
+      - description: Complaint type
+        in: formData
+        name: complaintType
+        type: string
+      - description: Complaint text
+        in: formData
+        name: complaintTxt
+        required: true
+        type: string
+      - description: Company INN
+        in: formData
+        name: companyINN
+        type: string
+      - description: Company name
+        in: formData
+        name: companyName
+        required: true
+        type: string
+      - description: Company region SOATO ID
+        in: formData
+        name: companyRegionSoatoId
+        type: integer
+      - description: Company district SOATO ID
+        in: formData
+        name: companyDistrictSoatoId
+        type: integer
+      - description: Company quarter SOATO ID
+        in: formData
+        name: companyQuarterSoatoId
+        type: integer
+      - description: Company address
+        in: formData
+        name: companyAddress
+        required: true
+        type: string
+      - description: Industry ID
+        in: formData
+        name: industryId
+        required: true
+        type: integer
+      - description: Agree to personal data processing
+        in: formData
+        name: agreePersonalData
+        required: true
+        type: boolean
+      - description: Is anonymous
+        in: formData
+        name: isAnonymous
+        type: boolean
+      - description: Organization SOATO ID
+        in: formData
+        name: organizationSoatoId
+        required: true
+        type: integer
+      - description: Call operator PINFL
+        in: formData
+        name: callOperatorPinfl
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create appeal with file uploads
+      tags:
+      - appeal
+  /appeal/action/{action}:
+    get:
+      consumes:
+      - application/json
+      description: Get appeals that are currently assigned to the logged-in user based
+        on workflow
+      operationId: get-page-inspectors-appeal
+      parameters:
+      - in: query
+        name: company_district
+        type: string
+      - in: query
+        name: company_inn
+        type: string
+      - in: query
+        name: company_name
+        type: string
+      - in: query
+        name: company_quarter
+        type: string
+      - in: query
+        name: company_region
+        type: string
+      - in: query
+        name: complaint_type
+        type: integer
+      - in: query
+        name: from_date
+        type: string
+      - in: query
+        name: full_name
+        type: string
+      - in: query
+        name: industry
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: number
+        type: integer
+      - in: query
+        name: pinfl
+        type: string
+      - enum:
+        - CALL_CENTER
+        - WEB
+        - TELEGRAM
+        in: query
+        name: source
+        type: string
+        x-enum-varnames:
+        - CALL_CENTER
+        - WEB
+        - TELEGRAM
+      - enum:
+        - UNDER_REVIEW
+        - IN_PROGRESS
+        - COMPLETED
+        - REJECTED
+        in: query
+        name: status
+        type: string
+        x-enum-varnames:
+        - UNDER_REVIEW
+        - IN_PROGRESS
+        - COMPLETED
+        - REJECTED
+      - in: query
+        name: to_date
+        type: string
+      - description: appeal action (FORWARD, ACCEPT, TRANSFER, RETURN, COMPLETE, REJECT)
+        enum:
+        - ACCEPT
+        - FORWARD
+        - RETURN
+        - TRANSFER
+        - COMPLETE
+        - REJECT
+        in: path
+        name: action
+        required: true
+        type: string
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/appeal_dto.AppealPage'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get appeals assigned to current user with pagination
+      tags:
+      - appeal
+  /appeal/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all appeal with pagination
+      operationId: get-all-appeal
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: company_district
+        type: string
+      - in: query
+        name: company_inn
+        type: string
+      - in: query
+        name: company_name
+        type: string
+      - in: query
+        name: company_quarter
+        type: string
+      - in: query
+        name: company_region
+        type: string
+      - in: query
+        name: complaint_type
+        type: integer
+      - in: query
+        name: from_date
+        type: string
+      - in: query
+        name: full_name
+        type: string
+      - in: query
+        name: industry
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: number
+        type: integer
+      - in: query
+        name: pinfl
+        type: string
+      - enum:
+        - CALL_CENTER
+        - WEB
+        - TELEGRAM
+        in: query
+        name: source
+        type: string
+        x-enum-varnames:
+        - CALL_CENTER
+        - WEB
+        - TELEGRAM
+      - enum:
+        - UNDER_REVIEW
+        - IN_PROGRESS
+        - COMPLETED
+        - REJECTED
+        in: query
+        name: status
+        type: string
+        x-enum-varnames:
+        - UNDER_REVIEW
+        - IN_PROGRESS
+        - COMPLETED
+        - REJECTED
+      - in: query
+        name: to_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Appeal'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all appeal with pagination
+      tags:
+      - appeal
+  /appeal/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all appeal with pagination
+      operationId: search-appeal
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: company_district
+        type: string
+      - in: query
+        name: company_inn
+        type: string
+      - in: query
+        name: company_name
+        type: string
+      - in: query
+        name: company_quarter
+        type: string
+      - in: query
+        name: company_region
+        type: string
+      - in: query
+        name: complaint_type
+        type: integer
+      - in: query
+        name: from_date
+        type: string
+      - in: query
+        name: full_name
+        type: string
+      - in: query
+        name: industry
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: number
+        type: integer
+      - in: query
+        name: pinfl
+        type: string
+      - enum:
+        - CALL_CENTER
+        - WEB
+        - TELEGRAM
+        in: query
+        name: source
+        type: string
+        x-enum-varnames:
+        - CALL_CENTER
+        - WEB
+        - TELEGRAM
+      - enum:
+        - UNDER_REVIEW
+        - IN_PROGRESS
+        - COMPLETED
+        - REJECTED
+        in: query
+        name: status
+        type: string
+        x-enum-varnames:
+        - UNDER_REVIEW
+        - IN_PROGRESS
+        - COMPLETED
+        - REJECTED
+      - in: query
+        name: to_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Appeal'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all appeal with pagination
+      tags:
+      - appeal
+  /article/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent article by ID
+      operationId: get-article-by-id
+      parameters:
+      - description: article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Article'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent article by ID
+      tags:
+      - article
+    patch:
+      consumes:
+      - application/json
+      description: article
+      operationId: update-article
+      parameters:
+      - description: article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: article information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ArticleUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: article
+      tags:
+      - article
+  /article/{id}/translation/{translation_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent article by ID
+      operationId: get-article-by-id-translation
+      parameters:
+      - description: article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ArticleTranslation'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent article by ID
+      tags:
+      - article-translation
+    patch:
+      consumes:
+      - application/json
+      description: article_translation
+      operationId: update-article-translation
+      parameters:
+      - description: article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      - description: article information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ArticleTranslationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: article_translation
+      tags:
+      - article-translation
+  /article/{id}/translation/create:
+    post:
+      consumes:
+      - application/json
+      description: article_translation
+      operationId: create-article-translation
+      parameters:
+      - description: article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: article information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ArticleTranslationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: article_translation
+      tags:
+      - article-translation
+  /article/{id}/translation/list:
+    get:
+      consumes:
+      - application/json
+      description: GetContent article translations
+      operationId: get-article-translations
+      parameters:
+      - description: article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/ArticleTranslation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent article translations
+      tags:
+      - article-translation
+  /article/create:
+    post:
+      consumes:
+      - application/json
+      description: article
+      operationId: create-article
+      parameters:
+      - description: article information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ArticleCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: article
+      tags:
+      - article
+  /article/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all article with pagination
+      operationId: get-all-article
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: code
+        type: string
+      - in: query
+        name: decree_id
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+        x-enum-varnames:
+        - ASC
+        - DESC
+      - in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Article'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all article with pagination
+      tags:
+      - article
+  /article/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all article with pagination
+      operationId: search-article
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: code
+        type: string
+      - in: query
+        name: decree_id
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+        x-enum-varnames:
+        - ASC
+        - DESC
+      - in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Article'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all article with pagination
+      tags:
+      - article
+  /auth/me:
+    post:
+      consumes:
+      - application/json
+      description: me
+      operationId: me
+      parameters:
+      - enum:
+        - "TRUE"
+        - "FALSE"
+        in: query
+        name: photo
+        type: string
+        x-enum-varnames:
+        - "TRUE"
+        - "FALSE"
+      - enum:
+        - "TRUE"
+        - "FALSE"
+        in: query
+        name: pinfl
+        type: string
+        x-enum-varnames:
+        - "TRUE"
+        - "FALSE"
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: me
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: refresh
+      operationId: refresh
+      parameters:
+      - description: refresh information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/auth_dto.RefreshToken'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/auth_dto.Token'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: refresh
+      tags:
+      - auth
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: sign in
+      operationId: sign-in
+      parameters:
+      - description: sign in information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/Code'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/auth_dto.Token'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: sign in
+      tags:
+      - auth
+  /auth/sign-out:
+    post:
+      consumes:
+      - application/json
+      description: sign out
+      operationId: sign-out
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: sign out
+      tags:
+      - auth
+  /bot_user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent bot by ID
+      operationId: get-bot-user-by-id
+      parameters:
+      - description: bot ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Bot'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent bot by ID
+      tags:
+      - bot_user
+    patch:
+      consumes:
+      - application/json
+      description: bot
+      operationId: update-bot
+      parameters:
+      - description: bot ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: bot information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/BotUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: bot
+      tags:
+      - bot_user
+  /bot_user/create:
+    post:
+      consumes:
+      - application/json
+      description: bot
+      operationId: create-bot
+      parameters:
+      - description: bot information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/BotCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: bot
+      tags:
+      - bot_user
+  /bot_user/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all bot with pagination
+      operationId: get-all-bot
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: phone_number
+        type: string
+      - in: query
+        name: telegram_id
+        type: integer
+      - in: query
+        name: username
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/bot_dto.BotUserPage'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all bot with pagination
+      tags:
+      - bot_user
+  /bot_user/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all bot with pagination
+      operationId: search-bot
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: phone_number
+        type: string
+      - in: query
+        name: telegram_id
+        type: integer
+      - in: query
+        name: username
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Bot'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all bot with pagination
+      tags:
+      - bot_user
+  /client/appeal/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all appeal with pagination
+      operationId: find-one-appeal-to-client
+      parameters:
+      - description: API Key for authentication
+        in: header
+        name: X-Auth
+        type: string
+      - description: appeal id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Appeal'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all appeal with pagination
+      tags:
+      - appeal-client
+  /client/appeal/get_by_password:
+    post:
+      consumes:
+      - application/json
+      description: GetContent appeal by password
+      operationId: get-appeal-by-password
+      parameters:
+      - description: API Key for authentication
+        in: header
+        name: X-Auth
+        type: string
+      - description: appeal by password request
+        in: body
+        name: reqBody
+        required: true
+        schema:
+          $ref: '#/definitions/AppealByPasswordReq'
+      - description: languageId
+        in: query
+        name: language_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Appeal'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent appeal by password
+      tags:
+      - appeal-client
+  /complaint_type/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent complaint_type by ID
+      operationId: get-complaint_type-by-id
+      parameters:
+      - description: complaint_type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Language ID
+        in: query
+        name: language_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ComplaintType'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent complaint_type by ID
+      tags:
+      - complaint_type
+    patch:
+      consumes:
+      - application/json
+      description: complaint_type
+      operationId: update-complaint_type
+      parameters:
+      - description: complaint_type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: complaint_type information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ComplaintTypeUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: complaint_type
+      tags:
+      - complaint_type
+  /complaint_type/{id}/translation/{translation_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent complaint_type translation by ID
+      operationId: get-complaint_type-translation-by-id
+      parameters:
+      - description: complaint_type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: complaint_type translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ComplaintTypeTranslation'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent complaint_type translation by ID
+      tags:
+      - complaint_type-translation
+    patch:
+      consumes:
+      - application/json
+      description: Update complaint_type translation
+      operationId: update-complaint_type-translation
+      parameters:
+      - description: complaint_type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: complaint_type translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      - description: complaint_type information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ComplaintTypeTranslationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update complaint_type translation
+      tags:
+      - complaint_type-translation
+  /complaint_type/{id}/translation/create:
+    post:
+      consumes:
+      - application/json
+      description: Create complaint_type translation
+      operationId: create-complaint_type-translation
+      parameters:
+      - description: complaint_type ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: complaint_type information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ComplaintTypeTranslationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create complaint_type translation
+      tags:
+      - complaint_type-translation
+  /complaint_type/{id}/translation/list:
+    get:
+      consumes:
+      - application/json
+      description: GetContent complaint_type translations
+      operationId: get-complaint_type-translations
+      parameters:
+      - description: complaint_type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/ComplaintTypeTranslation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent complaint_type translations
+      tags:
+      - complaint_type-translation
+  /complaint_type/create:
+    post:
+      consumes:
+      - application/json
+      description: complaint_type
+      operationId: create-complaint_type
+      parameters:
+      - description: complaint_type information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ComplaintTypeCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: complaint_type
+      tags:
+      - complaint_type
+  /complaint_type/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all complaint_type with pagination
+      operationId: get-all-complaint_type
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/ComplaintType'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all complaint_type with pagination
+      tags:
+      - complaint_type
+  /complaint_type/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all complaint_type with pagination
+      operationId: search-complaint_type
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/ComplaintType'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all complaint_type with pagination
+      tags:
+      - complaint_type
+  /contact/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent contact by ID
+      operationId: get-contact-by-id
+      parameters:
+      - description: contact ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Contact'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent contact by ID
+      tags:
+      - contact
+    patch:
+      consumes:
+      - application/json
+      description: contact
+      operationId: update-contact
+      parameters:
+      - description: contact ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: contact information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ContactUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: contact
+      tags:
+      - contact
+  /contact/create:
+    post:
+      consumes:
+      - application/json
+      description: contact
+      operationId: create-contact
+      parameters:
+      - description: contact information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ContactCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: contact
+      tags:
+      - contact
+  /contact/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all contact with pagination
+      operationId: get-all-contact
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: inspectorId
+        type: integer
+      - enum:
+        - PHONE
+        - EMAIL
+        in: query
+        name: type
+        type: string
+        x-enum-varnames:
+        - PHONE
+        - EMAIL
+      - in: query
+        name: value
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Contact'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all contact with pagination
+      tags:
+      - contact
+  /contact/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all contact with pagination
+      operationId: search-contact
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: inspectorId
+        type: integer
+      - enum:
+        - PHONE
+        - EMAIL
+        in: query
+        name: type
+        type: string
+        x-enum-varnames:
+        - PHONE
+        - EMAIL
+      - in: query
+        name: value
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Contact'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all contact with pagination
+      tags:
+      - contact
+  /decree/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent decree by ID
+      operationId: get-decree-by-id
+      parameters:
+      - description: decree ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: language_id
+        in: query
+        name: language_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Decree'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent decree by ID
+      tags:
+      - decree
+    patch:
+      consumes:
+      - application/json
+      description: decree
+      operationId: update-decree
+      parameters:
+      - description: decree ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: decree information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DecreeUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: decree
+      tags:
+      - decree
+  /decree/{id}/translation/{translation_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent decree translation by ID
+      operationId: get-decree-translation-by-id
+      parameters:
+      - description: decree ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: decree translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/DecreeTranslation'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent decree translation by ID
+      tags:
+      - decree-translation
+    patch:
+      consumes:
+      - application/json
+      description: Update decree translation
+      operationId: update-decree-translation
+      parameters:
+      - description: decree ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: decree translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      - description: decree information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DecreeTranslationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update decree translation
+      tags:
+      - decree-translation
+  /decree/{id}/translation/create:
+    post:
+      consumes:
+      - application/json
+      description: Create decree translation
+      operationId: create-decree-translation
+      parameters:
+      - description: decree ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: decree information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DecreeTranslationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create decree translation
+      tags:
+      - decree-translation
+  /decree/{id}/translation/list:
+    get:
+      consumes:
+      - application/json
+      description: GetContent decree translations
+      operationId: get-decree-translations
+      parameters:
+      - description: decree ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/DecreeTranslation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent decree translations
+      tags:
+      - decree-translation
+  /decree/create:
+    post:
+      consumes:
+      - application/json
+      description: decree
+      operationId: create-decree
+      parameters:
+      - description: decree information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DecreeCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: decree
+      tags:
+      - decree
+  /decree/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all decree with pagination
+      operationId: get-all-decree
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: approved_at
+        type: string
+      - in: query
+        name: language_id
+        type: integer
+      - enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+        x-enum-varnames:
+        - ASC
+        - DESC
+      - in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Decree'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all decree with pagination
+      tags:
+      - decree
+  /decree/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all decree with pagination
+      operationId: search-decree
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: approved_at
+        type: string
+      - in: query
+        name: language_id
+        type: integer
+      - enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+        x-enum-varnames:
+        - ASC
+        - DESC
+      - in: query
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Decree'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all decree with pagination
+      tags:
+      - decree
+  /detail/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent detail by ID
+      operationId: get-detail-by-id
+      parameters:
+      - description: X-Auth header
+        in: header
+        name: X-Auth
+        type: string
+      - description: Language ID
+        in: query
+        name: language_id
+        type: string
+      - description: detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Detail'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent detail by ID
+      tags:
+      - detail
+    patch:
+      consumes:
+      - application/json
+      description: detail
+      operationId: update-detail
+      parameters:
+      - description: detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: detail information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DetailUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: detail
+      tags:
+      - detail
+  /detail/{id}/translation/{translation_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent detail translation by ID
+      operationId: get-detail-translation-by-id
+      parameters:
+      - description: detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: detail translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Detail'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent detail translation by ID
+      tags:
+      - detail-translation
+    patch:
+      consumes:
+      - application/json
+      description: Update detail translation
+      operationId: update-detail-translation
+      parameters:
+      - description: detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: detail translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      - description: detail information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DetailTranslationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update detail translation
+      tags:
+      - detail-translation
+  /detail/{id}/translation/create:
+    post:
+      consumes:
+      - application/json
+      description: Create detail translation
+      operationId: create-detail-translation
+      parameters:
+      - description: detail ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: detail information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DetailTranslationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create detail translation
+      tags:
+      - detail-translation
+  /detail/{id}/translation/list:
+    get:
+      consumes:
+      - application/json
+      description: GetContent detail translations
+      operationId: get-detail-translations
+      parameters:
+      - description: detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Detail'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent detail translations
+      tags:
+      - detail-translation
+  /detail/create:
+    post:
+      consumes:
+      - application/json
+      description: detail
+      operationId: create-detail
+      parameters:
+      - description: detail information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/DetailCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: detail
+      tags:
+      - detail
+  /detail/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all detail with pagination
+      operationId: get-all-detail
+      parameters:
+      - description: X-Auth header
+        in: header
+        name: X-Auth
+        type: string
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - collectionFormat: csv
+        in: query
+        items:
+          enum:
+          - FAQ
+          - MENU
+          - PARTNERS
+          - APPLICATION_TYPE
+          - PUBLIC_OFFER
+          - PAGES_CONTENT
+          type: string
+        name: category
+        type: array
+      - in: query
+        name: language_id
+        type: integer
+      - enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+        x-enum-varnames:
+        - ASC
+        - DESC
+      - description: if set, return only children of this parent
+        in: query
+        name: parent_id
+        type: integer
+      - description: if true, return only parents
+        enum:
+        - "TRUE"
+        - "FALSE"
+        in: query
+        name: parents
+        type: string
+        x-enum-varnames:
+        - "TRUE"
+        - "FALSE"
+      - enum:
+        - MAIN_CONTENT
+        - HEADER_NAVIGATION
+        - FOOTER_NAVIGATION
+        - FOOTER_CONTACTS
+        - SOCIALS
+        in: query
+        name: position
+        type: string
+        x-enum-varnames:
+        - MAIN_CONTENT
+        - HEADER_NAVIGATION
+        - FOOTER_NAVIGATION
+        - FOOTER_CONTACTS
+        - FOOTER_SOCIALS
+      - in: query
+        name: title
+        type: string
+      - enum:
+        - ROUTE
+        - WEB_LINK
+        - STATIC
+        in: query
+        name: url_type
+        type: string
+        x-enum-varnames:
+        - ROUTE
+        - WEB_LINK
+        - STATIC
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Detail'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all detail with pagination
+      tags:
+      - detail
+  /detail/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all detail with pagination
+      operationId: search-detail
+      parameters:
+      - description: X-Auth header
+        in: header
+        name: X-Auth
+        type: string
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - collectionFormat: csv
+        in: query
+        items:
+          enum:
+          - FAQ
+          - MENU
+          - PARTNERS
+          - APPLICATION_TYPE
+          - PUBLIC_OFFER
+          - PAGES_CONTENT
+          type: string
+        name: category
+        type: array
+      - in: query
+        name: language_id
+        type: integer
+      - enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+        x-enum-varnames:
+        - ASC
+        - DESC
+      - description: if set, return only children of this parent
+        in: query
+        name: parent_id
+        type: integer
+      - description: if true, return only parents
+        enum:
+        - "TRUE"
+        - "FALSE"
+        in: query
+        name: parents
+        type: string
+        x-enum-varnames:
+        - "TRUE"
+        - "FALSE"
+      - enum:
+        - MAIN_CONTENT
+        - HEADER_NAVIGATION
+        - FOOTER_NAVIGATION
+        - FOOTER_CONTACTS
+        - SOCIALS
+        in: query
+        name: position
+        type: string
+        x-enum-varnames:
+        - MAIN_CONTENT
+        - HEADER_NAVIGATION
+        - FOOTER_NAVIGATION
+        - FOOTER_CONTACTS
+        - FOOTER_SOCIALS
+      - in: query
+        name: title
+        type: string
+      - enum:
+        - ROUTE
+        - WEB_LINK
+        - STATIC
+        in: query
+        name: url_type
+        type: string
+        x-enum-varnames:
+        - ROUTE
+        - WEB_LINK
+        - STATIC
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Detail'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all detail with pagination
+      tags:
+      - detail
+  /detail/tree:
+    get:
+      consumes:
+      - application/json
+      description: GetContent detail tree
+      operationId: get-detail-tree
+      parameters:
+      - description: X-Auth header
+        in: header
+        name: X-Auth
+        type: string
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - collectionFormat: csv
+        in: query
+        items:
+          enum:
+          - FAQ
+          - MENU
+          - PARTNERS
+          - APPLICATION_TYPE
+          - PUBLIC_OFFER
+          - PAGES_CONTENT
+          type: string
+        name: category
+        type: array
+      - in: query
+        name: language_id
+        type: integer
+      - enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+        x-enum-varnames:
+        - ASC
+        - DESC
+      - description: if set, return only children of this parent
+        in: query
+        name: parent_id
+        type: integer
+      - description: if true, return only parents
+        enum:
+        - "TRUE"
+        - "FALSE"
+        in: query
+        name: parents
+        type: string
+        x-enum-varnames:
+        - "TRUE"
+        - "FALSE"
+      - enum:
+        - MAIN_CONTENT
+        - HEADER_NAVIGATION
+        - FOOTER_NAVIGATION
+        - FOOTER_CONTACTS
+        - SOCIALS
+        in: query
+        name: position
+        type: string
+        x-enum-varnames:
+        - MAIN_CONTENT
+        - HEADER_NAVIGATION
+        - FOOTER_NAVIGATION
+        - FOOTER_CONTACTS
+        - FOOTER_SOCIALS
+      - in: query
+        name: title
+        type: string
+      - enum:
+        - ROUTE
+        - WEB_LINK
+        - STATIC
+        in: query
+        name: url_type
+        type: string
+        x-enum-varnames:
+        - ROUTE
+        - WEB_LINK
+        - STATIC
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Detail'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent detail tree
+      tags:
+      - detail
+  /file/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete file by ID
+      operationId: delete-file
+      parameters:
+      - description: file ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete file
+      tags:
+      - file
+  /file/{id}/replace:
+    patch:
+      consumes:
+      - application/json
+      description: file
+      operationId: replace-file
+      parameters:
+      - description: Order Document
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: file ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: file
+      tags:
+      - file
+  /file/create:
+    post:
+      consumes:
+      - application/json
+      description: file
+      operationId: create-file
+      parameters:
+      - in: formData
+        name: category
+        type: string
+      - in: formData
+        name: owner
+        type: string
+      - in: formData
+        name: sign
+        type: string
+      - description: Order Document
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: file
+      tags:
+      - file
+  /file/create_many:
+    post:
+      consumes:
+      - multipart/form-data
+      description: upload multiple files
+      operationId: create-many-files
+      parameters:
+      - collectionFormat: csv
+        description: Multiple Files
+        in: formData
+        items:
+          type: file
+        name: files
+        required: true
+        type: array
+      - description: File category
+        in: formData
+        name: category
+        required: true
+        type: string
+      - description: File owner
+        in: formData
+        name: owner
+        required: true
+        type: string
+      - description: File sign
+        in: formData
+        name: sign
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/ID64'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: upload multiple files
+      tags:
+      - file
+  /file/download/{category}/{owner}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent user by ID
+      operationId: file-by-owner
+      parameters:
+      - description: category
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: owner
+        in: path
+        name: owner
+        required: true
+        type: string
+      - description: sign
+        in: query
+        name: sign
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema: {}
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent user by ID
+      tags:
+      - file
+  /file/download/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent user by ID
+      operationId: download-file-by-id
+      parameters:
+      - description: file ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema: {}
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent user by ID
+      tags:
+      - file
+  /file/page:
+    get:
+      consumes:
+      - application/json
+      description: Get all files with pagination
+      operationId: get-all-files
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: category
+        type: string
+      - in: query
+        name: owner
+        type: string
+      - in: query
+        name: sign
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/File'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get all files with pagination
+      tags:
+      - file
+  /file/page/employee:
+    get:
+      consumes:
+      - application/json
+      description: Get all files with pagination
+      operationId: get-files-by-employee
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: employeeId
+        type: integer
+      - in: query
+        name: sign
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/File'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get all files with pagination
+      tags:
+      - file
+  /industry/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent industry by ID
+      operationId: get-industry-by-id
+      parameters:
+      - description: industry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: language_id
+        in: query
+        name: language_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Industry'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent industry by ID
+      tags:
+      - industry
+    patch:
+      consumes:
+      - application/json
+      description: industry
+      operationId: update-industry
+      parameters:
+      - description: industry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: industry information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/IndustryUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: industry
+      tags:
+      - industry
+  /industry/{id}/translation/{translation_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent industry translation by ID
+      operationId: get-industry-translation-by-id
+      parameters:
+      - description: industry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: industry translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/IndustryTranslation'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent industry translation by ID
+      tags:
+      - industry-translation
+    patch:
+      consumes:
+      - application/json
+      description: Update industry translation
+      operationId: update-industry-translation
+      parameters:
+      - description: industry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: industry translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      - description: industry information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/IndustryTranslationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update industry translation
+      tags:
+      - industry-translation
+  /industry/{id}/translation/create:
+    post:
+      consumes:
+      - application/json
+      description: Create industry translation
+      operationId: create-industry-translation
+      parameters:
+      - description: industry ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: industry information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/IndustryTranslationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create industry translation
+      tags:
+      - industry-translation
+  /industry/{id}/translation/list:
+    get:
+      consumes:
+      - application/json
+      description: GetContent industry translations
+      operationId: get-industry-translations
+      parameters:
+      - description: industry ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/IndustryTranslation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent industry translations
+      tags:
+      - industry-translation
+  /industry/create:
+    post:
+      consumes:
+      - application/json
+      description: industry
+      operationId: create-industry
+      parameters:
+      - description: industry information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/IndustryCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: industry
+      tags:
+      - industry
+  /industry/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all industry with pagination
+      operationId: get-all-industry
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Industry'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all industry with pagination
+      tags:
+      - industry
+  /industry/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all industry with pagination
+      operationId: search-industry
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Industry'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all industry with pagination
+      tags:
+      - industry
+  /inspector/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent inspector by ID
+      operationId: get-inspector-by-id
+      parameters:
+      - description: inspector ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: X-Auth header
+        in: header
+        name: X-Auth
+        type: string
+      - description: language_id
+        in: query
+        name: language_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Inspector'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent inspector by ID
+      tags:
+      - inspector
+    patch:
+      consumes:
+      - application/json
+      description: inspector
+      operationId: update-inspector
+      parameters:
+      - description: inspector ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: inspector information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/InspectorUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: inspector
+      tags:
+      - inspector
+  /inspector/create:
+    post:
+      consumes:
+      - application/json
+      description: inspector
+      operationId: create-inspector
+      parameters:
+      - description: inspector information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/InspectorCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: inspector
+      tags:
+      - inspector
+  /inspector/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all inspector with pagination
+      operationId: get-all-inspector
+      parameters:
+      - description: X-Auth header
+        in: header
+        name: X-Auth
+        type: string
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - enum:
+        - "TRUE"
+        - "FALSE"
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - "TRUE"
+        - "FALSE"
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: organization_id
+        type: integer
+      - in: query
+        name: position_id
+        type: integer
+      - in: query
+        name: soato_id
+        type: integer
+      - in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Inspector'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all inspector with pagination
+      tags:
+      - inspector
+  /inspector/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all inspector with pagination
+      operationId: search-inspector
+      parameters:
+      - description: X-Auth header
+        in: header
+        name: X-Auth
+        type: string
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - enum:
+        - "TRUE"
+        - "FALSE"
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - "TRUE"
+        - "FALSE"
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: organization_id
+        type: integer
+      - in: query
+        name: position_id
+        type: integer
+      - in: query
+        name: soato_id
+        type: integer
+      - in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Inspector'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all inspector with pagination
+      tags:
+      - inspector
+  /integration/egov/count_of_employees:
+    get:
+      consumes:
+      - application/json
+      description: Get info about count of employees by tin
+      operationId: count_of_employees
+      parameters:
+      - description: Company's tin
+        in: query
+        name: tin
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get info about count of employees
+      tags:
+      - egov_integration
+  /integration/egov/current_working_places:
+    get:
+      consumes:
+      - application/json
+      description: Get current working places by pinfl
+      operationId: current_working_places
+      parameters:
+      - description: Person's id
+        in: query
+        name: pinfl
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get current working places
+      tags:
+      - egov_integration
+  /integration/egov/experiences_history:
+    get:
+      consumes:
+      - application/json
+      description: Get citizen history by pinfl
+      operationId: citizen_history
+      parameters:
+      - description: Person's id
+        in: query
+        name: pinfl
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get citizen history
+      tags:
+      - egov_integration
+  /integration/egov/get_tin:
+    get:
+      consumes:
+      - application/json
+      description: Get TIN by pinfl
+      operationId: get_tin
+      parameters:
+      - description: Person pinfl
+        in: query
+        name: pinfl
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get TIN by pinfl
+      tags:
+      - egov_integration
+  /integration/egov/passport_data:
+    get:
+      consumes:
+      - application/json
+      description: Get passport data by pinfl
+      parameters:
+      - default: 1
+        description: Language ID
+        in: query
+        name: language_id
+        type: integer
+      - description: Person's id
+        in: query
+        name: pinfl
+        required: true
+        type: string
+      - default: "false"
+        description: 'example: true or false'
+        in: query
+        name: with_photo
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get passport data
+      tags:
+      - egov_integration
+  /integration/egov/self_employed:
+    get:
+      consumes:
+      - application/json
+      description: Get info about self employed status by pinfl
+      operationId: self_employed
+      parameters:
+      - description: Person pinfl
+        in: query
+        name: pinfl
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get info about self employed status
+      tags:
+      - egov_integration
+  /invitation/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent invitation by ID
+      operationId: get-invitation-by-id
+      parameters:
+      - description: invitation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Language ID
+        in: query
+        name: language_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/InvitationDto'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent invitation by ID
+      tags:
+      - invitation
+  /invitation/create:
+    post:
+      consumes:
+      - application/json
+      description: invitation
+      operationId: create-invitation
+      parameters:
+      - description: invitation information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/Invitation'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: invitation
+      tags:
+      - invitation
+  /invitation/delete_or_restore/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: invitation
+      operationId: restore-invitation
+      parameters:
+      - description: invitation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+          schema: {}
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: invitation
+      tags:
+      - invitation
+  /invitation/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all invitation with pagination
+      operationId: get-all-invitation
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: organization_id
+        type: integer
+      - in: query
+        name: pin
+        type: string
+      - in: query
+        name: role_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/organization_dto.InvitationPage'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all invitation with pagination
+      tags:
+      - invitation
+  /invitation/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all invitation with pagination
+      operationId: search-invitation
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: organization_id
+        type: integer
+      - in: query
+        name: pin
+        type: string
+      - in: query
+        name: role_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/InvitationDto'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all invitation with pagination
+      tags:
+      - invitation
+  /language:
+    post:
+      consumes:
+      - application/json
+      description: Create Language
+      parameters:
+      - description: Language Create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/language_dto.LanguageCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      summary: Create Language
+      tags:
+      - language
+  /language-content:
+    put:
+      consumes:
+      - application/json
+      description: language-content
+      operationId: create-or-update-language-content
+      parameters:
+      - description: language-content information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/language_dto.LanguageContentsCreateOrUpdate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language-content
+      tags:
+      - language-content
+  /language-content/{key}:
+    delete:
+      consumes:
+      - application/json
+      description: language-content
+      operationId: delete-language-content-by-key
+      parameters:
+      - description: key
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language-content
+      tags:
+      - language-content
+  /language-content/{language_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent language-content by ID
+      operationId: find-translation-by-language-id
+      parameters:
+      - description: language-content ID
+        in: path
+        name: language_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/sharedutil.JsonObject'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent language-content by ID
+      tags:
+      - language-content
+  /language-content/by-key/{key}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent language-content by ID
+      operationId: get-language-content-by-key
+      parameters:
+      - description: language-content ID
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/LanguageContent'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent language-content by ID
+      tags:
+      - language-content
+  /language-content/page/{language_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent language-content by ID
+      operationId: page-translation-by-language-id
+      parameters:
+      - description: language-content ID
+        in: path
+        name: language_id
+        required: true
+        type: string
+      - in: query
+        name: key
+        type: string
+      - in: query
+        name: value
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/sharedutil.JsonObject'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent language-content by ID
+      tags:
+      - language-content
+  /language/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: language
+      operationId: delete-language
+      parameters:
+      - description: language ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+          schema: {}
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language
+      tags:
+      - language
+    get:
+      consumes:
+      - application/json
+      description: language
+      operationId: language-by-id
+      parameters:
+      - description: language ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/language_dto.Language'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language
+      tags:
+      - language
+    patch:
+      consumes:
+      - application/json
+      description: language
+      operationId: update-language
+      parameters:
+      - description: language ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: language information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/language_dto.LanguageUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+          schema: {}
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language
+      tags:
+      - language
+  /language/{id}/restore:
+    patch:
+      consumes:
+      - application/json
+      description: language
+      operationId: restore-language
+      parameters:
+      - description: language ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+          schema: {}
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language
+      tags:
+      - language
+  /language/first:
+    get:
+      consumes:
+      - application/json
+      description: language
+      operationId: language-first
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/language_dto.Language'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language
+      tags:
+      - language
+  /language/page:
+    get:
+      consumes:
+      - application/json
+      description: language
+      operationId: language-page
+      parameters:
+      - description: with_deleted
+        in: query
+        name: with_deleted
+        type: string
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: description
+        in: query
+        name: description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/language_dto.Language'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language
+      tags:
+      - language
+  /language/search:
+    get:
+      consumes:
+      - application/json
+      description: language
+      operationId: language-find
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: description
+        in: query
+        name: description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/language_dto.Language'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: language
+      tags:
+      - language
+  /log/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent log by ID
+      operationId: get-log-by-id
+      parameters:
+      - description: log ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Log'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent log by ID
+      tags:
+      - log
+  /log/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all log with pagination
+      operationId: get-all-log
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: code
+        type: string
+      - in: query
+        name: fullname
+        type: string
+      - in: query
+        name: method
+        type: string
+      - in: query
+        name: table_name
+        type: string
+      - enum:
+        - ONEID
+        in: query
+        name: type
+        type: string
+        x-enum-varnames:
+        - ONEID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response when oneId=all
+          schema:
+            $ref: '#/definitions/LogPageAll'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all log with pagination
+      tags:
+      - log
+  /log/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all log with pagination
+      operationId: search-log
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: code
+        type: string
+      - in: query
+        name: fullname
+        type: string
+      - in: query
+        name: method
+        type: string
+      - in: query
+        name: table_name
+        type: string
+      - enum:
+        - ONEID
+        in: query
+        name: type
+        type: string
+        x-enum-varnames:
+        - ONEID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Log'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all log with pagination
+      tags:
+      - log
+  /log/tables:
+    get:
+      consumes:
+      - application/json
+      description: Get all table names from PostgreSQL database
+      operationId: get-table-names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of table names
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get all table names from PostgreSQL database
+      tags:
+      - log
+  /minimum_wage/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent minimumWage by ID
+      operationId: get-minimumWage-by-id
+      parameters:
+      - description: minimumWage ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/MinimumWage'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent minimumWage by ID
+      tags:
+      - minimumWage
+    patch:
+      consumes:
+      - application/json
+      description: minimumWage
+      operationId: update-minimumWage
+      parameters:
+      - description: minimumWage ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: minimumWage information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/MinimumWageUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: minimumWage
+      tags:
+      - minimumWage
+  /minimum_wage/create:
+    post:
+      consumes:
+      - application/json
+      description: minimumWage
+      operationId: create-minimumWage
+      parameters:
+      - description: minimumWage information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/MinimumWageCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: minimumWage
+      tags:
+      - minimumWage
+  /minimum_wage/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all minimumWage with pagination
+      operationId: get-all-minimumWage
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: amount
+        type: number
+      - in: query
+        name: valid_from
+        type: string
+      - in: query
+        name: valid_to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/MinimumWage'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all minimumWage with pagination
+      tags:
+      - minimumWage
+  /minimum_wage/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all minimumWage with pagination
+      operationId: search-minimumWage
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: amount
+        type: number
+      - in: query
+        name: valid_from
+        type: string
+      - in: query
+        name: valid_to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/MinimumWage'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all minimumWage with pagination
+      tags:
+      - minimumWage
+  /organization/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent organization by ID
+      operationId: get-organization-by-id
+      parameters:
+      - description: organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: language_id
+        in: query
+        name: language_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/OrganizationDto'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent organization by ID
+      tags:
+      - organization
+    patch:
+      consumes:
+      - application/json
+      description: organization
+      operationId: update-organization
+      parameters:
+      - description: organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: organization information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/OrganizationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: organization
+      tags:
+      - organization
+  /organization/{id}/translation/{translation_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent organization translation by ID
+      operationId: get-organization-translation-by-id
+      parameters:
+      - description: organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: organization translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/OrganizationTranslation'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent organization translation by ID
+      tags:
+      - organization-translation
+    patch:
+      consumes:
+      - application/json
+      description: Update organization translation
+      operationId: update-organization-translation
+      parameters:
+      - description: organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: organization translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      - description: organization information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/OrganizationTranslationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update organization translation
+      tags:
+      - organization-translation
+  /organization/{id}/translation/create:
+    post:
+      consumes:
+      - application/json
+      description: Create organization translation
+      operationId: create-organization-translation
+      parameters:
+      - description: organization ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: organization information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/OrganizationTranslationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create organization translation
+      tags:
+      - organization-translation
+  /organization/{id}/translation/list:
+    get:
+      consumes:
+      - application/json
+      description: GetContent organization translations
+      operationId: get-organization-translations
+      parameters:
+      - description: organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/OrganizationTranslation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent organization translations
+      tags:
+      - organization-translation
+  /organization/create:
+    post:
+      consumes:
+      - application/json
+      description: organization
+      operationId: create-organization
+      parameters:
+      - description: organization information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/OrganizationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: organization
+      tags:
+      - organization
+  /organization/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all organization with pagination
+      operationId: get-all-organization
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: district_id
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: parent_id
+        type: integer
+      - in: query
+        name: quarter_id
+        type: integer
+      - in: query
+        name: region_id
+        type: integer
+      - in: query
+        name: soato_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Organization'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all organization with pagination
+      tags:
+      - organization
+  /organization/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all organization with pagination
+      operationId: search-organization
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: district_id
+        type: integer
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: parent_id
+        type: integer
+      - in: query
+        name: quarter_id
+        type: integer
+      - in: query
+        name: region_id
+        type: integer
+      - in: query
+        name: soato_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Organization'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all organization with pagination
+      tags:
+      - organization
+  /position/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent position by ID
+      operationId: get-position-by-id
+      parameters:
+      - description: position ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: language_id
+        in: query
+        name: language_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Position'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent position by ID
+      tags:
+      - position
+    patch:
+      consumes:
+      - application/json
+      description: position
+      operationId: update-position
+      parameters:
+      - description: position ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: position information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/PositionUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: position
+      tags:
+      - position
+  /position/{id}/translation/{translation_id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent position translation by ID
+      operationId: get-position-translation-by-id
+      parameters:
+      - description: position ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: position translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/PositionTranslation'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent position translation by ID
+      tags:
+      - position-translation
+    patch:
+      consumes:
+      - application/json
+      description: Update position translation
+      operationId: update-position-translation
+      parameters:
+      - description: position ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: position translation ID
+        in: path
+        name: translation_id
+        required: true
+        type: string
+      - description: position information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/PositionTranslationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update position translation
+      tags:
+      - position-translation
+  /position/{id}/translation/create:
+    post:
+      consumes:
+      - application/json
+      description: Create position translation
+      operationId: create-position-translation
+      parameters:
+      - description: position ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: position information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/PositionTranslationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create position translation
+      tags:
+      - position-translation
+  /position/{id}/translation/list:
+    get:
+      consumes:
+      - application/json
+      description: GetContent position translations
+      operationId: get-position-translations
+      parameters:
+      - description: position ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/PositionTranslation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent position translations
+      tags:
+      - position-translation
+  /position/create:
+    post:
+      consumes:
+      - application/json
+      description: position
+      operationId: create-position
+      parameters:
+      - description: position information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/PositionCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: position
+      tags:
+      - position
+  /position/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all position with pagination
+      operationId: get-all-position
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Position'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all position with pagination
+      tags:
+      - position
+  /position/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all position with pagination
+      operationId: search-position
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - enum:
+        - ACTIVE
+        - INACTIVE
+        in: query
+        name: active
+        type: string
+        x-enum-varnames:
+        - ACTIVE
+        - INACTIVE
+      - in: query
+        name: language_id
+        type: integer
+      - in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Position'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all position with pagination
+      tags:
+      - position
+  /role:
+    put:
+      consumes:
+      - application/json
+      description: role
+      operationId: create-or-update-role
+      parameters:
+      - description: role information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/RoleCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: role
+      tags:
+      - role
+  /role/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent role by ID
+      operationId: get-role-by-id
+      parameters:
+      - description: role ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Role'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent role by ID
+      tags:
+      - role
+  /role/page:
+    get:
+      description: role-service-page
+      parameters:
+      - in: query
+        name: description
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: organization_id
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Items per page
+        in: query
+        name: perpage
+        type: integer
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/RolePage'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: role-service-page
+      tags:
+      - role
+  /role/permissions:
+    get:
+      consumes:
+      - application/json
+      description: get-all-permissions
+      operationId: get-all-permissions
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Items per page
+        in: query
+        name: perpage
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Without paginate
+        in: query
+        name: without_paginate
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of permissions
+          schema:
+            items:
+              $ref: '#/definitions/Permission'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: get-all-permissions
+      tags:
+      - role
+  /role/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all role with pagination
+      operationId: search-role
+      parameters:
+      - in: query
+        name: description
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: organization_id
+        type: integer
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Role'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all role with pagination
+      tags:
+      - role
+  /site_setting/get:
+    get:
+      consumes:
+      - application/json
+      description: GetContent siteSetting by ID
+      operationId: get-site-setting-by-id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/SiteSettingDto'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent siteSetting by ID
+      tags:
+      - siteSetting
+  /site_setting/put:
+    put:
+      consumes:
+      - application/json
+      description: siteSetting
+      operationId: update-site-setting
+      parameters:
+      - description: siteSetting information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/SiteSettingUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: siteSetting
+      tags:
+      - siteSetting
+  /template/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: template-service-delete
+      operationId: template-service-delete
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-delete
+      tags:
+      - template
+    get:
+      consumes:
+      - application/json
+      description: template-service-get-by-id
+      operationId: template-service-get-by-id
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Template'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-get-by-id
+      tags:
+      - template
+    patch:
+      consumes:
+      - application/json
+      description: template-service-update
+      operationId: template-service-update
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update request
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateTemplate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-update
+      tags:
+      - template
+  /template/create:
+    post:
+      consumes:
+      - application/json
+      description: template-service-create
+      operationId: template-service-create
+      parameters:
+      - description: Create request
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/CreateTemplate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-create
+      tags:
+      - template
+  /template/page:
+    get:
+      consumes:
+      - application/json
+      description: template-service-page
+      operationId: template-service-page
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Items per page
+        in: query
+        name: perpage
+        type: integer
+      - in: query
+        name: page_name
+        type: string
+      - in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/TemplatePages'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-page
+      tags:
+      - template
+  /template/search:
+    get:
+      consumes:
+      - application/json
+      description: template-service-search
+      operationId: template-service-search
+      parameters:
+      - in: query
+        name: page_name
+        type: string
+      - in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Template'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-search
+      tags:
+      - template
+  /template/type/{type}:
+    get:
+      consumes:
+      - application/json
+      description: template-service-get-by-type
+      operationId: template-service-get-by-type
+      parameters:
+      - description: Type
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Template'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-get-by-type
+      tags:
+      - template
+  /template/types:
+    get:
+      consumes:
+      - application/json
+      description: template-service-get-types
+      operationId: template-service-get-types
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: template-service-get-types
+      tags:
+      - template
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user by ID
+      operationId: delete-user
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete user
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      description: GetContent user by ID
+      operationId: get-user-by-id
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent user by ID
+      tags:
+      - user
+  /user/{id}/restore:
+    patch:
+      consumes:
+      - application/json
+      description: Restore user by id
+      operationId: restore-user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+          schema: {}
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Restore user by id
+      tags:
+      - user
+  /user/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all user with pagination
+      operationId: get-all-user
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      - in: query
+        name: fullname
+        type: string
+      - enum:
+        - male
+        - female
+        in: query
+        name: gender
+        type: string
+        x-enum-varnames:
+        - Male
+        - Female
+      - in: query
+        name: order
+        type: string
+      - in: query
+        name: pin
+        type: string
+      - in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/User'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all user with pagination
+      tags:
+      - user
+  /user/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all user with pagination
+      operationId: search-user
+      parameters:
+      - in: query
+        name: fullname
+        type: string
+      - enum:
+        - male
+        - female
+        in: query
+        name: gender
+        type: string
+        x-enum-varnames:
+        - Male
+        - Female
+      - in: query
+        name: order
+        type: string
+      - in: query
+        name: pin
+        type: string
+      - in: query
+        name: sort_by
+        type: string
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/User'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all user with pagination
+      tags:
+      - user
+  /violation/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetContent violation by ID
+      operationId: get-violation-by-id
+      parameters:
+      - description: violation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Violation'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent violation by ID
+      tags:
+      - violation
+    patch:
+      consumes:
+      - application/json
+      description: violation
+      operationId: update-violation
+      parameters:
+      - description: violation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: violation information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ViolationUpdate'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: violation
+      tags:
+      - violation
+  /violation/create:
+    post:
+      consumes:
+      - application/json
+      description: violation
+      operationId: create-violation
+      parameters:
+      - description: violation information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/ViolationCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/ID64'
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: violation
+      tags:
+      - violation
+  /violation/page:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all violation with pagination
+      operationId: get-all-violation
+      parameters:
+      - default: "1"
+        description: Page number
+        in: query
+        name: page
+        type: string
+      - default: "10"
+        description: Number of items per page
+        in: query
+        name: perpage
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Violation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all violation with pagination
+      tags:
+      - violation
+  /violation/search:
+    get:
+      consumes:
+      - application/json
+      description: GetContent all violation with pagination
+      operationId: search-violation
+      parameters:
+      - default: 20
+        description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              $ref: '#/definitions/Violation'
+            type: array
+        "400":
+          description: Bad request
+          schema: {}
+        "500":
+          description: Internal server error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: GetContent all violation with pagination
+      tags:
+      - violation
+swagger: "2.0"

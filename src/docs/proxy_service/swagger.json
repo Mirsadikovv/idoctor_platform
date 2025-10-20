@@ -1,0 +1,445 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Proxy Service API.",
+        "title": "Proxy Service API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/proxy/{scheme}/{host}/{path}": {
+            "get": {
+                "description": "Forward any HTTP or WebSocket request to another service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy"
+                ],
+                "summary": "Universal Proxy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Protocol scheme (http, https or ws)",
+                        "name": "scheme",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "host",
+                        "name": "host",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Path to forward (everything after /proxy/). Example: web-apps/apps/api/documents/api.js",
+                        "name": "path",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forwarded response from the target",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Target unreachable",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Forward any HTTP or WebSocket request to another service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy"
+                ],
+                "summary": "Universal Proxy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Protocol scheme (http, https or ws)",
+                        "name": "scheme",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "host",
+                        "name": "host",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Path to forward (everything after /proxy/). Example: web-apps/apps/api/documents/api.js",
+                        "name": "path",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forwarded response from the target",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Target unreachable",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Forward any HTTP or WebSocket request to another service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy"
+                ],
+                "summary": "Universal Proxy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Protocol scheme (http, https or ws)",
+                        "name": "scheme",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "host",
+                        "name": "host",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Path to forward (everything after /proxy/). Example: web-apps/apps/api/documents/api.js",
+                        "name": "path",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forwarded response from the target",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Target unreachable",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Forward any HTTP or WebSocket request to another service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy"
+                ],
+                "summary": "Universal Proxy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Protocol scheme (http, https or ws)",
+                        "name": "scheme",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "host",
+                        "name": "host",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Path to forward (everything after /proxy/). Example: web-apps/apps/api/documents/api.js",
+                        "name": "path",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forwarded response from the target",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Target unreachable",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "options": {
+                "description": "Forward any HTTP or WebSocket request to another service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy"
+                ],
+                "summary": "Universal Proxy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Protocol scheme (http, https or ws)",
+                        "name": "scheme",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "host",
+                        "name": "host",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Path to forward (everything after /proxy/). Example: web-apps/apps/api/documents/api.js",
+                        "name": "path",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forwarded response from the target",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Target unreachable",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "head": {
+                "description": "Forward any HTTP or WebSocket request to another service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy"
+                ],
+                "summary": "Universal Proxy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Protocol scheme (http, https or ws)",
+                        "name": "scheme",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "host",
+                        "name": "host",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Path to forward (everything after /proxy/). Example: web-apps/apps/api/documents/api.js",
+                        "name": "path",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forwarded response from the target",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Target unreachable",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Forward any HTTP or WebSocket request to another service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy"
+                ],
+                "summary": "Universal Proxy",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Protocol scheme (http, https or ws)",
+                        "name": "scheme",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "host",
+                        "name": "host",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Path to forward (everything after /proxy/). Example: web-apps/apps/api/documents/api.js",
+                        "name": "path",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forwarded response from the target",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Target unreachable",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

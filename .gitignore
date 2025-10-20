@@ -1,0 +1,9 @@
+.docker
+.env
+files
+*.env.dev
+.mcp.json
+Makefile.local
+
+.sql
+

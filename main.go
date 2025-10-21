@@ -1,7 +1,7 @@
 package main
 
 import (
-	"git.sriss.uz/mehnat/inspector_platform/src"
+	"github.com/Mirsadikovv/idoctor_platform/src"
 )
 
 // @title MyDream API

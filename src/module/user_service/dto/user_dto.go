@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	"git.sriss.uz/mehnat/inspector_platform/src/common/utils"
-	"git.sriss.uz/shared/shared_service/response"
+	"github.com/Mirsadikovv/idoctor_platform/src/common/utils"
+	"github.com/Mirsadikovv/shared/response"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

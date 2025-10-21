@@ -1,10 +1,10 @@
 package bot_cmd
 
 import (
-	auth_middleware "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/middleware"
-	bot_handler "git.sriss.uz/mehnat/inspector_platform/src/module/bot_service/handler"
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	bot_handler "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/handler"
 
-	"git.sriss.uz/shared/shared_service/logger"
+	"github.com/Mirsadikovv/shared/logger"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

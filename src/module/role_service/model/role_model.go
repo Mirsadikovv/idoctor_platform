@@ -1,6 +1,6 @@
 package role_model
 
-import "git.sriss.uz/shared/shared_service/sharedutil"
+import "github.com/Mirsadikovv/shared/sharedutil"
 
 type Role struct {
 	ID          int64                 `json:"id" gorm:"primaryKey;unique"`

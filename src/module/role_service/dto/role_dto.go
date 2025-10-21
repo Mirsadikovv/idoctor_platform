@@ -1,8 +1,8 @@
 package role_dto
 
 import (
-	"git.sriss.uz/shared/shared_service/response"
-	"git.sriss.uz/shared/shared_service/sharedutil"
+	"github.com/Mirsadikovv/shared/response"
+	"github.com/Mirsadikovv/shared/sharedutil"
 )
 
 type Permission struct {

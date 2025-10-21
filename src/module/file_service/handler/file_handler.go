@@ -3,14 +3,14 @@ package file_handler
 import (
 	"fmt"
 
-	auth_middleware "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/middleware"
-	file_dto "git.sriss.uz/mehnat/inspector_platform/src/module/file_service/dto"
-	file_service "git.sriss.uz/mehnat/inspector_platform/src/module/file_service/service"
-	log_service "git.sriss.uz/mehnat/inspector_platform/src/module/log_service/service"
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	file_dto "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/dto"
+	file_service "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/service"
+	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 
-	"git.sriss.uz/shared/shared_service/logger"
-	"git.sriss.uz/shared/shared_service/request"
-	"git.sriss.uz/shared/shared_service/response"
+	"github.com/Mirsadikovv/shared/logger"
+	"github.com/Mirsadikovv/shared/request"
+	"github.com/Mirsadikovv/shared/response"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

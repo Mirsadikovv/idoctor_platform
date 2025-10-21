@@ -3,9 +3,9 @@ package organization_dto
 import (
 	"time"
 
-	"git.sriss.uz/mehnat/inspector_platform/src/common/enum"
-	"git.sriss.uz/shared/shared_service/response"
-	"git.sriss.uz/shared/shared_service/sharedutil"
+	"github.com/Mirsadikovv/idoctor_platform/src/common/enum"
+	"github.com/Mirsadikovv/shared/response"
+	"github.com/Mirsadikovv/shared/sharedutil"
 )
 
 type InvitationPage = response.PageData[InvitationDto]

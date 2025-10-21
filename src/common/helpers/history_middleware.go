@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"git.sriss.uz/shared/shared_service/jwt"
+	"github.com/Mirsadikovv/shared/jwt"
 	"github.com/labstack/echo/v4"
 )
 

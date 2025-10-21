@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"git.sriss.uz/shared/shared_service/response"
+	"github.com/Mirsadikovv/shared/response"
 )
 
 type FileCreate struct {

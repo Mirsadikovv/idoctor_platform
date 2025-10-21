@@ -1,10 +1,10 @@
 package user_cmd
 
 import (
-	auth_middleware "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/middleware"
-	user_handler "git.sriss.uz/mehnat/inspector_platform/src/module/user_service/handler"
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	user_handler "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/handler"
 
-	"git.sriss.uz/shared/shared_service/logger"
+	"github.com/Mirsadikovv/shared/logger"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

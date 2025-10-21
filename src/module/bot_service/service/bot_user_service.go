@@ -3,12 +3,12 @@ package bot_service
 import (
 	"context"
 
-	bot_dto "git.sriss.uz/mehnat/inspector_platform/src/module/bot_service/dto"
-	bot_model "git.sriss.uz/mehnat/inspector_platform/src/module/bot_service/model"
+	bot_dto "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/dto"
+	bot_model "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/model"
 	"github.com/labstack/echo/v4"
 
-	"git.sriss.uz/shared/shared_service/pg"
-	"git.sriss.uz/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/pg"
+	"github.com/Mirsadikovv/shared/request"
 	"gorm.io/gorm"
 )
 

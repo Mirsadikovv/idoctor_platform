@@ -3,14 +3,14 @@ package user_handler
 import (
 	"fmt"
 
-	auth_dto "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/dto"
-	auth_middleware "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/middleware"
-	log_service "git.sriss.uz/mehnat/inspector_platform/src/module/log_service/service"
-	user_dto "git.sriss.uz/mehnat/inspector_platform/src/module/user_service/dto"
-	user_service "git.sriss.uz/mehnat/inspector_platform/src/module/user_service/service"
+	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
+	user_dto "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/dto"
+	user_service "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/service"
 
-	"git.sriss.uz/shared/shared_service/logger"
-	"git.sriss.uz/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/logger"
+	"github.com/Mirsadikovv/shared/request"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

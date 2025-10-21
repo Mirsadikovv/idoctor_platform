@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"strings"
 
-	auth_dto "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/dto"
-	auth_middleware "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/middleware"
-	"git.sriss.uz/shared/shared_service/middleware"
-	"git.sriss.uz/shared/shared_service/request"
-	"git.sriss.uz/shared/shared_service/response"
+	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	"github.com/Mirsadikovv/shared/middleware"
+	"github.com/Mirsadikovv/shared/request"
+	"github.com/Mirsadikovv/shared/response"
 	"github.com/labstack/echo/v4"
 )
 

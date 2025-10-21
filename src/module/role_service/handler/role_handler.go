@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"strings"
 
-	auth_middleware "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/middleware"
-	log_service "git.sriss.uz/mehnat/inspector_platform/src/module/log_service/service"
-	role_dto "git.sriss.uz/mehnat/inspector_platform/src/module/role_service/dto"
-	role_service "git.sriss.uz/mehnat/inspector_platform/src/module/role_service/service"
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
+	role_dto "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/dto"
+	role_service "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/service"
 
-	"git.sriss.uz/shared/shared_service/logger"
-	"git.sriss.uz/shared/shared_service/request"
-	"git.sriss.uz/shared/shared_service/response"
-	"git.sriss.uz/shared/shared_service/sharedutil"
+	"github.com/Mirsadikovv/shared/logger"
+	"github.com/Mirsadikovv/shared/request"
+	"github.com/Mirsadikovv/shared/response"
+	"github.com/Mirsadikovv/shared/sharedutil"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -178,7 +178,7 @@ func (h *roleHandler) Search(c echo.Context) error {
 			"roles.name",
 			"roles.description",
 		).Group("roles.id").
-		Order("roles.id DESC")
+			Order("roles.id DESC")
 
 	}
 
@@ -232,7 +232,7 @@ func (h *roleHandler) Page(c echo.Context) error {
 			"roles.name",
 			"roles.description",
 		).Group("roles.id").
-		Order("roles.id DESC")
+			Order("roles.id DESC")
 	}
 
 	items, err := h.roleService.Page(req.Context(), req.NewPaginate(), tx)

@@ -3,11 +3,11 @@ package language_service
 import (
 	"context"
 
-	language_dto "git.sriss.uz/mehnat/inspector_platform/src/module/language_service/dto"
-	language_model "git.sriss.uz/mehnat/inspector_platform/src/module/language_service/model"
+	language_dto "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/dto"
+	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
 
-	"git.sriss.uz/shared/shared_service/pg"
-	"git.sriss.uz/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/pg"
+	"github.com/Mirsadikovv/shared/request"
 	"gorm.io/gorm"
 )
 

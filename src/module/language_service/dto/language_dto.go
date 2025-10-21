@@ -3,8 +3,8 @@ package language_dto
 import (
 	"time"
 
-	"git.sriss.uz/shared/shared_service/response"
-	"git.sriss.uz/shared/shared_service/sharedutil"
+	"github.com/Mirsadikovv/shared/response"
+	"github.com/Mirsadikovv/shared/sharedutil"
 )
 
 type LanguagePage = response.PageData[Language]

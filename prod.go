@@ -4,9 +4,9 @@
 package main
 
 import (
-	"git.sriss.uz/mehnat/inspector_platform/src"
+	"github.com/Mirsadikovv/idoctor_platform/src"
 
-	"git.sriss.uz/shared/shared_service/sharedutil"
+	"github.com/Mirsadikovv/shared/sharedutil"
 )
 
 func fillEnv(env *src.Env) {

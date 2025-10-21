@@ -3,11 +3,11 @@ package role_service
 import (
 	"context"
 
-	role_dto "git.sriss.uz/mehnat/inspector_platform/src/module/role_service/dto"
-	role_model "git.sriss.uz/mehnat/inspector_platform/src/module/role_service/model"
+	role_dto "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/dto"
+	role_model "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/model"
 
-	"git.sriss.uz/shared/shared_service/pg"
-	"git.sriss.uz/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/pg"
+	"github.com/Mirsadikovv/shared/request"
 	"gorm.io/gorm"
 )
 

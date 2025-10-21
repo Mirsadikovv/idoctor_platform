@@ -3,14 +3,14 @@ package user_service
 import (
 	"context"
 
-	log_dto "git.sriss.uz/mehnat/inspector_platform/src/module/log_service/dto"
-	log_model "git.sriss.uz/mehnat/inspector_platform/src/module/log_service/model"
-	user_dto "git.sriss.uz/mehnat/inspector_platform/src/module/user_service/dto"
-	user_model "git.sriss.uz/mehnat/inspector_platform/src/module/user_service/model"
+	log_dto "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/dto"
+	log_model "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/model"
+	user_dto "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/dto"
+	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 	"github.com/labstack/echo/v4"
 
-	"git.sriss.uz/shared/shared_service/pg"
-	"git.sriss.uz/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/pg"
+	"github.com/Mirsadikovv/shared/request"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

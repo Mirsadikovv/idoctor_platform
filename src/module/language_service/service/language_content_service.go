@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	language_dto "git.sriss.uz/mehnat/inspector_platform/src/module/language_service/dto"
-	language_model "git.sriss.uz/mehnat/inspector_platform/src/module/language_service/model"
-	log_service "git.sriss.uz/mehnat/inspector_platform/src/module/log_service/service"
+	language_dto "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/dto"
+	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
+	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 	"github.com/labstack/echo/v4"
 
-	"git.sriss.uz/shared/shared_service/pg"
-	"git.sriss.uz/shared/shared_service/request"
-	"git.sriss.uz/shared/shared_service/sharedutil"
+	"github.com/Mirsadikovv/shared/pg"
+	"github.com/Mirsadikovv/shared/request"
+	"github.com/Mirsadikovv/shared/sharedutil"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

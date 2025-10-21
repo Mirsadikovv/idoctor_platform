@@ -3,12 +3,12 @@ package organization_service
 import (
 	"context"
 
-	organization_dto "git.sriss.uz/mehnat/inspector_platform/src/module/organization_service/dto"
-	organization_model "git.sriss.uz/mehnat/inspector_platform/src/module/organization_service/model"
+	organization_dto "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/dto"
+	organization_model "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/model"
 	"github.com/labstack/echo/v4"
 
-	"git.sriss.uz/shared/shared_service/pg"
-	"git.sriss.uz/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/pg"
+	"github.com/Mirsadikovv/shared/request"
 	"gorm.io/gorm"
 )
 

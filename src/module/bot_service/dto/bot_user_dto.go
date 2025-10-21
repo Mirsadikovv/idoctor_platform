@@ -1,7 +1,7 @@
 package bot_dto
 
 import (
-	"git.sriss.uz/shared/shared_service/response"
+	"github.com/Mirsadikovv/shared/response"
 )
 
 type BotUserPage = response.PageData[BotUserDto]

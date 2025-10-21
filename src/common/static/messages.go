@@ -3,8 +3,8 @@ package static
 import (
 	"fmt"
 
-	appeal_dto "git.sriss.uz/mehnat/inspector_platform/src/module/appeal_service/dto"
-	appeal_model "git.sriss.uz/mehnat/inspector_platform/src/module/appeal_service/model"
+	appeal_dto "github.com/Mirsadikovv/idoctor_platform/src/module/appeal_service/dto"
+	appeal_model "github.com/Mirsadikovv/idoctor_platform/src/module/appeal_service/model"
 )
 
 type MessageHandler = map[appeal_model.AppealWorkflowAction]MessageFunc

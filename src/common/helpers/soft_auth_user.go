@@ -3,8 +3,8 @@ package helpers
 import (
 	"strings"
 
-	auth_dto "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/dto"
-	"git.sriss.uz/shared/shared_service/jwt"
+	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
+	"github.com/Mirsadikovv/shared/jwt"
 	"github.com/labstack/echo/v4"
 )
 

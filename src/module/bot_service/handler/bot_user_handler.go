@@ -1,13 +1,13 @@
 package bot_handler
 
 import (
-	auth_middleware "git.sriss.uz/mehnat/inspector_platform/src/module/auth_service/middleware"
-	bot_dto "git.sriss.uz/mehnat/inspector_platform/src/module/bot_service/dto"
-	bot_service "git.sriss.uz/mehnat/inspector_platform/src/module/bot_service/service"
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	bot_dto "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/dto"
+	bot_service "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/service"
 
-	"git.sriss.uz/shared/shared_service/logger"
-	"git.sriss.uz/shared/shared_service/request"
-	"git.sriss.uz/shared/shared_service/response"
+	"github.com/Mirsadikovv/shared/logger"
+	"github.com/Mirsadikovv/shared/request"
+	"github.com/Mirsadikovv/shared/response"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -65,7 +65,7 @@ func (o *botHandler) Create(ctx echo.Context) error {
 		}
 	}
 
-	id, err := o.botService.Create(ctx,&botDto)
+	id, err := o.botService.Create(ctx, &botDto)
 	{
 		if err != nil {
 			return req.BadRequest(err)

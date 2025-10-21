@@ -7,13 +7,13 @@ import (
 	"os"
 	"path"
 
-	file_dto "git.sriss.uz/mehnat/inspector_platform/src/module/file_service/dto"
-	file_model "git.sriss.uz/mehnat/inspector_platform/src/module/file_service/model"
+	file_dto "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/dto"
+	file_model "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/model"
 	"github.com/labstack/echo/v4"
 
-	"git.sriss.uz/shared/shared_service/pg"
-	"git.sriss.uz/shared/shared_service/request"
-	"git.sriss.uz/shared/shared_service/sharedutil"
+	"github.com/Mirsadikovv/shared/pg"
+	"github.com/Mirsadikovv/shared/request"
+	"github.com/Mirsadikovv/shared/sharedutil"
 	"gorm.io/gorm"
 )
 

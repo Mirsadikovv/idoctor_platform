@@ -1,12 +1,9 @@
 package language_handler
 
 import (
-	"fmt"
-
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 	language_dto "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/dto"
 	language_service "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/service"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 
 	"github.com/Mirsadikovv/shared/logger"
 	"github.com/Mirsadikovv/shared/request"
@@ -74,15 +71,6 @@ func (l *languageHandler) Create(c echo.Context) error {
 		}
 	}
 
-	data := map[string]any{
-		"id":   id,
-		"data": languageDto,
-	}
-
-	if _, errLog := log_service.TableCrud(l.db, c, "languages", data); errLog != nil {
-		fmt.Println("log error:", errLog)
-	}
-
 	return req.Created(response.NewID(id))
 }
 
@@ -113,21 +101,9 @@ func (l *languageHandler) Update(c echo.Context) error {
 
 	var (
 		languageDto language_dto.LanguageUpdate
-		oldData     map[string]any
 	)
 	{
 		if err := req.BindBody(&languageDto); err != nil {
-			return req.BadRequest(err)
-		}
-	}
-
-	filter1 := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("id = ?", id)
-	}
-
-	old, err := l.languageService.FindOne(req.Context(), filter1)
-	{
-		if err != nil {
 			return req.BadRequest(err)
 		}
 	}
@@ -138,21 +114,6 @@ func (l *languageHandler) Update(c echo.Context) error {
 
 	if err := l.languageService.Update(c.Request().Context(), &languageDto, filter); err != nil {
 		return req.BadRequest(err)
-	}
-
-	oldData = map[string]any{
-		"name":        old.Name,
-		"description": old.Description,
-	}
-
-	data := map[string]any{
-		"id":       id,
-		"data":     languageDto,
-		"old_data": oldData,
-	}
-
-	if _, errLog := log_service.TableCrud(l.db, c, "languages", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.NoContent()
@@ -190,15 +151,6 @@ func (l *languageHandler) Delete(c echo.Context) error {
 		return req.BadRequest(err)
 	}
 
-	data := map[string]any{
-		"id":   id,
-		"data": nil,
-	}
-
-	if _, errLog := log_service.TableCrud(l.db, c, "languages", data); errLog != nil {
-		fmt.Println("log error:", errLog)
-	}
-
 	return req.NoContent()
 }
 
@@ -232,15 +184,6 @@ func (l *languageHandler) Restore(c echo.Context) error {
 
 	if err := l.languageService.DeleteOrRestore(c.Request().Context(), filter); err != nil {
 		return req.BadRequest(err)
-	}
-
-	data := map[string]any{
-		"id":   id,
-		"data": id,
-	}
-
-	if _, errLog := log_service.TableCrud(l.db, c, "languages", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.NoContent()

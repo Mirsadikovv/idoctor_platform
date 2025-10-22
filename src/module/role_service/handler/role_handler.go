@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 	role_dto "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/dto"
 	role_service "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/service"
 
@@ -311,15 +310,6 @@ func (h *roleHandler) CreateOrUpdate(c echo.Context) error {
 		if err != nil {
 			return req.BadRequest(err)
 		}
-	}
-
-	data := map[string]any{
-		"id":   id,
-		"data": roleDto,
-	}
-
-	if _, errLog := log_service.TableCrud(h.db, c, "roles", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.OK(response.NewID(id))

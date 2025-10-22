@@ -9,14 +9,16 @@ import (
 	"strings"
 
 	"github.com/Mirsadikovv/idoctor_platform/src/common/helpers"
+	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 	bot_model "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/model"
-	log_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/log_service"
-	log_model "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/model"
-	organization_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service"
+	file_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/file_service"
+	file_model "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/model"
+	language_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/language_service"
+	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
 	organization_model "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/model"
 	role_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/role_service"
 	role_model "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/model"
-
+	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
 	"github.com/Mirsadikovv/shared/jwt"
 	"github.com/Mirsadikovv/shared/logger"
@@ -99,18 +101,10 @@ func Exec(env *Env) {
 	helpers.RegisterHistoryCallbacks(db, router)
 
 	authMiddleware := middleware.NewAuthEchoMiddleware[*auth_dto.AuthUser](jwtConfig, memoryCache, db)
-	{
-		oneIdConfig := &auth_dto.OneIdConfig{
-			OneIdBaseUrl:              env.OneIdBaseUrl,
-			OneIdClientId:             env.OneIdClientId,
-			OneIdClientSecret:         env.OneIdClientSecret,
-			OneIdClientRedirectUrl:    env.OneIdClientRedirectUrl,
-			OneIdDashboardRedirectUrl: env.OneIdDashboardRedirectUrl,
-		}
 
-		role_cmd.Cmd(router, db, log, authMiddleware)
-		language_cmd.Cmd(router, db, log, authMiddleware)
-		file_cmd.Cmd(router, db, log, authMiddleware)
+	role_cmd.Cmd(router, db, log, authMiddleware)
+	language_cmd.Cmd(router, db, log, authMiddleware)
+	file_cmd.Cmd(router, db, log, authMiddleware)
 
 	router.GET("/swagger/dir", swaggerDirs())
 	router.GET("/swagger/*", swaggerHandler())
@@ -136,12 +130,9 @@ func migration(db *gorm.DB) error {
 
 		&bot_model.BotUser{},
 		&bot_model.BotMessage{},
-
 	}
 
-	models_migration := append(models, &log_model.Log{})
-
-	err := db.AutoMigrate(models_migration...)
+	err := db.AutoMigrate(models...)
 
 	CreateHistoryTriggers(db, models)
 
@@ -295,11 +286,7 @@ func CreateHistoryTriggers(DB *gorm.DB, models []interface{}) {
 }
 
 func Seed(db *gorm.DB) {
-
-	appeal_model.SeedComplaintTypes(db)
-	appeal_model.SeedIndustries(db)
-	setting_model.SeedSiteSetting(db)
-	appeal_model.SeedAppealStatuses(db)
+	// Seed functions for appeal, setting models have been removed
 }
 
 func createOrg(db *gorm.DB, r *echo.Echo) {

@@ -1,10 +1,7 @@
 package organization_handler
 
 import (
-	"fmt"
-
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 	organization_dto "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/dto"
 	organization_service "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/service"
 
@@ -93,15 +90,6 @@ func (o *organizationHandler) Create(ctx echo.Context) error {
 		}
 	}
 
-	data := map[string]any{
-		"id":   id,
-		"data": organizationDto,
-	}
-
-	if _, errLog := log_service.TableCrud(o.db, ctx, "organizations", data); errLog != nil {
-		fmt.Println("log error:", errLog)
-	}
-
 	return req.Created(response.NewID(id))
 }
 
@@ -132,53 +120,9 @@ func (o *organizationHandler) Update(ctx echo.Context) error {
 
 	var (
 		organizationDto organization_dto.OrganizationUpdate
-		oldData         map[string]any
 	)
 	{
 		if err := req.BindBody(&organizationDto); err != nil {
-			return req.BadRequest(err)
-		}
-	}
-
-	filter1 := func(tx *gorm.DB) *gorm.DB {
-		tx = tx.Where("organizations.id = ?", id)
-
-		rolesExp := gorm.Expr(`
-			SELECT 
-				COALESCE(
-					JSON_AGG(
-						JSON_BUILD_OBJECT(
-							'id', r.id,
-							'name', r.name,
-							'description', r.description
-						)
-					) FILTER (WHERE r.id IS NOT NULL), 
-					'[]'::json
-				) AS roles
-			FROM 
-				unnest(organizations.org_roles) AS role_id
-			LEFT JOIN 
-				roles r ON r.id = role_id
-		`)
-
-		return tx.
-			Select(
-				"organizations.id",
-				"organizations.parent_id",
-				"organizations.soato_id",
-				"organizations.region_id",
-				"organizations.district_id",
-				"organizations.quarter_id",
-				"organizations.review_role_id",
-
-				"roles_data.roles AS org_roles",
-			).
-			Joins("LEFT JOIN LATERAL (?) AS roles_data ON true", rolesExp)
-	}
-
-	old, err := o.organizationService.FindOne(req.Context(), filter1)
-	{
-		if err != nil {
 			return req.BadRequest(err)
 		}
 	}
@@ -189,26 +133,6 @@ func (o *organizationHandler) Update(ctx echo.Context) error {
 
 	if err := o.organizationService.Update(req.Context(), &organizationDto, filter); err != nil {
 		return req.BadRequest(err)
-	}
-
-	oldData = map[string]any{
-		"parentId":     old.ParentId,
-		"soatoId":      old.SoatoId,
-		"orgRoles":     old.OrgRoles,
-		"reviewRoleId": old.ReviewRoleId,
-		"regionId":     old.RegionId,
-		"districtId":   old.DistrictId,
-		"quarterId":    old.QuarterId,
-	}
-
-	data := map[string]any{
-		"id":       id,
-		"data":     organizationDto,
-		"old_data": oldData,
-	}
-
-	if _, errLog := log_service.TableCrud(o.db, ctx, "organizations", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.NoContent()
@@ -608,15 +532,6 @@ func (h *organizationHandler) CreateTranslation(ctx echo.Context) error {
 		return req.BadRequest(err)
 	}
 
-	data := map[string]any{
-		"id":   id,
-		"data": translation,
-	}
-
-	if _, errLog := log_service.TableCrud(h.db, ctx, "organization_translations", data); errLog != nil {
-		fmt.Println("log error:", errLog)
-	}
-
 	return req.Created(response.ID64{ID: id})
 }
 
@@ -747,21 +662,9 @@ func (h *organizationHandler) UpdateTranslation(ctx echo.Context) error {
 
 	var (
 		translation organization_dto.OrganizationTranslationUpdate
-		oldData     map[string]any
 	)
 	{
 		if err := req.BindBody(&translation); err != nil {
-			return req.BadRequest(err)
-		}
-	}
-
-	filter1 := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("organization_translations.organization_id = ? AND organization_translations.id = ?", organizationId, translationId)
-	}
-
-	old, err := h.organizationService.GetTranslationById(req.Context(), filter1)
-	{
-		if err != nil {
 			return req.BadRequest(err)
 		}
 	}
@@ -772,20 +675,6 @@ func (h *organizationHandler) UpdateTranslation(ctx echo.Context) error {
 
 	if err := h.organizationService.UpdateTranslation(req.Context(), translation, filter); err != nil {
 		return req.BadRequest(err)
-	}
-	oldData = map[string]any{
-		"name":        old.Name,
-		"description": old.Description,
-	}
-
-	data := map[string]any{
-		"id":       translationId,
-		"data":     translation,
-		"old_data": oldData,
-	}
-
-	if _, errLog := log_service.TableCrud(h.db, ctx, "organization_translations", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.NoContent()

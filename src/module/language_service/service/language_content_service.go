@@ -6,7 +6,6 @@ import (
 
 	language_dto "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/dto"
 	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 	"github.com/labstack/echo/v4"
 
 	"github.com/Mirsadikovv/shared/pg"
@@ -171,9 +170,6 @@ func (l *languageContentService) CreateOrUpdate(ctx echo.Context, languageDto *l
 			data["old_data"] = oldData
 		}
 
-		if _, errLog := log_service.TableCrud(l.db, ctx, "language_contents", data); errLog != nil {
-			fmt.Println("log error:", errLog)
-		}
 	}
 
 	languageResult := &language_dto.LanguageResult{

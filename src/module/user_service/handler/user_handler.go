@@ -5,7 +5,6 @@ import (
 
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 	user_dto "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/dto"
 	user_service "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/service"
 
@@ -40,7 +39,6 @@ func NewUserHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddl
 		userGroup.GET("/:id", handler.GetByID)
 		userGroup.DELETE("/:id", handler.Delete)
 		userGroup.PATCH("/:id/restore", handler.Restore)
-		userGroup.GET("/logs/:id", handler.UserLogs)
 	}
 }
 
@@ -73,17 +71,6 @@ func (h *userHandler) Delete(ctx echo.Context) error {
 
 	if err := h.userService.Delete(ctx, filter); err != nil {
 		return req.BadRequest(err)
-	}
-
-	{
-		data := map[string]any{
-			"id":   id,
-			"data": nil,
-		}
-
-		if _, errLog := log_service.TableCrud(h.db, ctx, "users", data); errLog != nil {
-			fmt.Println("log error:", errLog)
-		}
 	}
 
 	return req.NoContent()
@@ -294,55 +281,5 @@ func (h *userHandler) Restore(ctx echo.Context) error {
 		return req.BadRequest(err)
 	}
 
-	{
-		data := map[string]any{
-			"id":   id,
-			"data": nil,
-		}
-
-		if _, errLog := log_service.TableCrud(h.db, ctx, "users", data); errLog != nil {
-			fmt.Println("log error:", errLog)
-		}
-	}
-
 	return req.NoContent()
-}
-
-// UserLogs godoc
-// @Summary      Get logs by user ID
-// @Description  Get logs for a specific user by ID with pagination
-// @Tags         user
-// @ID           get-logs-by-user
-// @Accept       json
-// @Produce      json
-// @Param        id path int true "User ID"
-// @Param        page query int false "Page number" default(1)
-// @Param        perpage query int false "Number of items per page" default(10)
-// @Success      200 {object} log_dto.LogPage "Successful operation"
-// @Failure      400 {object} response.HttpSuccess "Bad request"
-// @Failure      500 {object} response.HttpSuccess "Internal server error"
-// @Router       /user/logs/{id} [get]
-func (h *userHandler) UserLogs(ctx echo.Context) error {
-
-	req := request.Request(ctx)
-
-	id, err := req.ParamToInt("id")
-	{
-		if err != nil {
-			return req.BadRequest(err)
-		}
-	}
-
-	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("user_id = ?", id)
-	}
-
-	userLogs, err := h.userService.UserLogs(req.Context(), req.NewPaginate(), filter)
-	{
-		if err != nil {
-			return req.BadRequest(err)
-		}
-	}
-
-	return req.OK(userLogs)
 }

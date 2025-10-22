@@ -6,7 +6,6 @@ import (
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 	language_dto "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/dto"
 	language_service "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/service"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 
 	"github.com/Mirsadikovv/shared/logger"
 	"github.com/Mirsadikovv/shared/request"
@@ -271,15 +270,6 @@ func (l *languageContentHandler) DeleteByKey(c echo.Context) error {
 
 	if err := l.languageContentService.Delete(c.Request().Context(), filter); err != nil {
 		return req.BadRequest(err)
-	}
-
-	data := map[string]any{
-		"id":   key,
-		"data": nil,
-	}
-
-	if _, errLog := log_service.TableCrud(l.db, c, "language_contents", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.NoContent()

@@ -1,12 +1,9 @@
 package file_handler
 
 import (
-	"fmt"
-
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 	file_dto "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/dto"
 	file_service "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/service"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 
 	"github.com/Mirsadikovv/shared/logger"
 	"github.com/Mirsadikovv/shared/request"
@@ -76,15 +73,6 @@ func (f *fileHandler) Create(c echo.Context) error {
 		}
 	}
 
-	data := map[string]any{
-		"id":   id,
-		"data": fileDto,
-	}
-
-	if _, errLog := log_service.TableCrud(f.db, c, "files", data); errLog != nil {
-		fmt.Println("log error:", errLog)
-	}
-
 	return req.Created(response.NewID(id))
 }
 
@@ -150,17 +138,6 @@ func (f *fileHandler) CreateMany(c echo.Context) error {
 		if err != nil {
 			return req.BadRequest(err)
 		}
-	}
-
-	{
-		logData := map[string]any{
-			"category":   fileDto.Category,
-			"owner":      fileDto.Owner,
-			"sign":       fileDto.Sign,
-			"file_count": len(fileDto.FileHeaders),
-			"file_ids":   fileIDs,
-		}
-		log_service.TableCrud(f.db, c, "files", &logData)
 	}
 
 	fileIDResponses := make([]response.ID64, len(fileIDs))
@@ -359,15 +336,6 @@ func (f *fileHandler) Delete(c echo.Context) error {
 		return req.BadRequest(err)
 	}
 
-	data := map[string]any{
-		"id":   id,
-		"data": nil,
-	}
-
-	if _, errLog := log_service.TableCrud(f.db, c, "files", data); errLog != nil {
-		fmt.Println("log error:", errLog)
-	}
-
 	return req.NoContent()
 }
 
@@ -409,14 +377,6 @@ func (f *fileHandler) Replace(c echo.Context) error {
 		if err != nil {
 			return req.BadRequest(err)
 		}
-	}
-	data := map[string]any{
-		"id":   id,
-		"data": fileDto,
-	}
-
-	if _, errLog := log_service.TableCrud(f.db, c, "files", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.NoContent()

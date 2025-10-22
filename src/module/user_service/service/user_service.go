@@ -3,8 +3,6 @@ package user_service
 import (
 	"context"
 
-	log_dto "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/dto"
-	log_model "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/model"
 	user_dto "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/dto"
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 	"github.com/labstack/echo/v4"
@@ -23,7 +21,6 @@ type UserService interface {
 	FindOne(ctx context.Context, filter pg.Filter) (*user_dto.User, error)
 	DeleteOrRestore(ctx echo.Context, filter pg.Filter) error
 	GetPINFLByUserId(userId int64) (int64, error)
-	UserLogs(ctx context.Context, paginate *request.Paginate, filter pg.Filter) (*log_dto.LogPage, error)
 }
 
 type userService struct {
@@ -164,9 +161,4 @@ func (s *userService) DeleteOrRestore(ctx echo.Context, filter pg.Filter) error 
 	}
 
 	return nil
-}
-
-func (s *userService) UserLogs(ctx context.Context, paginate *request.Paginate, filter pg.Filter) (*log_dto.LogPage, error) {
-
-	return pg.PageWithScan[log_model.Log, log_dto.Log](s.db, paginate, filter)
 }

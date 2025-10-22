@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
-	log_service "github.com/Mirsadikovv/idoctor_platform/src/module/log_service/service"
 	organization_dto "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/dto"
 
 	"github.com/Mirsadikovv/shared/request"
@@ -54,15 +53,6 @@ func (o *organizationHandler) AddInvitation(ctx echo.Context) error {
 		if err != nil {
 			return req.BadRequest(err)
 		}
-	}
-
-	data := map[string]any{
-		"id":   id,
-		"data": invitationDto,
-	}
-
-	if _, errLog := log_service.TableCrud(o.db, ctx, "invitations", data); errLog != nil {
-		fmt.Println("log error:", errLog)
 	}
 
 	return req.Created(response.ID64{ID: id})
@@ -474,14 +464,7 @@ func (o *organizationHandler) DeleteOrRestoreInvitation(ctx echo.Context) error 
 		return req.BadRequest(err)
 	}
 
-	data := map[string]any{
-		"id":   id,
-		"data": nil,
-	}
 
-	if _, errLog := log_service.TableCrud(o.db, ctx, "invitations", data); errLog != nil {
-		fmt.Println("log error:", errLog)
-	}
 
 	return req.NoContent()
 }

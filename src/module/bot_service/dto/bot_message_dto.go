@@ -3,8 +3,6 @@ package bot_dto
 import (
 	"time"
 
-	appeal_dto "github.com/Mirsadikovv/idoctor_platform/src/module/appeal_service/dto"
-	appeal_model "github.com/Mirsadikovv/idoctor_platform/src/module/appeal_service/model"
 	"github.com/Mirsadikovv/shared/response"
 )
 
@@ -44,8 +42,9 @@ type SendMessageRequest struct {
 	Text       string `json:"text" validate:"required"`
 } // @name SendMessageRequest
 
-type SendMessageByStatusRequest struct {
-	TelegramId     int64
-	Status         appeal_model.AppealWorkflowAction
-	LatestWorkflow appeal_dto.LatestWorkflow
-}
+// SendMessageByStatusRequest закомментирован из-за удаления appeal_service
+// type SendMessageByStatusRequest struct {
+// 	TelegramId     int64
+// 	Status         appeal_model.AppealWorkflowAction
+// 	LatestWorkflow appeal_dto.LatestWorkflow
+// }

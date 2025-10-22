@@ -9,9 +9,9 @@ import (
 	"github.com/Mirsadikovv/shared/sharedutil"
 )
 
-// @title MyDream API
+// @title github.com/Mirsadikovv/idoctor_platform API
 // @version 1.0
-// @description This is a MyDream API.
+// @description This is a github.com/Mirsadikovv/idoctor_platform API.
 // @BasePath  /api/v1
 // @Schemes http
 // @securityDefinitions.apikey ApiKeyAuth

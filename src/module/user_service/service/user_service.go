@@ -21,6 +21,7 @@ type UserService interface {
 	FindOne(ctx context.Context, filter pg.Filter) (*user_dto.User, error)
 	DeleteOrRestore(ctx echo.Context, filter pg.Filter) error
 	GetPINFLByUserId(userId int64) (int64, error)
+	Create(userDto *user_dto.UserCreate) (int64, error)
 }
 
 type userService struct {
@@ -161,4 +162,21 @@ func (s *userService) DeleteOrRestore(ctx echo.Context, filter pg.Filter) error 
 	}
 
 	return nil
+}
+
+func (s *userService) Create(userDto *user_dto.UserCreate) (int64, error) {
+
+	userModel := &user_model.User{
+		Username: userDto.Username,
+		// Password:   user_dto.Password(userDto.Password),
+		// Name:       userDto.Name,
+		RoleId: userDto.RoleId,
+		// EmployeeId: userDto.EmployeeId,
+	}
+
+	if err := pg.Create(s.db, userModel, "id"); err != nil {
+		return 0, err
+	}
+
+	return userModel.Id, nil
 }

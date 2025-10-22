@@ -4,7 +4,7 @@ import (
 	auth_handler "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/handler"
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 
-	"github.com/Mirsadikovv/shared/shared_service/logger"
+	"github.com/Mirsadikovv/shared/logger"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

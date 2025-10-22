@@ -5,8 +5,8 @@ import (
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 	auth_service "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/service"
 
-	"github.com/Mirsadikovv/shared/shared_service/logger"
-	"github.com/Mirsadikovv/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/logger"
+	"github.com/Mirsadikovv/shared/request"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

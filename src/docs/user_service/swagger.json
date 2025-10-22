@@ -12,61 +12,6 @@
     },
     "basePath": "/api/v1",
     "paths": {
-        "/user/logs/{id}": {
-            "get": {
-                "description": "Get logs for a specific user by ID with pagination",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Get logs by user ID",
-                "operationId": "get-logs-by-user",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "default": 10,
-                        "description": "Number of items per page",
-                        "name": "perpage",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/LogPage"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {}
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {}
-                    }
-                }
-            }
-        },
         "/user/page": {
             "get": {
                 "security": [
@@ -368,49 +313,6 @@
         }
     },
     "definitions": {
-        "Log": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "info": {
-                    "$ref": "#/definitions/sharedutil.JsonObject"
-                },
-                "user": {
-                    "$ref": "#/definitions/sharedutil.JsonObject"
-                },
-                "userId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "LogPage": {
-            "type": "object",
-            "properties": {
-                "currentPage": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Log"
-                    }
-                },
-                "pageSize": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
         "User": {
             "type": "object",
             "properties": {
@@ -475,10 +377,6 @@
                     "type": "string"
                 }
             }
-        },
-        "sharedutil.JsonObject": {
-            "type": "object",
-            "additionalProperties": {}
         },
         "user_dto.Gender": {
             "type": "string",

@@ -88,3 +88,11 @@ type UserParams struct {
 	Pin      *string `json:"pin" query:"pin"`
 	Gender   Gender  `json:"gender" query:"gender"`
 } // @name UserParams
+
+type UserCreate struct {
+	Username   string `json:"username"`
+	Password   string `json:"password"`
+	Name       string `json:"name"`
+	RoleId     int64  `json:"roleId"`
+	EmployeeId int64  `json:"employeeId"`
+}

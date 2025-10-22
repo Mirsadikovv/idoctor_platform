@@ -19,7 +19,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "me",
+                "description": "sign in",
                 "consumes": [
                     "application/json"
                 ],
@@ -29,36 +29,8 @@
                 "tags": [
                     "auth"
                 ],
-                "summary": "me",
+                "summary": "sign in",
                 "operationId": "me",
-                "parameters": [
-                    {
-                        "enum": [
-                            "TRUE",
-                            "FALSE"
-                        ],
-                        "type": "string",
-                        "x-enum-varnames": [
-                            "TRUE",
-                            "FALSE"
-                        ],
-                        "name": "photo",
-                        "in": "query"
-                    },
-                    {
-                        "enum": [
-                            "TRUE",
-                            "FALSE"
-                        ],
-                        "type": "string",
-                        "x-enum-varnames": [
-                            "TRUE",
-                            "FALSE"
-                        ],
-                        "name": "pinfl",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "201": {
                         "description": "Successful operation",
@@ -68,61 +40,6 @@
                     },
                     "400": {
                         "description": "Bad request",
-                        "schema": {}
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {}
-                    }
-                }
-            }
-        },
-        "/auth/refresh": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Refresh token",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Refresh",
-                "operationId": "refresh",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "organization_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "name": "role_id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/auth_dto.Token"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {}
-                    },
-                    "401": {
-                        "description": "Unauthorized",
                         "schema": {}
                     },
                     "500": {
@@ -153,7 +70,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Code"
+                            "$ref": "#/definitions/auth_dto.SignIn"
                         }
                     }
                 ],
@@ -208,23 +125,49 @@
                     }
                 }
             }
+        },
+        "/auth/sign-up": {
+            "post": {
+                "description": "sign up",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "sign up",
+                "operationId": "sign-up",
+                "parameters": [
+                    {
+                        "description": "sign in information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth_dto.SingUp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "Code": {
-            "type": "object",
-            "required": [
-                "code"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "isClient": {
-                    "type": "boolean"
-                }
-            }
-        },
         "User": {
             "type": "object",
             "properties": {
@@ -290,6 +233,34 @@
                 }
             }
         },
+        "auth_dto.SignIn": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "auth_dto.SingUp": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "roleId": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "auth_dto.Token": {
             "type": "object",
             "properties": {
@@ -297,17 +268,6 @@
                     "type": "string"
                 }
             }
-        },
-        "enum.Bool": {
-            "type": "string",
-            "enum": [
-                "TRUE",
-                "FALSE"
-            ],
-            "x-enum-varnames": [
-                "TRUE",
-                "FALSE"
-            ]
         },
         "user_dto.Gender": {
             "type": "string",

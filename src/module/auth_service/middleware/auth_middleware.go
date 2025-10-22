@@ -3,7 +3,7 @@ package auth_middleware
 import (
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 
-	"github.com/Mirsadikovv/shared/shared_service/middleware"
+	"github.com/Mirsadikovv/shared/middleware"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

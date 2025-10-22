@@ -5,7 +5,7 @@ import (
 
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
-	"github.com/Mirsadikovv/shared/shared_service/request"
+	"github.com/Mirsadikovv/shared/request"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

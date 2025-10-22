@@ -8,8 +8,8 @@ import (
 	user_dto "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/dto"
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 	user_service "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/service"
+	"github.com/Mirsadikovv/shared/pg"
 
-	"github.com/Mirsadikovv/shared/shared_service/pg"
 	"gorm.io/gorm"
 )
 

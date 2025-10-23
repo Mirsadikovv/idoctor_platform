@@ -136,11 +136,11 @@ func migration(db *gorm.DB) error {
 	}
 
 	err := db.AutoMigrate(models...)
-
-	Seed(db)
 	if err != nil {
 		return err
 	}
+
+	Seed(db)
 
 	return db.Exec(`
 

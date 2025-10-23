@@ -464,7 +464,5 @@ func (o *organizationHandler) DeleteOrRestoreInvitation(ctx echo.Context) error 
 		return req.BadRequest(err)
 	}
 
-
-
 	return req.NoContent()
 }

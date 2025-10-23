@@ -168,13 +168,18 @@ func (s *userService) Create(userDto *user_dto.UserCreate) (int64, error) {
 
 	userModel := &user_model.User{
 		Username: userDto.Username,
-		// Password:   user_dto.Password(userDto.Password),
-		// Name:       userDto.Name,
-		RoleId: userDto.RoleId,
-		// EmployeeId: userDto.EmployeeId,
+		Name:     userDto.Name,
+		RoleId:   userDto.RoleId,
 	}
 
-	if err := pg.Create(s.db, userModel, "id"); err != nil {
+	// Используем Clauses для применения HASH_MAKE к паролю
+	if err := s.db.Clauses(clause.Returning{Columns: []clause.Column{{Name: "id"}}}).
+		Create(map[string]interface{}{
+			"username": userDto.Username,
+			"password": gorm.Expr("HASH_MAKE(?)", userDto.Password),
+			"name":     userDto.Name,
+			"role_id":  userDto.RoleId,
+		}).Scan(userModel).Error; err != nil {
 		return 0, err
 	}
 

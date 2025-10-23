@@ -63,6 +63,7 @@ type User struct {
 	Id             int64      `json:"id"`
 	Pin            int64      `json:"pin"`
 	Username       string     `json:"username"`
+	Name           string     `json:"name"`
 	Valid          string     `json:"valid"`
 	PassportNumber string     `json:"passportnumber"`
 	FirstName      string     `json:"firstName"`

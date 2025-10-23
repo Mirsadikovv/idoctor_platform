@@ -14,7 +14,6 @@ import (
 )
 
 type AuthService interface {
-	SignInFaceId(id int64) (*auth_dto.Token, error)
 	SignIn(signIn *auth_dto.SignIn) (*auth_dto.Token, error)
 	SignUp(signUp *auth_dto.SingUp) error
 	Me(ctx context.Context, token string) (*user_dto.User, error)
@@ -39,40 +38,6 @@ func (a *authService) SignIn(signIn *auth_dto.SignIn) (*auth_dto.Token, error) {
 	filter := func(tx *gorm.DB) *gorm.DB {
 		return tx.Where("username = ?", signIn.Username).
 			Where("HASH_CHECK(?,password)", signIn.Password).
-			Where("blocked_at IS NULL")
-	}
-
-	lastVisit := map[string]any{"last_visit": gorm.Expr("CURRENT_TIMESTAMP")}
-
-	user, err := pg.Update[user_model.User](a.db, lastVisit, filter, "id")
-	{
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	authUser := auth_dto.AuthUser{
-		Id: user.Id,
-	}
-
-	token, err := a.authMiddleware.Token(&authUser)
-	{
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	responseToken := auth_dto.Token{
-		Token: token,
-	}
-
-	return &responseToken, nil
-}
-
-func (a *authService) SignInFaceId(id int64) (*auth_dto.Token, error) {
-
-	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("id = ?", id).
 			Where("blocked_at IS NULL")
 	}
 

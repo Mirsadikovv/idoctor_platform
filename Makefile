@@ -42,6 +42,6 @@ swag_init_werr:
 	fi
 
 pull-subtree:
-	git subtree pull --prefix=dmi_bot https://git.sriss.uz/mehnat/dmi_bot.git dev --squash
+	git subtree pull --prefix=idoctor_bot https://github.com/Mirsadikovv/idoctor_bot.git dev --squash
 push-subtree:
-	git subtree push --prefix=dmi_bot https://git.sriss.uz/mehnat/dmi_bot.git dev
+	git subtree push --prefix=idoctor_bot https://github.com/Mirsadikovv/idoctor_bot.git dev

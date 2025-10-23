@@ -5,8 +5,8 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/Mirsadikovv/idoctor_v2/app/config"
-	"github.com/Mirsadikovv/idoctor_v2/app/utils"
+	"github.com/Mirsadikovv/idoctor_bot/app/config"
+	"github.com/Mirsadikovv/idoctor_bot/app/utils"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 

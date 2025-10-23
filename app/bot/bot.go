@@ -3,9 +3,9 @@ package bot
 import (
 	"log"
 
-	"github.com/Mirsadikovv/idoctor_v2/app/config"
-	handlers "github.com/Mirsadikovv/idoctor_v2/app/handler/privates"
-	"github.com/Mirsadikovv/idoctor_v2/app/utils"
+	"github.com/Mirsadikovv/idoctor_bot/app/config"
+	handlers "github.com/Mirsadikovv/idoctor_bot/app/handler/privates"
+	"github.com/Mirsadikovv/idoctor_bot/app/utils"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"

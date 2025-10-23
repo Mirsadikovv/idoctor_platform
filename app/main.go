@@ -2,8 +2,8 @@ package src
 
 import (
 	"git.sriss.uz/shared/shared_service/pg"
-	"github.com/Mirsadikovv/idoctor_v2/app/bot"
-	"github.com/Mirsadikovv/idoctor_v2/app/config"
+	"github.com/Mirsadikovv/idoctor_bot/app/bot"
+	"github.com/Mirsadikovv/idoctor_bot/app/config"
 )
 
 type Env struct {

@@ -4,13 +4,13 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/Mirsadikovv/idoctor_v2/app/config"
-	"github.com/Mirsadikovv/idoctor_v2/app/utils"
+	"github.com/Mirsadikovv/idoctor_bot/app/config"
+	"github.com/Mirsadikovv/idoctor_bot/app/utils"
 
 	"fmt"
 
 	bot_dto "git.sriss.uz/mehnat/inspector_platform/src/module/bot_service/dto"
-	keyboard "github.com/Mirsadikovv/idoctor_v2/app/keyboards/defaults"
+	keyboard "github.com/Mirsadikovv/idoctor_bot/app/keyboards/defaults"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"

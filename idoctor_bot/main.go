@@ -1,7 +1,7 @@
 package main
 
 import (
-	cmd "github.com/Mirsadikovv/idoctor_v2/app"
+	cmd "github.com/Mirsadikovv/idoctor_bot/app"
 )
 
 func main() {

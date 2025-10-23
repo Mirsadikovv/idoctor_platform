@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	keyboard "github.com/Mirsadikovv/idoctor_v2/app/keyboards/defaults"
-	"github.com/Mirsadikovv/idoctor_v2/app/utils"
+	keyboard "github.com/Mirsadikovv/idoctor_bot/app/keyboards/defaults"
+	"github.com/Mirsadikovv/idoctor_bot/app/utils"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"

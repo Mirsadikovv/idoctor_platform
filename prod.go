@@ -4,8 +4,8 @@
 package main
 
 import (
-	"git.sriss.uz/shared/shared_service/sharedutil"
 	src "github.com/Mirsadikovv/idoctor_bot/app"
+	"github.com/Mirsadikovv/shared/sharedutil"
 )
 
 func fillEnv(env *src.Env) {

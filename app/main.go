@@ -1,7 +1,7 @@
 package src
 
 import (
-	"git.sriss.uz/shared/shared_service/pg"
+	"github.com/Mirsadikovv/shared/pg"
 	"github.com/Mirsadikovv/idoctor_bot/app/bot"
 	"github.com/Mirsadikovv/idoctor_bot/app/config"
 )

@@ -9,8 +9,8 @@ import (
 
 	"fmt"
 
-	bot_dto "git.sriss.uz/mehnat/inspector_platform/src/module/bot_service/dto"
 	keyboard "github.com/Mirsadikovv/idoctor_bot/app/keyboards/defaults"
+	bot_dto "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/dto"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"

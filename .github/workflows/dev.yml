@@ -18,11 +18,6 @@ jobs:
           CI_JOB_LOGIN: x
           CI_JOB_TOKEN: ${{ secrets.PAT_TOKEN }}
           JWT_SECRET: ${{ secrets.DEV_JWT_SECRET }}
-          ONEID_CLIENT_SECRET: ${{ secrets.DEV_ONEID_CLIENT_SECRET }}
-          ONEID_CLIENT_ID: ${{ vars.DEV_ONEID_CLIENT_ID }}
-          ONEID_CLIENT_REDIRECT_URL: ${{ vars.DEV_ONEID_CLIENT_REDIRECT_URL }}
-          ONEID_DASHBOARD_REDIRECT_URL: ${{ vars.DEV_ONEID_DASHBOARD_REDIRECT_URL }}
-          ONEID_BASE_URL: ${{ secrets.ONEID_BASE_URL }}
           BOT_TOKEN: ${{ secrets.DEV_BOT_TOKEN }}
           JWT_EXPIRED: ${{ vars.DEV_JWT_EXPIRED }}
           JWT_REFRESH_EXPIRED: ${{ vars.DEV_JWT_REFRESH_EXPIRED }}

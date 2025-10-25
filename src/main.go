@@ -46,15 +46,10 @@ type Env struct {
 	POSTGRES_Port             int    `env:"POSTGRES_PORT"`
 	POSTGRES_SSLMode          string `env:"POSTGRES_SSL_MODE" default:"disable"`
 	POSTGRES_TimeZone         string `env:"POSTGRES_TIME_ZONE" default:"UTC"`
-	JWT_Secret                string `env:"JWT_SECRET"`
-	JWT_Expired               int64  `env:"JWT_EXPIRED"`
-	JWT_RefreshExpired        int64  `env:"JWT_REFRESH_EXPIRED"`
-	REDIS_Addr                string `env:"REDIS_ADDR"`
-	OneIdBaseUrl              string `env:"ONEID_BASE_URL"`
-	OneIdClientId             string `env:"ONEID_CLIENT_ID"`
-	OneIdClientSecret         string `env:"ONEID_CLIENT_SECRET"`
-	OneIdClientRedirectUrl    string `env:"ONEID_CLIENT_REDIRECT_URL"`
-	OneIdDashboardRedirectUrl string `env:"ONEID_DASHBOARD_REDIRECT_URL"`
+	JWT_Secret         string `env:"JWT_SECRET"`
+	JWT_Expired        int64  `env:"JWT_EXPIRED"`
+	JWT_RefreshExpired int64  `env:"JWT_REFRESH_EXPIRED"`
+	REDIS_Addr         string `env:"REDIS_ADDR"`
 }
 
 func Exec(env *Env) {

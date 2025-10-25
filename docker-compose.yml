@@ -5,59 +5,30 @@ networks:
     name: stack
 
 services:
-  db-inspector-mehnat:
-    container_name: db-inspector-mehnat
+  db-platform-idoctor:
+    container_name: db-platform-idoctor
     image: postgres:16-alpine3.18
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - /srv/inspector_mehnat/docker/postgres/pgdata:/var/lib/postgresql/data
+      - /srv/platform_idoctor/docker/postgres/pgdata:/var/lib/postgresql/data
     networks:
       - stack
       - traefik-network
 
-  inspector-mehnat-redis-db:
-    container_name: inspector-mehnat-redis
+  platform-idoctor-redis-db:
+    container_name: platform-idoctor-redis
     image: redis:7.2.4-alpine
     restart: always
     volumes:
-      - /srv/inspector_mehnat/docker/redis/data:/data
+      - /srv/platform_idoctor/docker/redis/data:/data
     networks:
       - stack
 
-  onlyoffice:
-    image: onlyoffice/documentserver:latest
-    container_name: onlyoffice
-    restart: always
-    environment:
-      - JWT_ENABLED=false # disable JWT for now (simpler testing)
-    networks:
-      - stack
-      - traefik-network
-
-  e-imzo-server:
-    container_name: e-imzo-server
-    build:
-      context: ./e-imzo-server
-      dockerfile: ./Dockerfile
-    restart: always
-    environment:
-      - E_IMZO_LISTEN_IP=${E_IMZO_LISTEN_IP}
-      - E_IMZO_LISTEN_PORT=${E_IMZO_LISTEN_PORT}
-      - E_IMZO_VPN_TLS_ENABLED=${E_IMZO_VPN_TLS_ENABLED}
-      - E_IMZO_VPN_CONNECT_HOST=${E_IMZO_VPN_CONNECT_HOST}
-      - E_IMZO_VPN_CONNECT_PORT=${E_IMZO_VPN_CONNECT_PORT}
-      - E_IMZO_VPN_KEY_FILE_PATH=${E_IMZO_VPN_KEY_FILE_PATH}
-      - E_IMZO_VPN_KEY_PASSWORD=${E_IMZO_VPN_KEY_PASSWORD}
-      - E_IMZO_VPN_TRUSTSTORE_FILE_PATH=${E_IMZO_VPN_TRUSTSTORE_FILE_PATH}
-      - E_IMZO_TSP_JKS_FILE_PATH=${E_IMZO_TSP_JKS_FILE_PATH}
-    networks:
-      - stack
-
-  inspector-mehnat-app:
-    container_name: inspector-mehnat
+  platform-idoctor-app:
+    container_name: platform-idoctor
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -68,16 +39,11 @@ services:
     restart: always
     working_dir: "/app"
     volumes:
-      - /srv/inspector_mehnat/docker/app/files:/app/files
+      - /srv/platform_idoctor/docker/app/files:/app/files
     environment:
       - CI_JOB_LOGIN=${CI_JOB_LOGIN}
       - CI_JOB_TOKEN=${CI_JOB_TOKEN}
       - JWT_SECRET=${JWT_SECRET}
-      - ONEID_CLIENT_SECRET=${ONEID_CLIENT_SECRET}
-      - ONEID_CLIENT_ID=${ONEID_CLIENT_ID}
-      - ONEID_CLIENT_REDIRECT_URL=${ONEID_CLIENT_REDIRECT_URL}
-      - ONEID_DASHBOARD_REDIRECT_URL=${ONEID_DASHBOARD_REDIRECT_URL}
-      - ONEID_BASE_URL=${ONEID_BASE_URL}
       - JWT_EXPIRED=${JWT_EXPIRED}
       - JWT_REFRESH_EXPIRED=${JWT_REFRESH_EXPIRED}
       - HTTP_PORT=${HTTP_PORT}
@@ -91,27 +57,25 @@ services:
       - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
       - GATEWAY_BASE_URL=${GATEWAY_BASE_URL}
       - BOT_TOKEN=${BOT_TOKEN}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.inspector-mehnat-app.rule=Host(`api.inspector.mehnat.sriss.uz`)"
-      - "traefik.http.routers.inspector-mehnat-app.entrypoints=web"
-      - "traefik.http.services.inspector-mehnat-app.loadbalancer.server.port=80"
-      - "traefik.docker.network=traefik-network"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.platform-idoctor-app.rule=Host(`api.idoctor.uz`)"
+    #   - "traefik.http.routers.platform-idoctor-app.entrypoints=web"
+    #   - "traefik.http.services.platform-idoctor-app.loadbalancer.server.port=80"
+    #   - "traefik.docker.network=traefik-network"
     networks:
       - traefik-network
       - stack
     links:
-      - db-inspector-mehnat
-      - inspector-mehnat-redis-db
-      - e-imzo-server
+      - db-platform-idoctor
+      - platform-idoctor-redis-db
     depends_on:
-      - db-inspector-mehnat
-      - inspector-mehnat-redis-db
-      - e-imzo-server
+      - db-platform-idoctor
+      - platform-idoctor-redis-db
     command: "/app/main"
 
-  inspector_mehnat_bot:
-    container_name: inspector_mehnat_bot
+  platform_idoctor_bot:
+    container_name: platform_idoctor_bot
     restart: always
     networks:
       - stack
@@ -132,5 +96,5 @@ services:
       - BOT_TOKEN=${BOT_TOKEN}
       - ADMINS=${ADMINS}
     volumes:
-      - /srv/inspector_mehnat/docker/app/files:/app/files
+      - /srv/platform_idoctor/docker/app/files:/app/files
     command: "/app/main"

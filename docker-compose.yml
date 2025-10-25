@@ -80,7 +80,7 @@ services:
     networks:
       - stack
     build:
-      context: ./dmi_bot
+      context: ./idoctor_bot
       dockerfile: ./Dockerfile
       args:
         - CI_JOB_LOGIN=${CI_JOB_LOGIN}

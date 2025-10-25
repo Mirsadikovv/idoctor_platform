@@ -346,6 +346,9 @@
                 "middleName": {
                     "type": "string"
                 },
+                "name": {
+                    "type": "string"
+                },
                 "nationality": {
                     "type": "string"
                 },

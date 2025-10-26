@@ -2,7 +2,6 @@ FROM golang:1.25.3-alpine3.21 as builder
 
 ENV GOPATH /go
 ENV PATH $PATH:$GOPATH/bin
-ENV GOPRIVATE=git.sriss.uz
 
 RUN set -ex && \
   apk add --no-cache gcc musl-dev git
@@ -14,11 +13,6 @@ ARG MODE=dev
 WORKDIR /app
 
 COPY go.mod ./
-
-RUN git config --global url."https://git.sriss.uz/".insteadOf "http://git.sriss.uz/"
-
-RUN printf "machine git.sriss.uz\nlogin %s\npassword %s\n" "$CI_JOB_LOGIN"  "$CI_JOB_TOKEN" > ~/.netrc && \
-  chmod 600 ~/.netrc
 
 RUN go mod download
 

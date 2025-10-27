@@ -43,11 +43,14 @@ services:
     environment:
       - CI_JOB_LOGIN=${CI_JOB_LOGIN}
       - CI_JOB_TOKEN=${CI_JOB_TOKEN}
+
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRED=${JWT_EXPIRED}
       - JWT_REFRESH_EXPIRED=${JWT_REFRESH_EXPIRED}
+      
       - HTTP_PORT=${HTTP_PORT}
       - REDIS_ADDR=${REDIS_ADDR}
+      
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
@@ -55,7 +58,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_SSL_MODE=${POSTGRES_SSL_MODE}
       - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
-      - GATEWAY_BASE_URL=${GATEWAY_BASE_URL}
+      
       - BOT_TOKEN=${BOT_TOKEN}
     # labels:
     #   - "traefik.enable=true"
@@ -93,6 +96,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_SSL_MODE=${POSTGRES_SSL_MODE}
       - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
+      
       - BOT_TOKEN=${BOT_TOKEN}
       - ADMINS=${ADMINS}
     volumes:

@@ -15,22 +15,21 @@ jobs:
 
       - name: Docker build
         env:
-          CI_JOB_LOGIN: x
-          CI_JOB_TOKEN: ${{ secrets.PAT_TOKEN }}
-          JWT_SECRET: ${{ secrets.DEV_JWT_SECRET }}
-          BOT_TOKEN: ${{ secrets.DEV_BOT_TOKEN }}
-          JWT_EXPIRED: ${{ vars.DEV_JWT_EXPIRED }}
-          JWT_REFRESH_EXPIRED: ${{ vars.DEV_JWT_REFRESH_EXPIRED }}
-          HTTP_PORT: ${{ vars.DEV_HTTP_PORT }}
-          REDIS_ADDR: ${{ vars.DEV_REDIS_ADDR }}
-          POSTGRES_DB: ${{ vars.DEV_POSTGRES_DB }}
-          POSTGRES_HOST: ${{ vars.DEV_POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ vars.DEV_POSTGRES_PORT }}
-          POSTGRES_USER: ${{ vars.DEV_POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DEV_POSTGRES_PASSWORD }}
-          POSTGRES_SSL_MODE: ${{ vars.DEV_POSTGRES_SSL_MODE }}
-          POSTGRES_TIME_ZONE: ${{ vars.DEV_POSTGRES_TIME_ZONE }}
-          GATEWAY_BASE_URL: ${{ vars.DEV_GATEWAY_BASE_URL }}
-          ADMINS: ${{ vars.DEV_BOT_ADMINS }}
+          CI_JOB_LOGIN:         x
+          CI_JOB_TOKEN:         ${{ secrets.PAT_TOKEN }}
+          JWT_SECRET:           ${{ secrets.DEV_JWT_SECRET }}
+          BOT_TOKEN:            ${{ secrets.DEV_BOT_TOKEN }}
+          POSTGRES_PASSWORD:    ${{ secrets.DEV_POSTGRES_PASSWORD }}
+          JWT_EXPIRED:          ${{ vars.DEV_JWT_EXPIRED }}
+          JWT_REFRESH_EXPIRED:  ${{ vars.DEV_JWT_REFRESH_EXPIRED }}
+          HTTP_PORT:            ${{ vars.DEV_HTTP_PORT }}
+          REDIS_ADDR:           ${{ vars.DEV_REDIS_ADDR }}
+          POSTGRES_DB:          ${{ vars.DEV_POSTGRES_DB }}
+          POSTGRES_HOST:        ${{ vars.DEV_POSTGRES_HOST }}
+          POSTGRES_PORT:        ${{ vars.DEV_POSTGRES_PORT }}
+          POSTGRES_USER:        ${{ vars.DEV_POSTGRES_USER }}
+          POSTGRES_SSL_MODE:    ${{ vars.DEV_POSTGRES_SSL_MODE }}
+          POSTGRES_TIME_ZONE:   ${{ vars.DEV_POSTGRES_TIME_ZONE }} 
+          ADMINS:               ${{ vars.DEV_BOT_ADMINS }}
         run: |
           docker compose -f docker-compose.yml up --build --force-recreate --remove-orphans -d

@@ -94,10 +94,10 @@ services:
         - CI_JOB_TOKEN=${CI_JOB_TOKEN}
     environment:
       - POSTGRES_DB=postgres
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_HOST=db-platform-idoctor
+      - POSTGRES_PORT=5432
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_SSL_MODE=${POSTGRES_SSL_MODE}
       - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
 

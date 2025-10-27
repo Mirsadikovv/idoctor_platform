@@ -37,15 +37,15 @@ import (
 )
 
 type Env struct {
-	HTTP_Host                 string `env:"HTTP_HOST" default:"localhost"`
-	HTTP_Port                 int    `env:"HTTP_PORT" default:"80"`
-	POSTGRES_Host             string `env:"POSTGRES_HOST"`
-	POSTGRES_User             string `env:"POSTGRES_USER"`
-	POSTGRES_Password         string `env:"POSTGRES_PASSWORD"`
-	POSTGRES_DBName           string `env:"POSTGRES_DB"`
-	POSTGRES_Port             int    `env:"POSTGRES_PORT"`
-	POSTGRES_SSLMode          string `env:"POSTGRES_SSL_MODE" default:"disable"`
-	POSTGRES_TimeZone         string `env:"POSTGRES_TIME_ZONE" default:"UTC"`
+	HTTP_Host          string `env:"HTTP_HOST" default:"localhost"`
+	HTTP_Port          int    `env:"HTTP_PORT" default:"80"`
+	POSTGRES_Host      string `env:"POSTGRES_HOST"`
+	POSTGRES_User      string `env:"POSTGRES_USER"`
+	POSTGRES_Password  string `env:"POSTGRES_PASSWORD"`
+	POSTGRES_DBName    string `env:"POSTGRES_DB"`
+	POSTGRES_Port      int    `env:"POSTGRES_PORT"`
+	POSTGRES_SSLMode   string `env:"POSTGRES_SSL_MODE" default:"disable"`
+	POSTGRES_TimeZone  string `env:"POSTGRES_TIME_ZONE" default:"UTC"`
 	JWT_Secret         string `env:"JWT_SECRET"`
 	JWT_Expired        int64  `env:"JWT_EXPIRED"`
 	JWT_RefreshExpired int64  `env:"JWT_REFRESH_EXPIRED"`

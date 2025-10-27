@@ -33,3 +33,10 @@ jobs:
           ADMINS:               ${{ vars.DEV_BOT_ADMINS }}
         run: |
           docker compose -f docker-compose.yml up --build --force-recreate --remove-orphans -d
+
+      - name: Wait for containers
+        run: |
+          sleep 10
+      - name: List running containers
+        run: |
+          docker ps -a

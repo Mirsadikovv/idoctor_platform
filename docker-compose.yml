@@ -101,6 +101,7 @@ services:
       - POSTGRES_SSL_MODE=${POSTGRES_SSL_MODE}
       - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
 
+      - BOT_TOKEN=${BOT_TOKEN}
       - ADMINS=${ADMINS}
     volumes:
       - /srv/platform_idoctor/docker/app/files:/app/files

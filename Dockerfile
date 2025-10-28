@@ -1,7 +1,7 @@
 FROM golang:1.25.3-alpine3.21 as builder
 
-ENV GOPATH /go
-ENV PATH $PATH:$GOPATH/bin
+# ENV GOPATH /go
+# ENV PATH $PATH:$GOPATH/bin
 
 RUN set -ex && \
   apk add --no-cache gcc musl-dev git
@@ -12,7 +12,7 @@ ARG CI_JOB_TOKEN
 
 WORKDIR /app
 
-COPY go.mod ./
+COPY go.mod go.sum ./
 
 RUN go mod download
 

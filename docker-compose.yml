@@ -107,4 +107,4 @@ services:
       - /srv/platform_idoctor/docker/app/files:/app/files
     depends_on:
       - db-platform-idoctor
-    command: sh -c "sleep 15 && /app/main"
+    command: "/app/main"

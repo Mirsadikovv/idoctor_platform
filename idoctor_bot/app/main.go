@@ -37,18 +37,18 @@ func Exec(env *Env) {
 		TimeZone: env.POSTGRES_TIME_ZONE,
 	}
 
-	log.Println("Initializing database connection...")
 	db := pg.Primary(gormConfig, pgConfig)
-	log.Println("Database connection established")
+	{
+		if db == nil {
+			log.Fatal("Failed to establish database connection")
+			return
+		}
+	}
 
-	log.Println("Loading bot configuration...")
 	cfg, err := config.Load()
 	if err != nil {
-		log.Printf("Failed to load bot configuration: %v", err)
 		return
 	}
-	log.Printf("Bot configuration loaded successfully. Token: %s", cfg.BotToken)
 
-	log.Println("Starting bot...")
 	bot.Start(cfg, db)
 }

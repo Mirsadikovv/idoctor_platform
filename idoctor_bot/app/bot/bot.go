@@ -15,6 +15,7 @@ func Start(cfg *config.Config, db *gorm.DB) error {
 	log.Println("Starting bot...")
 	bot, err := tgbotapi.NewBotAPI(cfg.BotToken)
 	if err != nil {
+		log.Printf("Error creating bot: %v", err)
 		return err
 	}
 

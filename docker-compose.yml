@@ -72,7 +72,6 @@ services:
     #   - "traefik.http.services.platform-idoctor-app.loadbalancer.server.port=80"
     #   - "traefik.docker.network=traefik-network"
     networks:
-      - traefik-network
       - stack
     depends_on:
       db-platform-idoctor:

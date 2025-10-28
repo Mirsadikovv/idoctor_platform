@@ -1,8 +1,6 @@
 package src
 
 import (
-	"log"
-
 	"github.com/Mirsadikovv/idoctor_bot/app/bot"
 	"github.com/Mirsadikovv/idoctor_bot/app/config"
 	"github.com/Mirsadikovv/shared/pg"
@@ -19,10 +17,6 @@ type Env struct {
 }
 
 func Exec(env *Env) {
-	log.Println("Bot starting...")
-	log.Printf("Database config: Host=%s, User=%s, DB=%s, Port=%d, SSLMode=%s, TimeZone=%s",
-		env.POSTGRES_HOST, env.POSTGRES_USER, env.POSTGRES_DB, env.POSTGRES_PORT, env.POSTGRES_SSL_MODE, env.POSTGRES_TIME_ZONE)
-
 	gormConfig := &pg.GormConfig{
 		SkipDefaultTransaction: true,
 	}
@@ -40,7 +34,6 @@ func Exec(env *Env) {
 	db := pg.Primary(gormConfig, pgConfig)
 	{
 		if db == nil {
-			log.Fatal("Failed to establish database connection")
 			return
 		}
 	}

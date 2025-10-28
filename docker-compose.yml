@@ -72,13 +72,13 @@ services:
     #   - "traefik.http.services.platform-idoctor-app.loadbalancer.server.port=80"
     #   - "traefik.docker.network=traefik-network"
     networks:
+      - traefik-network
       - stack
-    links:
-      - db-platform-idoctor
-      - platform-idoctor-redis-db
     depends_on:
-      - db-platform-idoctor
-      - platform-idoctor-redis-db
+      db-platform-idoctor:
+        condition: service_healthy
+      platform-idoctor-redis-db:
+        condition: service_started
     command: "/app/main"
 
   platform_idoctor_bot:
@@ -106,5 +106,6 @@ services:
     volumes:
       - /srv/platform_idoctor/docker/app/files:/app/files
     depends_on:
-      - db-platform-idoctor
-    command: "/app/main"
+      db-platform-idoctor:
+        condition: service_healthy
+    command: sh -c "sleep 5 && /app/main"

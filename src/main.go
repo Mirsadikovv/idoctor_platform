@@ -22,6 +22,8 @@ import (
 	problem_model "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service/model"
 	role_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/role_service"
 	role_model "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/model"
+	supplier_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/supplier_service"
+	supplier_model "github.com/Mirsadikovv/idoctor_platform/src/module/supplier_service/model"
 	user_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/user_service"
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
@@ -105,6 +107,7 @@ func Exec(env *Env) {
 	organization_cmd.Cmd(router, db, log, authMiddleware)
 	problem_cmd.Cmd(router, db, log, authMiddleware)
 	role_cmd.Cmd(router, db, log, authMiddleware)
+	supplier_cmd.Cmd(router, db, log, authMiddleware)
 	user_cmd.Cmd(router, db, log, authMiddleware)
 
 	router.GET("/swagger/dir", swaggerDirs())
@@ -133,6 +136,7 @@ func migration(db *gorm.DB) error {
 		&bot_model.BotMessage{},
 
 		&problem_model.Problem{},
+		&supplier_model.Supplier{},
 	}
 
 	err := db.AutoMigrate(models...)
@@ -171,7 +175,8 @@ func createOrg(db *gorm.DB, r *echo.Echo) {
 
 	for _, route := range r.Routes() {
 		if route.Method == "echo_route_not_found" {
-			fmt.Println("Skipping route:", route.Path, "Method:", route.Method)
+			// fmt.Println("Skipping route:", route.Path, "Method:", route.Method)
+			continue
 		}
 		routers[route.Path] = []string{route.Method}
 	}

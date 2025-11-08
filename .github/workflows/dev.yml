@@ -32,7 +32,6 @@ jobs:
           POSTGRES_TIME_ZONE:   ${{ vars.DEV_POSTGRES_TIME_ZONE }} 
           ADMINS:               ${{ vars.DEV_BOT_ADMINS }}
         run: |
-          docker compose -f docker-compose.yml down
           docker compose -f docker-compose.yml up --build --force-recreate --remove-orphans -d
 
       - name: Wait for containers

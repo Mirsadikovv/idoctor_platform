@@ -73,12 +73,11 @@ services:
     #   - "traefik.docker.network=traefik-network"
     networks:
       - stack
-    links:
-      - db-platform-idoctor
-      - platform-idoctor-redis-db
     depends_on:
-      - db-platform-idoctor
-      - platform-idoctor-redis-db
+      db-platform-idoctor:
+        condition: service_healthy
+      platform-idoctor-redis-db:
+        condition: service_started
     command: "/app/main"
 
   platform_idoctor_bot:
@@ -101,9 +100,11 @@ services:
       - POSTGRES_SSL_MODE=${POSTGRES_SSL_MODE}
       - POSTGRES_TIME_ZONE=${POSTGRES_TIME_ZONE}
 
+      - BOT_TOKEN=${BOT_TOKEN}
       - ADMINS=${ADMINS}
     volumes:
       - /srv/platform_idoctor/docker/app/files:/app/files
     depends_on:
-      - db-platform-idoctor
-    command: sh -c "sleep 15 && /app/main"
+      db-platform-idoctor:
+        condition: service_healthy
+    command: sh -c "sleep 5 && /app/main"

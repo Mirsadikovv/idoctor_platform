@@ -1,9 +1,9 @@
 package src
 
 import (
-	"github.com/Mirsadikovv/shared/pg"
 	"github.com/Mirsadikovv/idoctor_bot/app/bot"
 	"github.com/Mirsadikovv/idoctor_bot/app/config"
+	"github.com/Mirsadikovv/shared/pg"
 )
 
 type Env struct {
@@ -17,7 +17,6 @@ type Env struct {
 }
 
 func Exec(env *Env) {
-
 	gormConfig := &pg.GormConfig{
 		SkipDefaultTransaction: true,
 	}
@@ -33,6 +32,11 @@ func Exec(env *Env) {
 	}
 
 	db := pg.Primary(gormConfig, pgConfig)
+	{
+		if db == nil {
+			return
+		}
+	}
 
 	cfg, err := config.Load()
 	if err != nil {
@@ -40,5 +44,4 @@ func Exec(env *Env) {
 	}
 
 	bot.Start(cfg, db)
-
 }

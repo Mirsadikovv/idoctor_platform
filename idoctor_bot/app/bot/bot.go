@@ -12,10 +12,12 @@ import (
 )
 
 func Start(cfg *config.Config, db *gorm.DB) error {
-
 	bot, err := tgbotapi.NewBotAPI(cfg.BotToken)
-	if err != nil {
-		return err
+	{
+		if err != nil {
+			log.Printf(" failed to create bot: %v", err)
+			return err
+		}
 	}
 
 	bot.Debug = false

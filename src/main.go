@@ -12,6 +12,8 @@ import (
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 	bot_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service"
 	bot_model "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/model"
+	device_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/device_service"
+	device_model "github.com/Mirsadikovv/idoctor_platform/src/module/device_service/model"
 	file_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/file_service"
 	file_model "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/model"
 	language_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/language_service"
@@ -102,6 +104,7 @@ func Exec(env *Env) {
 
 	auth_cmd.Cmd(router, db, log, authMiddleware)
 	bot_cmd.Cmd(router, db, log, authMiddleware)
+	device_cmd.Cmd(router, db, log, authMiddleware)
 	file_cmd.Cmd(router, db, log, authMiddleware)
 	language_cmd.Cmd(router, db, log, authMiddleware)
 	organization_cmd.Cmd(router, db, log, authMiddleware)
@@ -137,6 +140,7 @@ func migration(db *gorm.DB) error {
 
 		&problem_model.Problem{},
 		&supplier_model.Supplier{},
+		&device_model.Device{},
 	}
 
 	err := db.AutoMigrate(models...)

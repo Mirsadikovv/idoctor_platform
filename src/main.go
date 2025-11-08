@@ -20,6 +20,8 @@ import (
 	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
 	organization_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service"
 	organization_model "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/model"
+	part_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/part_service"
+	part_model "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/model"
 	problem_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service"
 	problem_model "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service/model"
 	role_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/role_service"
@@ -108,6 +110,7 @@ func Exec(env *Env) {
 	file_cmd.Cmd(router, db, log, authMiddleware)
 	language_cmd.Cmd(router, db, log, authMiddleware)
 	organization_cmd.Cmd(router, db, log, authMiddleware)
+	part_cmd.Cmd(router, db, log, authMiddleware)
 	problem_cmd.Cmd(router, db, log, authMiddleware)
 	role_cmd.Cmd(router, db, log, authMiddleware)
 	supplier_cmd.Cmd(router, db, log, authMiddleware)
@@ -141,6 +144,7 @@ func migration(db *gorm.DB) error {
 		&problem_model.Problem{},
 		&supplier_model.Supplier{},
 		&device_model.Device{},
+		&part_model.Part{},
 	}
 
 	err := db.AutoMigrate(models...)

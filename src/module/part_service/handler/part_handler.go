@@ -1,0 +1,313 @@
+package part_handler
+
+import (
+	"fmt"
+
+	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
+	part_dto "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/dto"
+	part_service "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/service"
+
+	"github.com/Mirsadikovv/shared/logger"
+	"github.com/Mirsadikovv/shared/request"
+	"github.com/Mirsadikovv/shared/response"
+	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
+)
+
+type partHandler struct {
+	db             *gorm.DB
+	log            logger.Logger
+	authMiddleware *auth_middleware.AuthMiddleware
+	partService    part_service.PartService
+}
+
+func NewPartHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMiddleware *auth_middleware.AuthMiddleware) {
+	handler := &partHandler{
+		db:             db,
+		log:            log,
+		authMiddleware: authMiddleware,
+		partService:    part_service.NewPartService(db),
+	}
+
+	partServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	partGroup := router.Group("/api/v1/part", partServiceMiddleware)
+	{
+		partGroup.GET("/:id", handler.FindByID)
+		partGroup.GET("/search", handler.Search)
+		partGroup.GET("/page", handler.Page)
+		partGroup.POST("", handler.Create)
+		partGroup.PUT("/:id", handler.Update)
+		partGroup.DELETE("/:id", handler.DeleteOrRestore)
+	}
+}
+
+// Search godoc
+// @Summary      Get all parts with search
+// @Description  Get all parts with search
+// @Tags 		 part
+// @ID           search-part
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        params query part_dto.PartParams false "params"
+// @Param        limit  query int    false "Limit the number of results" default(20)
+// @Success      200 {object} []part_dto.Part "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /part/search [get]
+func (h *partHandler) Search(c echo.Context) error {
+	req := request.RequestWithData[any](c)
+
+	var params part_dto.PartParams
+	{
+		if err := req.BindQuery(&params); err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	filter := func(tx *gorm.DB) *gorm.DB {
+		if params.Name != nil {
+			name := fmt.Sprintf("%%%s%%", *params.Name)
+			tx = tx.Where("parts.name ILIKE ?", name)
+		}
+
+		if params.DeviceID != nil {
+			tx = tx.Where("parts.device_id = ?", *params.DeviceID)
+		}
+
+		if params.SupplierID != nil {
+			tx = tx.Where("parts.supplier_id = ?", *params.SupplierID)
+		}
+
+		// Handle soft delete filtering
+		if params.OnlyDeleted != nil && *params.OnlyDeleted {
+			tx = tx.Unscoped().Where("parts.deleted_at IS NOT NULL")
+		} else if params.IncludeDeleted != nil && *params.IncludeDeleted {
+			tx = tx.Unscoped()
+		}
+
+		return tx.Select(
+			"parts.id",
+			"parts.name",
+			"parts.device_id",
+			"parts.supplier_id",
+			"parts.created_at",
+			"parts.deleted_at",
+		).Order("parts.id DESC")
+	}
+
+	parts, err := h.partService.Find(req.Context(), filter)
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(parts)
+}
+
+// Page 			godoc
+// @Summary			part-service-page
+// @Description		part-service-page
+// @Tags 			part
+// @Param       	filter query part_dto.PartParams false "Filter parameters"
+// @Param       	page query int false "Page number"
+// @Param       	perpage query int false "Items per page"
+// @Security     	ApiKeyAuth
+// @Success	200 	{object} part_dto.PartPage "Successful operation"
+// @Failure	400 	{object} response.HttpSuccess "Bad request"
+// @Failure	500 	{object} response.HttpSuccess "Internal server error"
+// @Router			/part/page [get]
+func (h *partHandler) Page(c echo.Context) error {
+	req := request.Request(c)
+
+	var params part_dto.PartParams
+	{
+		if err := req.BindQuery(&params); err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	tx := func(tx *gorm.DB) *gorm.DB {
+		if params.Name != nil {
+			tx = tx.Where("name ILIKE ?", fmt.Sprintf("%%%s%%", *params.Name))
+		}
+
+		if params.DeviceID != nil {
+			tx = tx.Where("device_id = ?", *params.DeviceID)
+		}
+
+		if params.SupplierID != nil {
+			tx = tx.Where("supplier_id = ?", *params.SupplierID)
+		}
+
+		// Handle soft delete filtering
+		if params.OnlyDeleted != nil && *params.OnlyDeleted {
+			tx = tx.Unscoped().Where("deleted_at IS NOT NULL")
+		} else if params.IncludeDeleted != nil && *params.IncludeDeleted {
+			tx = tx.Unscoped()
+		}
+
+		return tx.Select(
+			"parts.id",
+			"parts.name",
+			"parts.device_id",
+			"parts.supplier_id",
+			"parts.created_at",
+			"parts.deleted_at",
+		).Order("parts.id DESC")
+	}
+
+	items, err := h.partService.Page(req.Context(), req.NewPaginate(), tx)
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(items)
+}
+
+// GetById godoc
+// @Summary      Get part by ID
+// @Description  Get part by ID
+// @Tags 		 part
+// @ID           get-part-by-id
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        id path string true "part ID"
+// @Success      200 {object} part_dto.Part "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /part/{id} [get]
+func (h *partHandler) FindByID(c echo.Context) error {
+	req := request.RequestWithData[any](c)
+
+	id, err := req.ParamToInt("id")
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	filter := func(tx *gorm.DB) *gorm.DB {
+		return tx.Where("id = ?", id)
+	}
+
+	part, err := h.partService.FindOne(req.Context(), filter)
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(part)
+}
+
+// Create godoc
+// @Summary      Create part
+// @Description  Create new part
+// @Tags 		 part
+// @ID           create-part
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        input body part_dto.PartCreate true "part information"
+// @Success      201 {object} response.ID64 "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /part [POST]
+func (h *partHandler) Create(c echo.Context) error {
+	req := request.Request(c)
+
+	var partDto part_dto.PartCreate
+	{
+		if err := req.BindBody(&partDto); err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	id, err := h.partService.Create(c.Request().Context(), &partDto)
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(response.NewID(id))
+}
+
+// Update godoc
+// @Summary      Update part
+// @Description  Update existing part
+// @Tags 		 part
+// @ID           update-part
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        id path string true "part ID"
+// @Param        input body part_dto.PartUpdate true "part information"
+// @Success      200 {object} response.HttpSuccess "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /part/{id} [PUT]
+func (h *partHandler) Update(c echo.Context) error {
+	req := request.Request(c)
+
+	id, err := req.ParamToInt("id")
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	var partDto part_dto.PartUpdate
+	{
+		if err := req.BindBody(&partDto); err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	err = h.partService.Update(c.Request().Context(), id, &partDto)
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(map[string]string{"message": "Part updated successfully"})
+}
+
+// DeleteOrRestore godoc
+// @Summary      Delete or restore part
+// @Description  Soft delete part if active, restore if already deleted
+// @Tags 		 part
+// @ID           delete-or-restore-part
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        id path string true "part ID"
+// @Success      200 {object} response.HttpSuccess "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /part/{id} [delete]
+func (h *partHandler) DeleteOrRestore(c echo.Context) error {
+	req := request.Request(c)
+
+	id, err := req.ParamToInt("id")
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	err = h.partService.DeleteOrRestore(req.Context(), id)
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(map[string]string{"message": "Part status toggled successfully"})
+}

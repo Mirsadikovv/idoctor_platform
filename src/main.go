@@ -18,6 +18,8 @@ import (
 	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
 	organization_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service"
 	organization_model "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/model"
+	problem_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service"
+	problem_model "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service/model"
 	role_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/role_service"
 	role_model "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/model"
 	user_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/user_service"
@@ -101,6 +103,7 @@ func Exec(env *Env) {
 	file_cmd.Cmd(router, db, log, authMiddleware)
 	language_cmd.Cmd(router, db, log, authMiddleware)
 	organization_cmd.Cmd(router, db, log, authMiddleware)
+	problem_cmd.Cmd(router, db, log, authMiddleware)
 	role_cmd.Cmd(router, db, log, authMiddleware)
 	user_cmd.Cmd(router, db, log, authMiddleware)
 
@@ -128,6 +131,8 @@ func migration(db *gorm.DB) error {
 
 		&bot_model.BotUser{},
 		&bot_model.BotMessage{},
+
+		&problem_model.Problem{},
 	}
 
 	err := db.AutoMigrate(models...)

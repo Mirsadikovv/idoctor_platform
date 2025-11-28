@@ -501,7 +501,8 @@
                     "type": "string"
                 },
                 "size": {
-                    "type": "integer"
+                    "type": "integer",
+                    "format": "int64"
                 }
             }
         },
@@ -523,7 +524,8 @@
                     "$ref": "#/definitions/textproto.MIMEHeader"
                 },
                 "size": {
-                    "type": "integer"
+                    "type": "integer",
+                    "format": "int64"
                 }
             }
         },

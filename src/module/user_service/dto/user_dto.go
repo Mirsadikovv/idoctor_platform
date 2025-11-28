@@ -86,5 +86,4 @@ type UserCreate struct {
 	DateOfBirth *string `json:"dateOfBirth,omitempty"`
 	Gender      *string `json:"gender,omitempty"`
 	RoleId      int64   `json:"roleId" validate:"required"`
-	EmployeeId  int64   `json:"employeeId,omitempty"`
 }

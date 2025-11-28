@@ -34,12 +34,47 @@ func NewUserHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddl
 
 	userGroup := group.Group("/user", authMiddleware.BuildMiddleware())
 	{
+		userGroup.POST("", handler.Create)
 		userGroup.GET("/page", handler.Page)
 		userGroup.GET("/search", handler.Search)
 		userGroup.GET("/:id", handler.GetByID)
 		userGroup.DELETE("/:id", handler.Delete)
 		userGroup.PATCH("/:id/restore", handler.Restore)
 	}
+}
+
+// Create godoc
+// @Summary      Create user
+// @Description  Create a new user
+// @Tags 		 user
+// @ID           create-user
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        user body user_dto.UserCreate true "User information"
+// @Success      201 {object} response.HttpSuccess "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /user [post]
+func (h *userHandler) Create(ctx echo.Context) error {
+
+	req := request.Request(ctx)
+
+	var userCreate user_dto.UserCreate
+	{
+		if err := req.BindBody(&userCreate); err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	userId, err := h.userService.Create(&userCreate)
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.Created(userId)
 }
 
 // Delete godoc

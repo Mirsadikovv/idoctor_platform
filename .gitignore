@@ -6,4 +6,5 @@ files
 Makefile.local
 
 .sql
-
+.claude
+/bin

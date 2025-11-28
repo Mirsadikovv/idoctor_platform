@@ -12,6 +12,52 @@
     },
     "basePath": "/api/v1",
     "paths": {
+        "/user": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Create user",
+                "operationId": "create-user",
+                "parameters": [
+                    {
+                        "description": "User information",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_dto.UserCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "schema": {}
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/user/page": {
             "get": {
                 "security": [
@@ -345,6 +391,40 @@
                 "Male",
                 "Female"
             ]
+        },
+        "user_dto.UserCreate": {
+            "type": "object",
+            "required": [
+                "password",
+                "roleId",
+                "username"
+            ],
+            "properties": {
+                "dateOfBirth": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "middleName": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "roleId": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
         }
     },
     "securityDefinitions": {

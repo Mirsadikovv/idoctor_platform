@@ -43,7 +43,7 @@ func (a *authService) SignIn(signIn *auth_dto.SignIn) (*auth_dto.Token, error) {
 
 	lastVisit := map[string]any{"last_visit": gorm.Expr("CURRENT_TIMESTAMP")}
 
-	user, err := pg.Update[user_model.User](a.db, lastVisit, filter, "id")
+	user, err := pg.Update[user_model.User](a.db, lastVisit, filter, "id", "role_id")
 	{
 		if err != nil {
 			return nil, err
@@ -51,7 +51,8 @@ func (a *authService) SignIn(signIn *auth_dto.SignIn) (*auth_dto.Token, error) {
 	}
 
 	authUser := auth_dto.AuthUser{
-		Id: user.Id,
+		Id:     user.Id,
+		RoleId: user.RoleId,
 	}
 
 	token, err := a.authMiddleware.Token(&authUser)
@@ -71,10 +72,14 @@ func (a *authService) SignIn(signIn *auth_dto.SignIn) (*auth_dto.Token, error) {
 func (a *authService) SignUp(signUp *auth_dto.SingUp) error {
 
 	userDto := user_dto.UserCreate{
-		Username: signUp.Username,
-		Password: signUp.Password,
-		Name:     signUp.Name,
-		RoleId:   signUp.RoleId,
+		Username:    signUp.Username,
+		Password:    signUp.Password,
+		FirstName:   signUp.FirstName,
+		LastName:    signUp.LastName,
+		MiddleName:  signUp.MiddleName,
+		DateOfBirth: signUp.DateOfBirth,
+		Gender:      signUp.Gender,
+		RoleId:      signUp.RoleId,
 	}
 
 	if _, err := a.userService.Create(&userDto); err != nil {
@@ -97,7 +102,6 @@ func (a *authService) Me(ctx context.Context, token string) (*user_dto.User, err
 		return tx.Select(
 			"users.id",
 			"users.username",
-			"users.name",
 			"users.role_id",
 			"roles.pages",
 			"users.last_visit",

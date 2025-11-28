@@ -60,40 +60,31 @@ func (p Password) GormValue(context.Context, *gorm.DB) clause.Expr {
 }
 
 type User struct {
-	Id             int64      `json:"id"`
-	Pin            int64      `json:"pin"`
-	Username       string     `json:"username"`
-	Name           string     `json:"name"`
-	Valid          string     `json:"valid"`
-	PassportNumber string     `json:"passportnumber"`
-	FirstName      string     `json:"firstName"`
-	LastName       string     `json:"lastName"`
-	MiddleName     string     `json:"middleName"`
-	DateOfBirth    string     `json:"dateOfBirth"`
-	UserType       string     `json:"userType"`
-	Gender         Gender     `json:"gender"`
-	Email          string     `json:"email"`
-	SessionId      string     `json:"sessionId"`
-	Photo          string     `json:"photo"`
-	Nationality    string     `json:"nationality"`
-	PlaceOfBirth   string     `json:"placeOfBirth"`
-	CountryOfBirth string     `json:"countryOfBirth"`
-	Citizenship    string     `json:"citizenship"`
-	RoleId         int64      `json:"roleId"`
-	LastVisit      *time.Time `json:"lastVisit"`
+	Id          int64      `json:"id"`
+	Username    string     `json:"username"`
+	FirstName   string     `json:"firstName"`
+	LastName    string     `json:"lastName"`
+	MiddleName  string     `json:"middleName"`
+	DateOfBirth string     `json:"dateOfBirth"`
+	Gender      Gender     `json:"gender"`
+	RoleId      int64      `json:"roleId"`
+	LastVisit   *time.Time `json:"lastVisit"`
 } // @name User
 
 type UserParams struct {
 	utils.OrderParams
 	Fullname *string `json:"fullname" query:"fullname"`
-	Pin      *string `json:"pin" query:"pin"`
 	Gender   Gender  `json:"gender" query:"gender"`
 } // @name UserParams
 
 type UserCreate struct {
-	Username   string `json:"username"`
-	Password   string `json:"password"`
-	Name       string `json:"name"`
-	RoleId     int64  `json:"roleId"`
-	EmployeeId int64  `json:"employeeId"`
+	Username    string  `json:"username" validate:"required"`
+	Password    string  `json:"password" validate:"required"`
+	FirstName   *string `json:"firstName,omitempty"`
+	LastName    *string `json:"lastName,omitempty"`
+	MiddleName  *string `json:"middleName,omitempty"`
+	DateOfBirth *string `json:"dateOfBirth,omitempty"`
+	Gender      *string `json:"gender,omitempty"`
+	RoleId      int64   `json:"roleId" validate:"required"`
+	EmployeeId  int64   `json:"employeeId,omitempty"`
 }

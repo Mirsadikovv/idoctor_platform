@@ -171,16 +171,7 @@
         "User": {
             "type": "object",
             "properties": {
-                "citizenship": {
-                    "type": "string"
-                },
-                "countryOfBirth": {
-                    "type": "string"
-                },
                 "dateOfBirth": {
-                    "type": "string"
-                },
-                "email": {
                     "type": "string"
                 },
                 "firstName": {
@@ -201,37 +192,10 @@
                 "middleName": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "nationality": {
-                    "type": "string"
-                },
-                "passportnumber": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "string"
-                },
-                "pin": {
-                    "type": "integer"
-                },
-                "placeOfBirth": {
-                    "type": "string"
-                },
                 "roleId": {
                     "type": "integer"
                 },
-                "sessionId": {
-                    "type": "string"
-                },
-                "userType": {
-                    "type": "string"
-                },
                 "username": {
-                    "type": "string"
-                },
-                "valid": {
                     "type": "string"
                 }
             }
@@ -249,8 +213,25 @@
         },
         "auth_dto.SingUp": {
             "type": "object",
+            "required": [
+                "password",
+                "roleId",
+                "username"
+            ],
             "properties": {
-                "name": {
+                "dateOfBirth": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "middleName": {
                     "type": "string"
                 },
                 "password": {

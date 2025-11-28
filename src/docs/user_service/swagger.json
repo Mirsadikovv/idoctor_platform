@@ -71,11 +71,6 @@
                     },
                     {
                         "type": "string",
-                        "name": "pin",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "name": "sort_by",
                         "in": "query"
                     }
@@ -142,11 +137,6 @@
                     {
                         "type": "string",
                         "name": "order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "pin",
                         "in": "query"
                     },
                     {
@@ -316,16 +306,7 @@
         "User": {
             "type": "object",
             "properties": {
-                "citizenship": {
-                    "type": "string"
-                },
-                "countryOfBirth": {
-                    "type": "string"
-                },
                 "dateOfBirth": {
-                    "type": "string"
-                },
-                "email": {
                     "type": "string"
                 },
                 "firstName": {
@@ -346,37 +327,10 @@
                 "middleName": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "nationality": {
-                    "type": "string"
-                },
-                "passportnumber": {
-                    "type": "string"
-                },
-                "photo": {
-                    "type": "string"
-                },
-                "pin": {
-                    "type": "integer"
-                },
-                "placeOfBirth": {
-                    "type": "string"
-                },
                 "roleId": {
                     "type": "integer"
                 },
-                "sessionId": {
-                    "type": "string"
-                },
-                "userType": {
-                    "type": "string"
-                },
                 "username": {
-                    "type": "string"
-                },
-                "valid": {
                     "type": "string"
                 }
             }

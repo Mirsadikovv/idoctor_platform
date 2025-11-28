@@ -30,7 +30,7 @@ func NewAuthHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddl
 	authGroup := group.Group("/auth")
 	{
 		authGroup.POST("/sign-in", handler.SignIn)
-		// authGroup.POST("/sign-up", handler.SignUp)
+		authGroup.POST("/sign-up", handler.SignUp)
 		authGroup.POST("/sign-out", handler.SignOut)
 		authGroup.POST("/me", handler.Me)
 	}

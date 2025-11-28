@@ -109,18 +109,12 @@ func (h *userHandler) Page(ctx echo.Context) error {
 			tx = tx.Where("(users.first_name ILIKE ? OR users.middle_name ILIKE ? OR users.last_name ILIKE ?)", fullname, fullname, fullname)
 		}
 
-		if params.Pin != nil {
-			pin := fmt.Sprintf("%s%%", *params.Pin)
-			tx = tx.Where("users.pin::TEXT ILIKE ?", pin)
-		}
-
 		if params.Gender.Valid() {
 			tx = tx.Where("users.gender = ?", params.Gender.String())
 		}
 
 		allowedSortFields := map[string]string{
 			"id":        "users.id",
-			"pin":       "users.pin",
 			"firstName": "users.first_name",
 			"lastName":  "users.last_name",
 			"createdAt": "users.created_at",
@@ -173,11 +167,6 @@ func (h *userHandler) Search(ctx echo.Context) error {
 			tx = tx.Where("(users.first_name ILIKE ? OR users.middle_name ILIKE ? OR users.last_name ILIKE ?)", fullname, fullname, fullname)
 		}
 
-		if params.Pin != nil {
-			pin := fmt.Sprintf("%s%%", *params.Pin)
-			tx = tx.Where("users.pin::TEXT ILIKE ?", pin)
-		}
-
 		if params.Gender.Valid() {
 			tx = tx.Where("users.gender = ?", params.Gender.String())
 		}
@@ -221,18 +210,17 @@ func (h *userHandler) GetByID(ctx echo.Context) error {
 
 	filter := func(tx *gorm.DB) *gorm.DB {
 		return tx.
-			Joins("LEFT JOIN invitations ON invitations.pin = users.pin").
-			Joins("LEFT JOIN organizations ON organizations.id = invitations.organization_id").
-			Joins("LEFT JOIN roles ON roles.id = invitations.role_id").
+			Joins("LEFT JOIN roles ON roles.id = users.role_id").
+			Joins("LEFT JOIN organizations ON organizations.id = users.organization_id").
 			Select(
 				"users.id AS id",
-				"users.pin",
 				"users.username",
 				"users.first_name",
 				"users.last_name",
 				"users.middle_name",
 				"users.date_of_birth",
 				"users.gender",
+				"users.role_id",
 				"organizations.soato_id AS soato_id",
 				"organizations.id AS org_id",
 				"roles.pages AS pages",

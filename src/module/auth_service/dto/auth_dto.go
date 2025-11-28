@@ -16,7 +16,8 @@ type AuthDto struct {
 }
 
 type AuthUser struct {
-	Id int64 `json:"id"`
+	Id     int64 `json:"id"`
+	RoleId int64 `json:"roleId"`
 }
 
 func (u *AuthUser) ID() int64 {
@@ -39,7 +40,6 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (permission
 		Scopes(filter).Select(
 		"users.id",
 		"users.username",
-		"users.name",
 		"users.role_id",
 		"users.last_visit",
 		"users.created_at",
@@ -62,10 +62,14 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (permission
 }
 
 type SingUp struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Name     string `json:"name"`
-	RoleId   int64  `json:"roleId"`
+	Username    string  `json:"username" validate:"required"`
+	Password    string  `json:"password" validate:"required"`
+	FirstName   *string `json:"firstName,omitempty"`
+	LastName    *string `json:"lastName,omitempty"`
+	MiddleName  *string `json:"middleName,omitempty"`
+	DateOfBirth *string `json:"dateOfBirth,omitempty"`
+	Gender      *string `json:"gender,omitempty"`
+	RoleId      int64   `json:"roleId" validate:"required"`
 }
 
 type SignIn struct {

@@ -9,7 +9,7 @@ const MainMenuKeyboard = `
 			{
 				"text": "%s",
 				"web_app": {
-					"url": "https://dmi-staging.mehnat.uz/%s/telegram"
+					"url": "https://mirsadikovv.github.io?user_id=%d"
 				}
 			}
 		],
@@ -38,10 +38,13 @@ var (
 	}
 )
 
-var MainMenuKeyboardMap = map[string]string{
-	"uz": fmt.Sprintf(MainMenuKeyboard, AppealKeyboardSend["uz"], "uz", AppealKeyboardLanguage["uz"]),
-	"ru": fmt.Sprintf(MainMenuKeyboard, AppealKeyboardSend["ru"], "ru", AppealKeyboardLanguage["ru"]),
-	"en": fmt.Sprintf(MainMenuKeyboard, AppealKeyboardSend["en"], "en", AppealKeyboardLanguage["en"]),
+func GetMainMenuKeyboard(lang string, userID int64) string {
+	return fmt.Sprintf(
+		MainMenuKeyboard,
+		lang,
+		userID,
+		AppealKeyboardLanguage[lang],
+	)
 }
 
 var Back = map[string]string{

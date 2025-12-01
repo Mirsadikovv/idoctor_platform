@@ -11,7 +11,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// send number
 func SendPhoneNumber(bot *tgbotapi.BotAPI, update tgbotapi.Update, db *gorm.DB, lang *utils.LanguageCache) *utils.LanguageCache {
 	if update.Message.Contact != nil && update.Message.Contact.PhoneNumber != "" {
 
@@ -21,9 +20,13 @@ func SendPhoneNumber(bot *tgbotapi.BotAPI, update tgbotapi.Update, db *gorm.DB, 
 			log.Println("Error updating bot user state:", err)
 		}
 
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf(MenuText[lang.Get(update.Message.From.ID)], update.Message.From.ID, update.Message.From.FirstName))
+		userLang := lang.Get(update.Message.From.ID)
+
+		menuKeyboard := keyboard.GetMainMenuKeyboard(userLang, update.Message.From.ID)
+
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf(MenuText[userLang], update.Message.From.ID, update.Message.From.FirstName))
 		msg.ParseMode = "HTML"
-		msg.ReplyMarkup = utils.MakeReplyMarkup(keyboard.MainMenuKeyboardMap[lang.Get(update.Message.From.ID)])
+		msg.ReplyMarkup = utils.MakeReplyMarkup(menuKeyboard)
 		if _, err := bot.Send(msg); err != nil {
 			log.Println("Error sending message:", err)
 		}

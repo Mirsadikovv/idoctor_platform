@@ -10,7 +10,6 @@ import (
 	"fmt"
 
 	keyboard "github.com/Mirsadikovv/idoctor_bot/app/keyboards/defaults"
-	bot_dto "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/dto"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -18,28 +17,37 @@ import (
 
 func Start(bot *tgbotapi.BotAPI, update tgbotapi.Update, cfg *config.Config, db *gorm.DB, lang *utils.LanguageCache) *utils.LanguageCache {
 
-	var botDto bot_dto.BotUserCreate
-	{
+	type TelegramUser struct {
+		TelegramId       int64  `gorm:"column:telegram_id"`
+		TelegramUsername string `gorm:"column:telegram_username"`
+		FirstName        string `gorm:"column:first_name"`
+		LanguageCode     string `gorm:"column:language_code"`
+	}
 
-		{
-			botDto.TelegramId = update.Message.From.ID
-			botDto.Name = update.Message.From.FirstName
-			botDto.Username = update.Message.From.UserName
-			botDto.LanguageCode = update.Message.From.LanguageCode
-		}
+	var user TelegramUser
+	{
+		telegramId := update.Message.From.ID
+		telegramUsername := update.Message.From.UserName
+		firstName := update.Message.From.FirstName
+		languageCode := update.Message.From.LanguageCode
 
 		result := db.
-			Table("bot_users").
-			Where("telegram_id = ?", update.Message.From.ID).
-			FirstOrCreate(&botDto)
+			Table("users").
+			Where("telegram_id = ?", telegramId).
+			FirstOrCreate(&user, TelegramUser{
+				TelegramId:       telegramId,
+				TelegramUsername: telegramUsername,
+				FirstName:        firstName,
+				LanguageCode:     languageCode,
+			})
 
 		if result.Error != nil {
-			log.Println("Error creating bot user:", result.Error)
+			log.Println("Error creating telegram user:", result.Error)
 		}
 
 		if result.RowsAffected == 1 {
 
-			lang.Set(update.Message.From.ID, update.Message.From.LanguageCode)
+			lang.Set(update.Message.From.ID, languageCode)
 
 			for _, idStr := range cfg.AdminIds {
 
@@ -65,8 +73,8 @@ func Start(bot *tgbotapi.BotAPI, update tgbotapi.Update, cfg *config.Config, db 
 				}
 			}
 		} else {
-			if botDto.LanguageCode != "" {
-				lang.Set(update.Message.From.ID, botDto.LanguageCode)
+			if user.LanguageCode != "" {
+				lang.Set(update.Message.From.ID, user.LanguageCode)
 			}
 		}
 	}

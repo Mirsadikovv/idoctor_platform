@@ -133,6 +133,18 @@ func (s *userService) Create(userDto *user_dto.UserCreate) (int64, error) {
 	if userDto.Gender != nil {
 		data["gender"] = *userDto.Gender
 	}
+	if userDto.TelegramId != nil {
+		data["telegram_id"] = *userDto.TelegramId
+	}
+	if userDto.TelegramUsername != nil {
+		data["telegram_username"] = *userDto.TelegramUsername
+	}
+	if userDto.PhoneNumber != nil {
+		data["phone_number"] = *userDto.PhoneNumber
+	}
+	if userDto.LanguageCode != nil {
+		data["language_code"] = *userDto.LanguageCode
+	}
 
 	userModel := &user_model.User{
 		Username: userDto.Username,

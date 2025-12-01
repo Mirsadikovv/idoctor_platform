@@ -41,10 +41,3 @@ type SendMessageRequest struct {
 	TelegramId int64  `json:"telegramId" validate:"required"`
 	Text       string `json:"text" validate:"required"`
 } // @name SendMessageRequest
-
-// SendMessageByStatusRequest закомментирован из-за удаления appeal_service
-// type SendMessageByStatusRequest struct {
-// 	TelegramId     int64
-// 	Status         appeal_model.AppealWorkflowAction
-// 	LatestWorkflow appeal_dto.LatestWorkflow
-// }

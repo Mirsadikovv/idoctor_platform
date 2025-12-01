@@ -3,7 +3,9 @@ package bot_handler
 import (
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 	bot_dto "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/dto"
-	bot_service "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service/service"
+	user_dto "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/dto"
+	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
+	user_service "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/service"
 
 	"github.com/Mirsadikovv/shared/logger"
 	"github.com/Mirsadikovv/shared/request"
@@ -18,7 +20,7 @@ type BotHandler interface {
 type botHandler struct {
 	db             *gorm.DB
 	log            logger.Logger
-	botService     bot_service.BotService
+	userService    user_service.UserService
 	authMiddleware *auth_middleware.AuthMiddleware
 }
 
@@ -27,7 +29,7 @@ func NewBotHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddle
 		db:             db,
 		log:            log,
 		authMiddleware: authMiddleware,
-		botService:     bot_service.NewBotService(db),
+		userService:    user_service.NewUserService(db),
 	}
 
 	botGroup := group.Group("/bot_user")
@@ -65,7 +67,19 @@ func (o *botHandler) Create(ctx echo.Context) error {
 		}
 	}
 
-	id, err := o.botService.Create(ctx, &botDto)
+	// Create user with telegram data
+	userCreate := &user_dto.UserCreate{
+		Username:         botDto.Username,
+		Password:         "default_password", // Or generate random password
+		FirstName:        &botDto.Name,
+		TelegramId:       &botDto.TelegramId,
+		TelegramUsername: &botDto.Username,
+		PhoneNumber:      &botDto.PhoneNumber,
+		LanguageCode:     &botDto.LanguageCode,
+		RoleId:           1, // Default role for bot users
+	}
+
+	id, err := o.userService.Create(userCreate)
 	{
 		if err != nil {
 			return req.BadRequest(err)
@@ -107,12 +121,29 @@ func (o *botHandler) Update(ctx echo.Context) error {
 		}
 	}
 
-	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("bots.id = ?", id)
+	// Update user telegram data
+	updates := make(map[string]interface{})
+
+	if botDto.Name != nil {
+		updates["first_name"] = *botDto.Name
+	}
+	if botDto.TelegramId != nil {
+		updates["telegram_id"] = *botDto.TelegramId
+	}
+	if botDto.Username != nil {
+		updates["telegram_username"] = *botDto.Username
+	}
+	if botDto.PhoneNumber != nil {
+		updates["phone_number"] = *botDto.PhoneNumber
+	}
+	if botDto.LanguageCode != nil {
+		updates["language_code"] = *botDto.LanguageCode
 	}
 
-	if err := o.botService.Update(ctx, &botDto, filter); err != nil {
-		return req.BadRequest(err)
+	if len(updates) > 0 {
+		if err := o.db.Model(&user_model.User{}).Where("id = ?", id).Updates(updates).Error; err != nil {
+			return req.BadRequest(err)
+		}
 	}
 
 	return req.NoContent()
@@ -144,35 +175,59 @@ func (o *botHandler) Page(ctx echo.Context) error {
 		}
 	}
 
-	filter := func(tx *gorm.DB) *gorm.DB {
-
-		if params.Name != nil {
-			tx = tx.Where("bot_users.name ILIKE ?", "%"+*params.Name+"%")
-		}
-
-		if params.PhoneNumber != nil {
-			tx = tx.Where("bot_users.phone_number ILIKE ?", "%"+*params.PhoneNumber+"%")
-		}
-
-		if params.TelegramId != nil {
-			tx = tx.Where("bot_users.telegram_id = ?", *params.TelegramId)
-		}
-
-		if params.Username != nil {
-			tx = tx.Where("bot_users.username ILIKE ?", "%"+*params.Username+"%")
-		}
-
-		return tx.Select("bot_users.*")
+	type BotUserDto struct {
+		Id           int64  `json:"id"`
+		Name         string `json:"name"`
+		TelegramId   int64  `json:"telegramId"`
+		Username     string `json:"username"`
+		PhoneNumber  string `json:"phoneNumber"`
+		LanguageCode string `json:"languageCode"`
 	}
 
-	userPage, err := o.botService.Page(req.Context(), req.NewPaginate(), filter)
-	{
-		if err != nil {
-			return req.BadRequest(err)
-		}
+	tx := o.db.Table("users").Where("telegram_id IS NOT NULL")
+
+	if params.Name != nil {
+		tx = tx.Where("first_name ILIKE ?", "%"+*params.Name+"%")
 	}
 
-	return req.OK(userPage)
+	if params.PhoneNumber != nil {
+		tx = tx.Where("phone_number ILIKE ?", "%"+*params.PhoneNumber+"%")
+	}
+
+	if params.TelegramId != nil {
+		tx = tx.Where("telegram_id = ?", *params.TelegramId)
+	}
+
+	if params.Username != nil {
+		tx = tx.Where("telegram_username ILIKE ?", "%"+*params.Username+"%")
+	}
+
+	var total int64
+	if err := tx.Count(&total).Error; err != nil {
+		return req.BadRequest(err)
+	}
+
+	paginate := req.NewPaginate()
+	tx = tx.Offset(paginate.Offset()).Limit(paginate.Limit())
+
+	var items []BotUserDto
+	if err := tx.Select(
+		"id",
+		"first_name as name",
+		"telegram_id",
+		"telegram_username as username",
+		"phone_number",
+		"language_code",
+	).Find(&items).Error; err != nil {
+		return req.BadRequest(err)
+	}
+
+	result := map[string]interface{}{
+		"data":  items,
+		"total": total,
+	}
+
+	return req.OK(result)
 }
 
 // Search godoc
@@ -200,39 +255,50 @@ func (o *botHandler) Search(ctx echo.Context) error {
 		}
 	}
 
-	filter := func(tx *gorm.DB) *gorm.DB {
-
-		if params.Name != nil {
-			tx = tx.Where("bot_users.name ILIKE ?", "%"+*params.Name+"%")
-		}
-
-		if params.PhoneNumber != nil {
-			tx = tx.Where("bot_users.phone_number ILIKE ?", "%"+*params.PhoneNumber+"%")
-		}
-
-		if params.TelegramId != nil {
-			tx = tx.Where("bot_users.telegram_id = ?", *params.TelegramId)
-		}
-
-		if params.Username != nil {
-			tx = tx.Where("bot_users.username ILIKE ?", "%"+*params.Username+"%")
-		}
-
-		return tx.Select("bot_users.*")
+	type BotUserDto struct {
+		Id           int64  `json:"id"`
+		Name         string `json:"name"`
+		TelegramId   int64  `json:"telegramId"`
+		Username     string `json:"username"`
+		PhoneNumber  string `json:"phoneNumber"`
+		LanguageCode string `json:"languageCode"`
 	}
 
-	bots, err := o.botService.Find(req.Context(), filter)
-	{
-		if err != nil {
-			return req.BadRequest(err)
-		}
+	tx := o.db.Table("users").Where("telegram_id IS NOT NULL")
 
-		if bots == nil {
-			return req.OK([]bot_dto.BotUserDto{})
-		}
+	if params.Name != nil {
+		tx = tx.Where("first_name ILIKE ?", "%"+*params.Name+"%")
 	}
 
-	return req.OK(bots)
+	if params.PhoneNumber != nil {
+		tx = tx.Where("phone_number ILIKE ?", "%"+*params.PhoneNumber+"%")
+	}
+
+	if params.TelegramId != nil {
+		tx = tx.Where("telegram_id = ?", *params.TelegramId)
+	}
+
+	if params.Username != nil {
+		tx = tx.Where("telegram_username ILIKE ?", "%"+*params.Username+"%")
+	}
+
+	var items []BotUserDto
+	if err := tx.Select(
+		"id",
+		"first_name as name",
+		"telegram_id",
+		"telegram_username as username",
+		"phone_number",
+		"language_code",
+	).Limit(20).Find(&items).Error; err != nil {
+		return req.BadRequest(err)
+	}
+
+	if items == nil {
+		items = []BotUserDto{}
+	}
+
+	return req.OK(items)
 }
 
 // GetById godoc
@@ -259,17 +325,27 @@ func (o *botHandler) GetById(ctx echo.Context) error {
 		}
 	}
 
-	filter := func(tx *gorm.DB) *gorm.DB {
-		tx = tx.Where("bot_users.id = ?", id)
-
-		return tx.Select("bot_users.*")
+	type BotUserDto struct {
+		Id           int64  `json:"id"`
+		Name         string `json:"name"`
+		TelegramId   int64  `json:"telegramId"`
+		Username     string `json:"username"`
+		PhoneNumber  string `json:"phoneNumber"`
+		LanguageCode string `json:"languageCode"`
 	}
 
-	user, err := o.botService.FindOne(req.Context(), filter)
-	{
-		if err != nil {
-			return req.BadRequest(err)
-		}
+	var user BotUserDto
+	if err := o.db.Table("users").
+		Where("id = ? AND telegram_id IS NOT NULL", id).
+		Select(
+			"id",
+			"first_name as name",
+			"telegram_id",
+			"telegram_username as username",
+			"phone_number",
+			"language_code",
+		).First(&user).Error; err != nil {
+		return req.BadRequest(err)
 	}
 
 	return req.OK(user)

@@ -141,7 +141,6 @@ func migration(db *gorm.DB) error {
 		&organization_model.OrganizationTranslation{},
 		&organization_model.Invitation{},
 
-		&bot_model.BotUser{},
 		&bot_model.BotMessage{},
 
 		&problem_model.Problem{},

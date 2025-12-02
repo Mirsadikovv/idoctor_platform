@@ -18,8 +18,5 @@ RUN go mod download
 
 COPY . .
 
-ARG HTTP_PORT=80
-EXPOSE ${HTTP_PORT}
-
 # Сборка Go-приложения
 RUN go build -ldflags "-s -w" -o main .

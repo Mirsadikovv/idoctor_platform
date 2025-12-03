@@ -21,6 +21,7 @@ type UserService interface {
 	FindOne(ctx context.Context, filter pg.Filter) (*user_dto.User, error)
 	DeleteOrRestore(ctx echo.Context, filter pg.Filter) error
 	Create(userDto *user_dto.UserCreate) (int64, error)
+	Update(ctx echo.Context, id int64, userDto *user_dto.UserUpdate) error
 }
 
 type userService struct {
@@ -158,4 +159,37 @@ func (s *userService) Create(userDto *user_dto.UserCreate) (int64, error) {
 	}
 
 	return userModel.Id, nil
+}
+
+func (s *userService) Update(ctx echo.Context, id int64, userDto *user_dto.UserUpdate) error {
+	data := make(map[string]any)
+
+	// Добавляем только те поля, которые были переданы
+	if userDto.Username != nil {
+		data["username"] = *userDto.Username
+	}
+	if userDto.Password != nil {
+		data["password"] = gorm.Expr("HASH_MAKE(?)", *userDto.Password)
+	}
+
+	// Если нет данных для обновления, возвращаем ошибку
+	if len(data) == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	// Обновляем пользователя
+	result := s.db.WithContext(ctx.Request().Context()).
+		Table("users").
+		Where("id = ?", id).
+		Updates(data)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	return nil
 }

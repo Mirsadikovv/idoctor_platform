@@ -183,6 +183,9 @@
                 "id": {
                     "type": "integer"
                 },
+                "languageCode": {
+                    "type": "string"
+                },
                 "lastName": {
                     "type": "string"
                 },
@@ -192,8 +195,17 @@
                 "middleName": {
                     "type": "string"
                 },
+                "phoneNumber": {
+                    "type": "string"
+                },
                 "roleId": {
                     "type": "integer"
+                },
+                "telegramId": {
+                    "type": "integer"
+                },
+                "telegramUsername": {
+                    "type": "string"
                 },
                 "username": {
                     "type": "string"

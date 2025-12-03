@@ -38,7 +38,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_dto.UserCreate"
+                            "$ref": "#/definitions/UserCreate"
                         }
                     }
                 ],
@@ -301,6 +301,60 @@
                         "schema": {}
                     }
                 }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update username and/or password for a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Update user credentials",
+                "operationId": "update-user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User credentials to update",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
             }
         },
         "/user/{id}/restore": {
@@ -364,6 +418,9 @@
                 "id": {
                     "type": "integer"
                 },
+                "languageCode": {
+                    "type": "string"
+                },
                 "lastName": {
                     "type": "string"
                 },
@@ -373,26 +430,24 @@
                 "middleName": {
                     "type": "string"
                 },
+                "phoneNumber": {
+                    "type": "string"
+                },
                 "roleId": {
                     "type": "integer"
+                },
+                "telegramId": {
+                    "type": "integer"
+                },
+                "telegramUsername": {
+                    "type": "string"
                 },
                 "username": {
                     "type": "string"
                 }
             }
         },
-        "user_dto.Gender": {
-            "type": "string",
-            "enum": [
-                "male",
-                "female"
-            ],
-            "x-enum-varnames": [
-                "Male",
-                "Female"
-            ]
-        },
-        "user_dto.UserCreate": {
+        "UserCreate": {
             "type": "object",
             "required": [
                 "password",
@@ -409,6 +464,9 @@
                 "gender": {
                     "type": "string"
                 },
+                "languageCode": {
+                    "type": "string"
+                },
                 "lastName": {
                     "type": "string"
                 },
@@ -418,13 +476,44 @@
                 "password": {
                     "type": "string"
                 },
+                "phoneNumber": {
+                    "type": "string"
+                },
                 "roleId": {
                     "type": "integer"
+                },
+                "telegramId": {
+                    "type": "integer"
+                },
+                "telegramUsername": {
+                    "type": "string"
                 },
                 "username": {
                     "type": "string"
                 }
             }
+        },
+        "UserUpdate": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_dto.Gender": {
+            "type": "string",
+            "enum": [
+                "male",
+                "female"
+            ],
+            "x-enum-varnames": [
+                "Male",
+                "Female"
+            ]
         }
     },
     "securityDefinitions": {

@@ -38,6 +38,7 @@ func NewUserHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddl
 		userGroup.GET("/page", handler.Page)
 		userGroup.GET("/search", handler.Search)
 		userGroup.GET("/:id", handler.GetByID)
+		userGroup.PATCH("/:id", handler.Update)
 		userGroup.DELETE("/:id", handler.Delete)
 		userGroup.PATCH("/:id/restore", handler.Restore)
 	}
@@ -270,6 +271,46 @@ func (h *userHandler) GetByID(ctx echo.Context) error {
 	}
 
 	return req.OK(user)
+}
+
+// Update godoc
+// @Summary      Update user credentials
+// @Description  Update username and/or password for a user
+// @Tags 		 user
+// @ID           update-user
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        id path int true "User ID"
+// @Param        user body user_dto.UserUpdate true "User credentials to update"
+// @Success      204 "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      404 {object} response.HttpSuccess "User not found"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /user/{id} [patch]
+func (h *userHandler) Update(ctx echo.Context) error {
+
+	req := request.Request(ctx)
+
+	id, err := req.ParamToInt("id")
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	var userUpdate user_dto.UserUpdate
+	{
+		if err := req.BindBody(&userUpdate); err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	if err := h.userService.Update(ctx, id, &userUpdate); err != nil {
+		return req.BadRequest(err)
+	}
+
+	return req.NoContent()
 }
 
 // Restore godoc

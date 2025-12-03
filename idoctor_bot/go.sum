@@ -1,5 +1,3 @@
-github.com/Mirsadikovv/idoctor_platform v0.0.0-20251023121242-427c98d78437 h1:D12GdEvQJgE8ycJ4Yude/w3KdrZdST9sqs+x0JPUVhk=
-github.com/Mirsadikovv/idoctor_platform v0.0.0-20251023121242-427c98d78437/go.mod h1:+NPuYZGDO+ZYF0eZlz6ERp8YelVQaWnpkSaF71+Ylf0=
 github.com/Mirsadikovv/shared v0.0.0-20250811121934-145ab4ca2012 h1:UTsYYtyCTzA29V1yWxmhF+qVK5edbP9mO0rPQBmRD6k=
 github.com/Mirsadikovv/shared v0.0.0-20250811121934-145ab4ca2012/go.mod h1:u2Mx6ECLZSbj+8gKdMIBSlfy2XFmjMQuJX4qE+1UnDE=
 github.com/caarlos0/env/v11 v11.3.1 h1:cArPWC15hWmEt+gWk7YBi7lEXTXCvpaSdCiZE2X5mCA=

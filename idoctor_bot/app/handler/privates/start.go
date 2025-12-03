@@ -13,14 +13,27 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
+
+func clauseOnConflict() clause.OnConflict {
+	return clause.OnConflict{
+		Columns: []clause.Column{{Name: "telegram_id"}},
+		DoUpdates: clause.Assignments(map[string]any{
+			"telegram_id":       gorm.Expr("excluded.telegram_id"),
+			"telegram_username": gorm.Expr("excluded.telegram_username"),
+			"telegram_name":     gorm.Expr("excluded.telegram_name"),
+			"language_code":     gorm.Expr("excluded.language_code"),
+		}),
+	}
+}
 
 func Start(bot *tgbotapi.BotAPI, update tgbotapi.Update, cfg *config.Config, db *gorm.DB, lang *utils.LanguageCache) *utils.LanguageCache {
 
 	type TelegramUser struct {
 		TelegramId       int64  `gorm:"column:telegram_id"`
 		TelegramUsername string `gorm:"column:telegram_username"`
-		FirstName        string `gorm:"column:first_name"`
+		TelegramName     string `gorm:"column:telegram_name"`
 		LanguageCode     string `gorm:"column:language_code"`
 	}
 
@@ -28,25 +41,36 @@ func Start(bot *tgbotapi.BotAPI, update tgbotapi.Update, cfg *config.Config, db 
 	{
 		telegramId := update.Message.From.ID
 		telegramUsername := update.Message.From.UserName
-		firstName := update.Message.From.FirstName
+		telegramName := update.Message.From.FirstName
 		languageCode := update.Message.From.LanguageCode
 
-		result := db.
-			Table("users").
-			Where("telegram_id = ?", telegramId).
-			FirstOrCreate(&user, TelegramUser{
-				TelegramId:       telegramId,
-				TelegramUsername: telegramUsername,
-				FirstName:        firstName,
-				LanguageCode:     languageCode,
-			})
+		// result := db.
+		// 	Table("users").
+		// 	Where("telegram_id = ?", telegramId).
+		// 	FirstOrCreate(&user, TelegramUser{
+		// 		TelegramId:       telegramId,
+		// 		TelegramUsername: telegramUsername,
+		// 		FirstName:        firstName,
+		// 		LanguageCode:     languageCode,
+		// 	})
 
-		if result.Error != nil {
-			log.Println("Error creating telegram user:", result.Error)
+		newUser := TelegramUser{
+			TelegramId:       telegramId,
+			TelegramUsername: telegramUsername,
+			TelegramName:     telegramName,
+			LanguageCode:     languageCode,
+		}
+
+		result := db.Table("users").
+			Clauses(clauseOnConflict()).
+			Create(&newUser)
+		{
+			if result.Error != nil {
+				log.Println("Error creating telegram user:", result.Error)
+			}
 		}
 
 		if result.RowsAffected == 1 {
-
 			lang.Set(update.Message.From.ID, languageCode)
 
 			for _, idStr := range cfg.AdminIds {

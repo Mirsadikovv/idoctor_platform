@@ -6,7 +6,7 @@ import (
 
 type User struct {
 	Id               int64      `json:"id" gorm:"primaryKey"`
-	Username         string     `json:"username" gorm:"column:username;not null"`
+	Username         string     `json:"username" gorm:"column:username"`
 	Password         string     `json:"-" gorm:"column:password"`
 	FirstName        string     `json:"firstName" gorm:"column:first_name"`
 	LastName         string     `json:"lastName" gorm:"column:last_name"`
@@ -15,6 +15,7 @@ type User struct {
 	Gender           string     `json:"gender" gorm:"column:gender"`
 	RoleId           int64      `json:"roleId" gorm:"column:role_id"`
 	OrganizationId   int64      `json:"organizationId" gorm:"column:organization_id"`
+	TelegramName     *string    `json:"telegramName,omitempty" gorm:"column:telegram_name"`
 	TelegramId       *int64     `json:"telegramId,omitempty" gorm:"column:telegram_id;unique"`
 	TelegramUsername *string    `json:"telegramUsername,omitempty" gorm:"column:telegram_username"`
 	PhoneNumber      *string    `json:"phoneNumber,omitempty" gorm:"column:phone_number"`

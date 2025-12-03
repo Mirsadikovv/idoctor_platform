@@ -3,7 +3,6 @@ module github.com/Mirsadikovv/idoctor_bot
 go 1.25.3
 
 require (
-	github.com/Mirsadikovv/idoctor_platform v0.0.0-20251023121242-427c98d78437
 	github.com/Mirsadikovv/shared v0.0.0-20250811121934-145ab4ca2012
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/joho/godotenv v1.5.1

@@ -76,7 +76,7 @@ services:
       - "traefik.http.routers.platform-idoctor-app.rule=Host(`api.tvgo.uz`)"
       - "traefik.http.routers.platform-idoctor-app.service=platform-idoctor-app"
       - "traefik.http.routers.platform-idoctor-app.entrypoints=websecure"
-      - "traefik.http.services.platform-idoctor-app.loadbalancer.server.port=${HTTP_PORT}"
+      - "traefik.http.services.platform-idoctor-app.loadbalancer.server.port=80"
       - "traefik.http.routers.platform-idoctor-app.tls=true"
       - "traefik.http.routers.platform-idoctor-app.tls.certresolver=letsencrypt"
       - "traefik.http.services.platform-idoctor-app.loadbalancer.passhostheader=true"

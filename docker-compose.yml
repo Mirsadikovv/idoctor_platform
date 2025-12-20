@@ -5,9 +5,11 @@ networks:
 services:
 
   traefik:
-    image: traefik:v3.0
+    image: traefik:v3.2
     container_name: traefik
     restart: always
+    environment:
+      - DOCKER_API_VERSION=1.44
     command:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"

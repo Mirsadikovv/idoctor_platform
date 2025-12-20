@@ -120,6 +120,9 @@ func Exec(env *Env) {
 	user_cmd.Cmd(router, db, log, authMiddleware)
 
 	router.GET("/swagger/dir", swaggerDirs())
+	router.GET("/swagger", func(c echo.Context) error {
+		return c.Redirect(301, "/swagger/")
+	})
 	router.GET("/swagger/*", swaggerHandler())
 
 	createOrg(db, router)

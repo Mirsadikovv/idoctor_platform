@@ -71,6 +71,18 @@ services:
     #   - "traefik.http.routers.platform-idoctor-app.entrypoints=web"
     #   - "traefik.http.services.platform-idoctor-app.loadbalancer.server.port=80"
     #   - "traefik.docker.network=traefik-network"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.platform-idoctor-app.rule=Host(`api.tvgo.uz`)"
+      - "traefik.http.routers.platform-idoctor-app.service=platform-idoctor-app"
+      - "traefik.http.routers.platform-idoctor-app.entrypoints=websecure"
+      - "traefik.http.services.platform-idoctor-app.loadbalancer.server.port=${HTTP_PORT}"
+      - "traefik.http.routers.platform-idoctor-app.tls=true"
+      - "traefik.http.routers.platform-idoctor-app.tls.certresolver=letsencrypt"
+      - "traefik.http.services.platform-idoctor-app.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.platform-idoctor-app.middlewares=compresstraefik"
+      - "traefik.http.middlewares.compresstraefik.compress=true"
+      - "traefik.docker.network=traefik-network"
     networks:
       - stack
     depends_on:

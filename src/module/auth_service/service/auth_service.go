@@ -2,6 +2,7 @@ package auth_service
 
 import (
 	"context"
+	"log"
 
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
@@ -130,17 +131,21 @@ func (a *authService) SignInTelegram(ctx context.Context, telegramId *int64) (*a
 			"roles.name as role",
 		).Joins("INNER JOIN roles ON roles.id = users.role_id").
 			Where("users.telegram_id = ?", *telegramId).
-			Where("users.blocked_at IS NULL")
+			Where("users.blocked_at IS NULL").
+			Order("users.last_visit DESC")
 	}
 
-	var result struct {
-		Role string `json:"role"`
-	}
+	var result auth_dto.UserRole
 
-	err := a.db.Table("users").Scopes(filter).First(&result).Error
+	err := a.db.
+		Table("users").
+		Scopes(filter).
+		Scan(&result).Error
+
+	log.Println("result", result)
 	if err != nil {
 		// Если пользователь не найден, возвращаем "user"
-		if err == gorm.ErrRecordNotFound {
+		if err == gorm.ErrRecordNotFound || result.Role == "" {
 			return &auth_dto.TelegramRole{
 				Role: "user",
 			}, nil

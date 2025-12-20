@@ -84,3 +84,7 @@ type Token struct {
 type TelegramRole struct {
 	Role string `json:"role"`
 }
+
+type UserRole struct {
+	Role string `gorm:"column:role"`
+}

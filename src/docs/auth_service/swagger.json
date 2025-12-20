@@ -92,6 +92,46 @@
                 }
             }
         },
+        "/auth/sign-in-telegram": {
+            "post": {
+                "description": "sign in with telegram",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "sign in with telegram",
+                "operationId": "sign-in-telegram",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Telegram ID",
+                        "name": "telegram_id",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/auth_dto.TelegramRole"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/auth/sign-out": {
             "post": {
                 "security": [
@@ -253,6 +293,14 @@
                     "type": "integer"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "auth_dto.TelegramRole": {
+            "type": "object",
+            "properties": {
+                "role": {
                     "type": "string"
                 }
             }

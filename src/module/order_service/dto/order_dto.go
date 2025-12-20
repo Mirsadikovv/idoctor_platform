@@ -45,13 +45,13 @@ type Order struct {
 } // @Name Order
 
 type OrderParams struct {
-	ClientID       *int64  `query:"client_id" json:"client_id"`
-	MasterID       *int64  `query:"master_id" json:"master_id"`
-	Status         *string `query:"status" json:"status"`
-	PaymentType    *string `query:"payment_type" json:"payment_type"`
-	PaymentStatus  *string `query:"payment_status" json:"payment_status"`
+	ClientID       *int64   `query:"client_id" json:"client_id"`
+	MasterID       *int64   `query:"master_id" json:"master_id"`
+	Status         *string  `query:"status" json:"status"`
+	PaymentType    *string  `query:"payment_type" json:"payment_type"`
+	PaymentStatus  *string  `query:"payment_status" json:"payment_status"`
 	MinPrice       *float64 `query:"min_price" json:"min_price"`
 	MaxPrice       *float64 `query:"max_price" json:"max_price"`
-	IncludeDeleted *bool   `query:"include_deleted" json:"include_deleted"`
-	OnlyDeleted    *bool   `query:"only_deleted" json:"only_deleted"`
+	IncludeDeleted *bool    `query:"include_deleted" json:"include_deleted"`
+	OnlyDeleted    *bool    `query:"only_deleted" json:"only_deleted"`
 } // @Name OrderParams

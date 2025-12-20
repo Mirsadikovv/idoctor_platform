@@ -61,7 +61,6 @@ func (s *userService) FindOne(ctx context.Context, filter pg.Filter) (*user_dto.
 	return pg.FindOneWithScan[user_model.User, user_dto.User](s.db, filter)
 }
 
-
 func clauseOnConflict() clause.OnConflict {
 	return clause.OnConflict{
 		Columns: []clause.Column{{Name: "username"}},

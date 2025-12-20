@@ -24,7 +24,7 @@ type Supplier struct {
 } // @Name Supplier
 
 type SupplierParams struct {
-	Name              *string `query:"name" json:"name"`
-	IncludeDeleted    *bool   `query:"include_deleted" json:"include_deleted"`
-	OnlyDeleted       *bool   `query:"only_deleted" json:"only_deleted"`
+	Name           *string `query:"name" json:"name"`
+	IncludeDeleted *bool   `query:"include_deleted" json:"include_deleted"`
+	OnlyDeleted    *bool   `query:"only_deleted" json:"only_deleted"`
 } // @Name SupplierParams

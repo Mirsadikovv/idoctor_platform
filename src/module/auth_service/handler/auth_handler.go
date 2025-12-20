@@ -1,6 +1,8 @@
 package auth_handler
 
 import (
+	"fmt"
+
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 	auth_service "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/service"
@@ -33,6 +35,7 @@ func NewAuthHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddl
 		authGroup.POST("/sign-up", handler.SignUp)
 		authGroup.POST("/sign-out", handler.SignOut)
 		authGroup.POST("/me", handler.Me)
+		authGroup.POST("/sign-in-telegram", handler.SignInTelegram)
 	}
 }
 
@@ -150,4 +153,47 @@ func (a *authHandler) Me(ctx echo.Context) error {
 	}
 
 	return req.OK(user)
+}
+
+// Create godoc
+// @Summary      sign in with telegram
+// @Description  sign in with telegram
+// @Tags 		 auth
+// @ID           sign-in-telegram
+// @Accept       json
+// @Produce      json
+// @Param        telegram_id header int false "Telegram ID"
+// @Success      200 {object} auth_dto.TelegramRole "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /auth/sign-in-telegram [post]
+func (a *authHandler) SignInTelegram(ctx echo.Context) error {
+
+	req := request.Request(ctx)
+	a.log.Info("SignInTelegram\n")
+
+	// Получаем telegram_id из header
+	telegramIdHeader := ctx.Request().Header.Get("telegram_id")
+
+	var telegramId *int64
+	if telegramIdHeader != "" {
+		// Парсим telegram_id из строки в int64
+		var id int64
+		_, err := fmt.Sscanf(telegramIdHeader, "%d", &id)
+		if err != nil {
+			a.log.Error(err)
+			return req.BadRequest(err)
+		}
+		telegramId = &id
+	}
+
+	role, err := a.authService.SignInTelegram(req.Context(), telegramId)
+	{
+		if err != nil {
+			a.log.Error(err)
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(role)
 }

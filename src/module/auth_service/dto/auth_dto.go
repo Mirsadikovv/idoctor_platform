@@ -80,3 +80,11 @@ type SignIn struct {
 type Token struct {
 	Token string `json:"token"`
 }
+
+type TelegramRole struct {
+	Role string `json:"role"`
+}
+
+type UserRole struct {
+	Role string `gorm:"column:role"`
+}

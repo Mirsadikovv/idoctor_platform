@@ -2,6 +2,7 @@ package auth_service
 
 import (
 	"context"
+	"log"
 
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
@@ -17,6 +18,7 @@ type AuthService interface {
 	SignIn(signIn *auth_dto.SignIn) (*auth_dto.Token, error)
 	SignUp(signUp *auth_dto.SingUp) error
 	Me(ctx context.Context, token string) (*user_dto.User, error)
+	SignInTelegram(ctx context.Context, telegramId *int64) (*auth_dto.TelegramRole, error)
 }
 
 type authService struct {
@@ -112,4 +114,46 @@ func (a *authService) Me(ctx context.Context, token string) (*user_dto.User, err
 	}
 
 	return a.userService.FindOne(ctx, filter)
+}
+
+func (a *authService) SignInTelegram(ctx context.Context, telegramId *int64) (*auth_dto.TelegramRole, error) {
+
+	// Если telegram_id не указан, возвращаем роль "user"
+	if telegramId == nil {
+		return &auth_dto.TelegramRole{
+			Role: "user",
+		}, nil
+	}
+
+	// Ищем пользователя по telegram_id и получаем его роль
+	filter := func(tx *gorm.DB) *gorm.DB {
+		return tx.Select(
+			"roles.name as role",
+		).Joins("INNER JOIN roles ON roles.id = users.role_id").
+			Where("users.telegram_id = ?", *telegramId).
+			Where("users.blocked_at IS NULL").
+			Order("users.last_visit DESC")
+	}
+
+	var result auth_dto.UserRole
+
+	err := a.db.
+		Table("users").
+		Scopes(filter).
+		Scan(&result).Error
+
+	log.Println("result", result)
+	if err != nil {
+		// Если пользователь не найден, возвращаем "user"
+		if err == gorm.ErrRecordNotFound || result.Role == "" {
+			return &auth_dto.TelegramRole{
+				Role: "user",
+			}, nil
+		}
+		return nil, err
+	}
+
+	return &auth_dto.TelegramRole{
+		Role: result.Role,
+	}, nil
 }

@@ -41,8 +41,8 @@ services:
         - HTTP_PORT=${HTTP_PORT}
     restart: always
     working_dir: "/app"
-    ports:
-      - "${HTTP_PORT}:${HTTP_PORT}"
+    # ports:
+    #   - "${HTTP_PORT}:${HTTP_PORT}"
     volumes:
       - /srv/platform_idoctor/docker/app/files:/app/files
     environment:

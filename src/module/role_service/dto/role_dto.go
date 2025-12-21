@@ -12,7 +12,6 @@ type Permission struct {
 } // @Name Permission
 
 type RoleCreate struct {
-	ID          int64                 `json:"id"`
 	Name        string                `json:"name"`
 	Description string                `json:"description"`
 	Pages       sharedutil.JsonObject `json:"pages"`

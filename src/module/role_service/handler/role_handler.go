@@ -38,7 +38,7 @@ func NewRoleHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMiddl
 		roleGroup.GET("/:id", handler.FindByID)
 		roleGroup.GET("/search", handler.Search)
 		roleGroup.GET("/page", handler.Page)
-		roleGroup.PUT("", handler.CreateOrUpdate)
+		roleGroup.POST("", handler.Create)
 		roleGroup.PATCH("/:id", handler.Update)
 		roleGroup.PATCH("/:id/restore", handler.Restore)
 		roleGroup.DELETE("/:id", handler.Delete)
@@ -282,10 +282,10 @@ func (h *roleHandler) FindByID(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary      role
-// @Description  role
+// @Summary      Create role
+// @Description  Create a new role
 // @Tags 		 role
-// @ID           create-or-update-role
+// @ID           create-role
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
@@ -293,8 +293,8 @@ func (h *roleHandler) FindByID(c echo.Context) error {
 // @Success      201 {object} response.ID64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
-// @Router       /role [PUT]
-func (h *roleHandler) CreateOrUpdate(c echo.Context) error {
+// @Router       /role [POST]
+func (h *roleHandler) Create(c echo.Context) error {
 
 	req := request.Request(c)
 
@@ -305,7 +305,7 @@ func (h *roleHandler) CreateOrUpdate(c echo.Context) error {
 		}
 	}
 
-	id, err := h.roleService.CreateOrUpdate(c.Request().Context(), &roleDto)
+	id, err := h.roleService.Create(c.Request().Context(), &roleDto)
 	{
 		if err != nil {
 			return req.BadRequest(err)

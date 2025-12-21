@@ -15,7 +15,7 @@ type RoleService interface {
 	Page(ctx context.Context, paginate *request.Paginate, filter pg.Filter) (*role_dto.RolePage, error)
 	Find(ctx context.Context, filter pg.Filter) ([]role_dto.Role, error)
 	FindOne(ctx context.Context, filter pg.Filter) (*role_dto.Role, error)
-	CreateOrUpdate(ctx context.Context, roleDto *role_dto.RoleCreate) (int64, error)
+	Create(ctx context.Context, roleDto *role_dto.RoleCreate) (int64, error)
 }
 
 type roleService struct {
@@ -40,7 +40,7 @@ func (r *roleService) Page(ctx context.Context, paginate *request.Paginate, filt
 	return pg.PageWithScan[role_model.Role, role_dto.Role](r.db.WithContext(ctx), paginate, filter)
 }
 
-func (r *roleService) CreateOrUpdate(ctx context.Context, roleDto *role_dto.RoleCreate) (int64, error) {
+func (r *roleService) Create(ctx context.Context, roleDto *role_dto.RoleCreate) (int64, error) {
 
 	roleModel := &role_model.Role{
 		Name:        roleDto.Name,
@@ -49,21 +49,9 @@ func (r *roleService) CreateOrUpdate(ctx context.Context, roleDto *role_dto.Role
 		Permissions: roleDto.Permissions,
 	}
 
-	if roleDto.ID == 0 {
-		if err := pg.Create(r.db.WithContext(ctx), roleModel, "id"); err != nil {
-			return 0, err
-		}
-
-		return roleModel.ID, nil
-	}
-
-	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("id = ?", roleDto.ID)
-	}
-
-	if _, err := pg.Update[role_model.Role](r.db.WithContext(ctx), roleModel, filter, "id"); err != nil {
+	if err := pg.Create(r.db.WithContext(ctx), roleModel, "id"); err != nil {
 		return 0, err
 	}
 
-	return roleDto.ID, nil
+	return roleModel.ID, nil
 }

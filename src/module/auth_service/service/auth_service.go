@@ -140,7 +140,7 @@ func (a *authService) SignInTelegram(ctx context.Context, telegramId *int64) (*a
 	err := a.db.
 		Table("users").
 		Scopes(filter).
-		Scan(&result).Error
+		Take(&result).Error
 
 	log.Println("result", result)
 	if err != nil {

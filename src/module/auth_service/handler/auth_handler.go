@@ -174,7 +174,6 @@ func (a *authHandler) SignInTelegram(ctx echo.Context) error {
 
 	// Получаем telegram_id из header
 	telegramIdHeader := ctx.Request().Header.Get("telegram_id")
-
 	var telegramId *int64
 	if telegramIdHeader != "" {
 		// Парсим telegram_id из строки в int64
@@ -186,7 +185,6 @@ func (a *authHandler) SignInTelegram(ctx echo.Context) error {
 		}
 		telegramId = &id
 	}
-
 	role, err := a.authService.SignInTelegram(req.Context(), telegramId)
 	{
 		if err != nil {

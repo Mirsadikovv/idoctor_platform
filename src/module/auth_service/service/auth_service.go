@@ -118,42 +118,87 @@ func (a *authService) Me(ctx context.Context, token string) (*user_dto.User, err
 
 func (a *authService) SignInTelegram(ctx context.Context, telegramId *int64) (*auth_dto.TelegramRole, error) {
 
-	// Если telegram_id не указан, возвращаем роль "user"
+	// Если telegram_id не указан, возвращаем роль "user" с токеном role_id = 0
 	if telegramId == nil {
+		authUser := auth_dto.AuthUser{
+			Id:     0,
+			RoleId: 0,
+		}
+
+		token, err := a.authMiddleware.Token(&authUser)
+		if err != nil {
+			return nil, err
+		}
+
 		return &auth_dto.TelegramRole{
-			Role: "user",
+			Role:  "user",
+			Token: token,
 		}, nil
 	}
 
-	// Ищем пользователя по telegram_id и получаем его роль
+	// Ищем пользователя по telegram_id и получаем его роль и id
 	filter := func(tx *gorm.DB) *gorm.DB {
 		return tx.Select(
+			"users.id",
+			"users.role_id",
 			"roles.name as role",
-		).Joins("INNER JOIN roles ON roles.id = users.role_id").
+		).Joins("LEFT JOIN roles ON roles.id = users.role_id").
 			Where("users.telegram_id = ?", *telegramId).
 			Where("users.blocked_at IS NULL").
 			Order("users.last_visit DESC")
 	}
 
-	var result auth_dto.UserRole
+	var result struct {
+		Id     int64  `gorm:"column:id"`
+		RoleId int64  `gorm:"column:role_id"`
+		Role   string `gorm:"column:role"`
+	}
 
 	err := a.db.
 		Table("users").
 		Scopes(filter).
 		Take(&result).Error
 
-	log.Println("result", result)
 	if err != nil {
-		// Если пользователь не найден, возвращаем "user"
-		if err == gorm.ErrRecordNotFound || result.Role == "" {
-			return &auth_dto.TelegramRole{
-				Role: "user",
-			}, nil
+		return nil, err
+	}
+
+	log.Println("result", result)
+	log.Println(result.RoleId)
+	if err == gorm.ErrRecordNotFound || result.Role == "" || result.RoleId == 0 {
+		authUser := auth_dto.AuthUser{
+			Id:     result.Id,
+			RoleId: 0,
 		}
+
+		token, err := a.authMiddleware.Token(&authUser)
+		if err != nil {
+			return nil, err
+		}
+
+		return &auth_dto.TelegramRole{
+			Role:  "user",
+			Token: token,
+		}, nil
+	}
+
+	// Обновляем last_visit
+	lastVisit := map[string]any{"last_visit": gorm.Expr("CURRENT_TIMESTAMP")}
+	a.db.Table("users").Where("id = ?", result.Id).Updates(lastVisit)
+
+	// Генерируем токен
+	authUser := auth_dto.AuthUser{
+		Id:     result.Id,
+		RoleId: result.RoleId,
+	}
+
+	token, err := a.authMiddleware.Token(&authUser)
+	if err != nil {
 		return nil, err
 	}
 
 	return &auth_dto.TelegramRole{
-		Role: result.Role,
+		Role:  result.Role,
+		Token: token,
 	}, nil
 }

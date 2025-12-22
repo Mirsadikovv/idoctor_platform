@@ -42,7 +42,6 @@ import (
 	"github.com/Mirsadikovv/shared/swagger"
 	"github.com/labstack/echo/v4"
 	echo_middleware "github.com/labstack/echo/v4/middleware"
-	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
 
@@ -202,44 +201,6 @@ func createOrg(db *gorm.DB, r *echo.Echo) {
 		Description: "Admin",
 		Permissions: routers,
 	})
-}
-
-func createOrg_(db *gorm.DB) {
-
-	db.Where("1 = 1").Delete(&organization_model.Organization{})
-	db.Where("1 = 1").Delete(&organization_model.Invitation{})
-
-	org := organization_model.Organization{
-		SoatoId: 17,
-		OrgRoles: pq.Int64Array{
-			1,
-		},
-		ReviewRoleId: 1,
-		ParentId:     0,
-		Id:           1,
-	}
-
-	fmt.Println(db.Create(&org).Error)
-
-	db.Create(&role_model.Role{
-		ID:          1,
-		Name:        "Admin",
-		Description: "Admin",
-		Pages: sharedutil.JsonObject{
-			"ADMINISTRATION_PAGE": []string{"GET", "POST", "PATCH", "DELETE"},
-			"BUTCHERY_PAGE":       []string{"GET", "POST", "PATCH", "DELETE"},
-			"BUTCHER_CREATE":      []string{"GET", "POST", "PATCH", "DELETE"},
-			"BUTCHER_DELETE":      []string{"GET", "POST", "PATCH", "DELETE"},
-		},
-	})
-
-	invitation := organization_model.Invitation{
-		OrganizationId: org.Id,
-		Pin:            52605046520045,
-		RoleId:         1,
-	}
-
-	fmt.Println(db.Create(&invitation).Error)
 }
 
 //go:embed docs

@@ -82,7 +82,8 @@ type Token struct {
 }
 
 type TelegramRole struct {
-	Role string `json:"role"`
+	Role  string `json:"role"`
+	Token string `json:"token"`
 }
 
 type UserRole struct {

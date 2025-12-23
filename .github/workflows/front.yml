@@ -11,6 +11,10 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+            - name: Ensure stack network exists
+              run: |
+                docker network inspect stack >/dev/null 2>&1 || docker network create stack
+
             - name: docker build
               env:
                   APP_TITLE: ${{vars.DEV_APP_TITLE}}
@@ -21,7 +25,5 @@ jobs:
               run: |
                 cd idoctor_front && docker compose --project-name idoctor_platform up --build --force-recreate --remove-orphans -d
                 cd ..
-                sleep 4
-                pwd
                 sleep 2
                 docker ps -a

@@ -19,4 +19,4 @@ jobs:
                   API_URL: ${{vars.DEV_API_URL}}
 
               run: |
-                cd idoctor_front && docker-compose up --build --force-recreate --remove-orphans -d
+                cd idoctor_front && docker compose up --build --force-recreate --remove-orphans -d

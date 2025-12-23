@@ -1,6 +1,6 @@
-networks:
-    stack:
-        external: true
+# networks:
+#     stack:
+#         external: true
 
 services:
     idoctor_dev_dashboard:
@@ -14,17 +14,17 @@ services:
                 VITE_LANG_NAME: ${LANG_NAME}
                 VITE_API_URL: ${API_URL}
 
-        networks:
-            - stack
+        # networks:
+        #     - stack
         environment:
             VITE_APP_TITLE: ${APP_TITLE}
             VITE_TOKEN_NAME: ${TOKEN_NAME}
             VITE_LANG_NAME: ${LANG_NAME}
             VITE_API_URL: ${API_URL}
 
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.idoctor_dev_dashboard.rule=Host(`tvgo.uz`)"
-            - "traefik.http.routers.idoctor_dev_dashboard.entrypoints=web"
-            - "traefik.http.services.idoctor_dev_dashboard.loadbalancer.server.port=5173"
-            - "traefik.docker.network=stack"
+        # labels:
+        #     - "traefik.enable=true"
+        #     - "traefik.http.routers.idoctor_dev_dashboard.rule=Host(`tvgo.uz`)"
+        #     - "traefik.http.routers.idoctor_dev_dashboard.entrypoints=web"
+        #     - "traefik.http.services.idoctor_dev_dashboard.loadbalancer.server.port=5173"
+        #     - "traefik.docker.network=stack"

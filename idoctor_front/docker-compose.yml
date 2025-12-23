@@ -1,6 +1,6 @@
-# networks:
-#     traefik-network:
-#         external: true
+networks:
+    stack:
+        external: true
 
 services:
     idoctor_dev_dashboard:

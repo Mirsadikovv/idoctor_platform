@@ -7,10 +7,14 @@ on:
 
 jobs:
     build:
-        runs-on: [ubuntu-latest]
+        runs-on: self-hosted
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+            - name: Ensure stack network exists
+              run: |
+                docker network inspect stack >/dev/null 2>&1 || docker network create stack
+
             - name: docker build
               env:
                   APP_TITLE: ${{vars.DEV_APP_TITLE}}
@@ -19,4 +23,9 @@ jobs:
                   API_URL: ${{vars.DEV_API_URL}}
 
               run: |
-                docker compose -f idoctor_front/docker-compose.yml --project-directory idoctor_front up --build --force-recreate --remove-orphans -d
+                cd idoctor_front && docker compose --project-name idoctor_platform up --build --force-recreate --remove-orphans -d
+                cd ..
+                sleep 4 
+                pwd
+                sleep 2
+                docker ps -a

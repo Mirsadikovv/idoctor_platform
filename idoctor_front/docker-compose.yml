@@ -1,6 +1,7 @@
-# networks:
-#     traefik-network:
-#         external: true
+networks:
+    stack:
+        external: true
+        name: stack
 
 services:
     idoctor_dev_dashboard:
@@ -24,7 +25,9 @@ services:
 
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.idoctor_dev_dashboard.rule=Host(`tvgo.uz`)"
-            - "traefik.http.routers.idoctor_dev_dashboard.entrypoints=web"
+            - "traefik.http.routers.idoctor_dev_dashboard.rule=Host(`idoctor.tvgo.uz`)"
+            - "traefik.http.routers.idoctor_dev_dashboard.entrypoints=websecure"
+            - "traefik.http.routers.idoctor_dev_dashboard.tls=true"
+            - "traefik.http.routers.idoctor_dev_dashboard.tls.certresolver=letsencrypt"
             - "traefik.http.services.idoctor_dev_dashboard.loadbalancer.server.port=5173"
             - "traefik.docker.network=stack"

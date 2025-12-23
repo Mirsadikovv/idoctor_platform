@@ -1,6 +1,7 @@
 networks:
     stack:
         external: true
+        name: stack
 
 services:
     idoctor_dev_dashboard:

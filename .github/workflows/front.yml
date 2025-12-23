@@ -1,0 +1,22 @@
+name: DEV
+
+on:
+    push:
+        branches:
+            - front
+
+jobs:
+    build:
+        runs-on: [ubuntu-latest]
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: docker build
+              env:
+                  APP_TITLE: ${{vars.DEV_APP_TITLE}}
+                  TOKEN_NAME: ${{vars.DEV_TOKEN_NAME}}
+                  LANG_NAME: ${{vars.DEV_LANG_NAME}}
+                  API_URL: ${{vars.DEV_API_URL}}
+
+              run: |
+                docker compose -f idoctor_front/docker-compose.yml --project-directory idoctor_front up --build --force-recreate --remove-orphans -d

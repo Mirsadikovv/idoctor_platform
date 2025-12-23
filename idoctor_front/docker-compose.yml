@@ -1,6 +1,5 @@
 networks:
     stack:
-        external: true
         name: stack
 
 services:

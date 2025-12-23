@@ -1,0 +1,61 @@
+.q-tab__label {
+	font-size: 1.1rem !important;
+	line-height: 1.715em !important;
+	font-weight: 500 !important;
+}
+
+.ck-powered-by {
+	display: none !important;
+}
+
+// Отключаем стандартную анимацию Quasar
+.q-field__bottom--animated {
+	position: relative !important;
+	transform: none !important;
+	min-height: 0 !important;
+	bottom: auto !important;
+	left: auto !important;
+	right: auto !important;
+}
+
+// Плавное разворачивание области ошибок
+.q-field__bottom {
+	animation: none !important;
+	transition: all 0.3s ease-in-out !important;
+	overflow: hidden;
+	height: 0 !important; // По умолчанию свернуто
+	opacity: 0; // По умолчанию скрыто
+	position: relative !important;
+	transform: none !important;
+	padding-top: 0 !important;
+	margin-top: 0;
+	display: flex;
+	align-items: center !important;
+
+	// Ограничиваем ошибки одной строкой с эллипсисом
+	* {
+		white-space: nowrap !important;
+		overflow: hidden !important;
+		text-overflow: ellipsis !important;
+		display: block !important;
+	}
+}
+
+// Когда есть ошибка - разворачиваем область
+.q-field--error {
+	.q-field__bottom {
+		height: 22px !important; // Разворачиваем до нужной высоты
+		opacity: 1;
+		margin-top: 4px !important;
+	}
+}
+
+// Убираем дополнительный padding снизу
+.q-field--with-bottom {
+	padding-bottom: 0 !important;
+}
+
+
+.my-row {
+    @apply  [&>*]:px-8px mx--8px gap-y-16px;
+}

@@ -24,7 +24,7 @@ func (u *AuthUser) ID() int64 {
 	return u.Id
 }
 
-func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (permission403 bool, _ error) {
+func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, error) {
 
 	filter := func(tx *gorm.DB) *gorm.DB {
 		return tx.Joins("INNER JOIN roles ON roles.id = users.role_id").

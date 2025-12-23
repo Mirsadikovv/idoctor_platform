@@ -21,5 +21,7 @@ jobs:
               run: |
                 cd idoctor_front && docker compose --project-name idoctor_platform up --build --force-recreate --remove-orphans -d
                 cd ..
+                sleep 4
+                pwd
                 sleep 2
                 docker ps -a

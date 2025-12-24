@@ -20,3 +20,6 @@ COPY . .
 
 # Сборка Go-приложения
 RUN go build -ldflags "-s -w" -o main .
+
+# Делаем бинарник исполняемым
+RUN chmod +x main

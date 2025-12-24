@@ -102,7 +102,7 @@ services:
       - "traefik.http.services.platform-idoctor-app.loadbalancer.passhostheader=true"
       - "traefik.http.routers.platform-idoctor-app.middlewares=compresstraefik"
       - "traefik.http.middlewares.compresstraefik.compress=true"
-      - "traefik.docker.network=traefik-network"
+      - "traefik.docker.network=stack"
     networks:
       - stack
     depends_on:
@@ -165,4 +165,4 @@ services:
           - "traefik.http.routers.idoctor_dev_dashboard.tls=true"
           - "traefik.http.routers.idoctor_dev_dashboard.tls.certresolver=letsencrypt"
           - "traefik.http.services.idoctor_dev_dashboard.loadbalancer.server.port=5173"
-          - "traefik.docker.network=traefik-network"
+          - "traefik.docker.network=stack"

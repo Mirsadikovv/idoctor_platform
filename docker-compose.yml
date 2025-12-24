@@ -63,8 +63,6 @@ services:
         - HTTP_PORT=${HTTP_PORT}
     restart: always
     working_dir: "/app"
-    # ports:
-    #   - "${HTTP_PORT}:${HTTP_PORT}"
     volumes:
       - /srv/platform_idoctor/docker/app/files:/app/files
     environment:
@@ -142,3 +140,29 @@ services:
       db-platform-idoctor:
         condition: service_healthy
     command: sh -c "sleep 5 && /app/main"
+  idoctor_dev_dashboard:
+      container_name: idoctor_dev_dashboard
+      restart: always
+      build:
+          context: ./idoctor_front
+          dockerfile: ./Dockerfile
+          args:
+              VITE_APP_TITLE: ${APP_TITLE}
+              VITE_TOKEN_NAME: ${TOKEN_NAME}
+              VITE_LANG_NAME: ${LANG_NAME}
+              VITE_API_URL: ${API_URL}
+      networks:
+          - stack
+      environment:
+          VITE_APP_TITLE: ${APP_TITLE}
+          VITE_TOKEN_NAME: ${TOKEN_NAME}
+          VITE_LANG_NAME: ${LANG_NAME}
+          VITE_API_URL: ${API_URL}
+      labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.idoctor_dev_dashboard.rule=Host(`idoctor.tvgo.uz`)"
+          - "traefik.http.routers.idoctor_dev_dashboard.entrypoints=websecure"
+          - "traefik.http.routers.idoctor_dev_dashboard.tls=true"
+          - "traefik.http.routers.idoctor_dev_dashboard.tls.certresolver=letsencrypt"
+          - "traefik.http.services.idoctor_dev_dashboard.loadbalancer.server.port=5173"
+          - "traefik.docker.network=traefik-network"

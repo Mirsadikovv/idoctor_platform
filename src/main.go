@@ -8,6 +8,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/Mirsadikovv/idoctor_platform/src/common/seeder"
 	auth_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service"
 	auth_dto "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/dto"
 	bot_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/bot_service"
@@ -180,7 +181,7 @@ func migration(db *gorm.DB) error {
 }
 
 func Seed(db *gorm.DB) {
-	// Seed functions for appeal, setting models have been removed
+	seeder.SeedRoles(db)
 }
 
 func createOrg(db *gorm.DB, r *echo.Echo) {

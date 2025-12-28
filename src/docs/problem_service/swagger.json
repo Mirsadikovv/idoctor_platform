@@ -190,7 +190,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get problem by ID",
+                "description": "Get problem by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -200,12 +200,12 @@
                 "tags": [
                     "problem"
                 ],
-                "summary": "Get problem by ID",
+                "summary": "Get problem by Id",
                 "operationId": "get-problem-by-id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "problem ID",
+                        "description": "problem Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -249,7 +249,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "problem ID",
+                        "description": "problem Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -287,7 +287,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete problem by ID",
+                "description": "Delete problem by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -302,7 +302,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "problem ID",
+                        "description": "problem Id",
                         "name": "id",
                         "in": "path",
                         "required": true

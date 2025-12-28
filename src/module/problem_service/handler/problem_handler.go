@@ -196,7 +196,7 @@ func (h *problemHandler) FindById(c echo.Context) error {
 // @Produce      json
 // @Security     ApiKeyAuth
 // @Param        input body problem_dto.ProblemCreate true "problem information"
-// @Success      201 {object} response.Id64 "Successful operation"
+// @Success      201 {object} response.ID64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /problem [POST]
@@ -232,7 +232,7 @@ func (h *problemHandler) Create(c echo.Context) error {
 // @Security     ApiKeyAuth
 // @Param        id path string true "problem Id"
 // @Param        input body problem_dto.ProblemUpdate true "problem information"
-// @Success      200 {object} response.Id64 "Successful operation"
+// @Success      200 {object} response.ID64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /problem/{id} [PUT]

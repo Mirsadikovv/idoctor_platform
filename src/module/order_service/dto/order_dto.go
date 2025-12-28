@@ -6,6 +6,15 @@ import (
 	"github.com/Mirsadikovv/shared/response"
 )
 
+type UserInfo struct {
+	Id         int64   `json:"id"`
+	FirstName  string  `json:"first_name"`
+	LastName   string  `json:"last_name"`
+	MiddleName string  `json:"middle_name"`
+	Username   string  `json:"username"`
+	PhoneNumber *string `json:"phone_number,omitempty"`
+} // @Name UserInfo
+
 type OrderCreate struct {
 	ClientId      *int64  `json:"client_id"`
 	MasterId      *int64  `json:"master_id"`
@@ -34,6 +43,8 @@ type Order struct {
 	Id            int64      `json:"id"`
 	ClientId      *int64     `json:"client_id"`
 	MasterId      *int64     `json:"master_id"`
+	Client        *UserInfo  `json:"client,omitempty"`
+	Master        *UserInfo  `json:"master,omitempty"`
 	Price         float64    `json:"price"`
 	Status        string     `json:"status"`
 	PaymentType   string     `json:"payment_type"`

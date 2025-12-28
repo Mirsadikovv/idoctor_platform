@@ -79,6 +79,11 @@
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
                         "type": "boolean",
                         "name": "include_deleted",
                         "in": "query"
@@ -111,6 +116,11 @@
                     {
                         "type": "string",
                         "name": "payment_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "start_date",
                         "in": "query"
                     },
                     {
@@ -175,6 +185,11 @@
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
                         "type": "boolean",
                         "name": "include_deleted",
                         "in": "query"
@@ -207,6 +222,11 @@
                     {
                         "type": "string",
                         "name": "payment_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "start_date",
                         "in": "query"
                     },
                     {
@@ -250,7 +270,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get order by ID with parts and problems",
+                "description": "Get order by Id with parts and problems",
                 "consumes": [
                     "application/json"
                 ],
@@ -260,12 +280,12 @@
                 "tags": [
                     "order"
                 ],
-                "summary": "Get order by ID",
+                "summary": "Get order by Id",
                 "operationId": "get-order-by-id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "order ID",
+                        "description": "order Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -309,7 +329,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "order ID",
+                        "description": "order Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -360,7 +380,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "order ID",
+                        "description": "order Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -395,6 +415,9 @@
         "Order": {
             "type": "object",
             "properties": {
+                "client": {
+                    "$ref": "#/definitions/UserInfo"
+                },
                 "client_id": {
                     "type": "integer"
                 },
@@ -406,6 +429,9 @@
                 },
                 "id": {
                     "type": "integer"
+                },
+                "master": {
+                    "$ref": "#/definitions/UserInfo"
                 },
                 "master_id": {
                     "type": "integer"
@@ -539,6 +565,29 @@
                     }
                 },
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserInfo": {
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "middle_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

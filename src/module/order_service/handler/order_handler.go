@@ -257,7 +257,7 @@ func (h *orderHandler) FindById(c echo.Context) error {
 // @Produce      json
 // @Security     ApiKeyAuth
 // @Param        input body order_dto.OrderCreate true "order information"
-// @Success      201 {object} response.Id64 "Successful operation"
+// @Success      201 {object} response.ID64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /order [POST]

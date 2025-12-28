@@ -8,6 +8,7 @@ import (
 	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
 	part_model "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/model"
 	problem_model "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service/model"
+	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
 	"github.com/Mirsadikovv/shared/pg"
 	"github.com/Mirsadikovv/shared/request"
@@ -41,7 +42,7 @@ func (s *orderService) Find(ctx context.Context, filter pg.Filter) ([]order_dto.
 		tx = filter(tx)
 	}
 
-	if err := tx.Preload("Parts").Preload("Problems").Find(&orders).Error; err != nil {
+	if err := tx.Preload("Client").Preload("Master").Preload("Parts").Preload("Problems").Find(&orders).Error; err != nil {
 		return nil, err
 	}
 
@@ -52,6 +53,8 @@ func (s *orderService) Find(ctx context.Context, filter pg.Filter) ([]order_dto.
 			Id:            order.Id,
 			ClientId:      order.ClientId,
 			MasterId:      order.MasterId,
+			Client:        convertUserToUserInfo(order.Client),
+			Master:        convertUserToUserInfo(order.Master),
 			Price:         order.Price,
 			Status:        order.Status,
 			PaymentType:   order.PaymentType,
@@ -88,7 +91,7 @@ func (s *orderService) FindOne(ctx context.Context, filter pg.Filter) (*order_dt
 		tx = filter(tx)
 	}
 
-	if err := tx.Preload("Parts").Preload("Problems").First(&order).Error; err != nil {
+	if err := tx.Preload("Client").Preload("Master").Preload("Parts").Preload("Problems").First(&order).Error; err != nil {
 		return nil, err
 	}
 
@@ -96,6 +99,8 @@ func (s *orderService) FindOne(ctx context.Context, filter pg.Filter) (*order_dt
 		Id:            order.Id,
 		ClientId:      order.ClientId,
 		MasterId:      order.MasterId,
+		Client:        convertUserToUserInfo(order.Client),
+		Master:        convertUserToUserInfo(order.Master),
 		Price:         order.Price,
 		Status:        order.Status,
 		PaymentType:   order.PaymentType,
@@ -243,4 +248,18 @@ func convertDeletedAt(deletedAt *gorm.DeletedAt) *time.Time {
 		return &deletedAt.Time
 	}
 	return nil
+}
+
+func convertUserToUserInfo(user *user_model.User) *order_dto.UserInfo {
+	if user == nil {
+		return nil
+	}
+	return &order_dto.UserInfo{
+		Id:          user.Id,
+		FirstName:   user.FirstName,
+		LastName:    user.LastName,
+		MiddleName:  user.MiddleName,
+		Username:    user.Username,
+		PhoneNumber: user.PhoneNumber,
+	}
 }

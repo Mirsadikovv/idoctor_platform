@@ -210,7 +210,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get part by ID",
+                "description": "Get part by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -220,12 +220,12 @@
                 "tags": [
                     "part"
                 ],
-                "summary": "Get part by ID",
+                "summary": "Get part by Id",
                 "operationId": "get-part-by-id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "part ID",
+                        "description": "part Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -269,7 +269,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "part ID",
+                        "description": "part Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -320,7 +320,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "part ID",
+                        "description": "part Id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -344,11 +344,48 @@
         }
     },
     "definitions": {
+        "DeviceInfo": {
+            "type": "object",
+            "properties": {
+                "brand_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "ID64": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "MasterInfo": {
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "middle_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -361,14 +398,32 @@
                 "deleted_at": {
                     "type": "string"
                 },
+                "device": {
+                    "$ref": "#/definitions/DeviceInfo"
+                },
                 "device_id": {
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
+                "income_price": {
+                    "type": "number"
+                },
+                "master": {
+                    "$ref": "#/definitions/MasterInfo"
+                },
+                "master_id": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "supplier": {
+                    "$ref": "#/definitions/SupplierInfo"
                 },
                 "supplier_id": {
                     "type": "integer"
@@ -433,6 +488,17 @@
                 },
                 "supplier_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "SupplierInfo": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         }

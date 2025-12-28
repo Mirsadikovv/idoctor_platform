@@ -302,6 +302,9 @@
             "properties": {
                 "role": {
                     "type": "string"
+                },
+                "token": {
+                    "type": "string"
                 }
             }
         },

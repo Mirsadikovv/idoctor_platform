@@ -92,6 +92,10 @@ func (h *orderHandler) Search(c echo.Context) error {
 			tx = tx.Where("orders.price <= ?", *params.MaxPrice)
 		}
 
+		if params.StartDate != nil && params.EndDate != nil {
+			tx = tx.Where("created_at BETWEEN ? AND ?", *params.StartDate, *params.EndDate)
+		}
+
 		// Handle soft delete filtering
 		if params.OnlyDeleted != nil && *params.OnlyDeleted {
 			tx = tx.Unscoped().Where("orders.deleted_at IS NOT NULL")
@@ -171,6 +175,10 @@ func (h *orderHandler) Page(c echo.Context) error {
 
 		if params.MaxPrice != nil {
 			tx = tx.Where("price <= ?", *params.MaxPrice)
+		}
+
+		if params.StartDate != nil && params.EndDate != nil {
+			tx = tx.Where("created_at BETWEEN ? AND ?", *params.StartDate, *params.EndDate)
 		}
 
 		// Handle soft delete filtering

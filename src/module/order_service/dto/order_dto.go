@@ -54,4 +54,6 @@ type OrderParams struct {
 	MaxPrice       *float64 `query:"max_price" json:"max_price"`
 	IncludeDeleted *bool    `query:"include_deleted" json:"include_deleted"`
 	OnlyDeleted    *bool    `query:"only_deleted" json:"only_deleted"`
+	StartDate      *string  `query:"start_date" json:"start_date"`
+	EndDate        *string  `query:"end_date" json:"end_date"`
 } // @Name OrderParams

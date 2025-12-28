@@ -14,7 +14,7 @@ import (
 func SendPhoneNumber(bot *tgbotapi.BotAPI, update tgbotapi.Update, db *gorm.DB, lang *utils.LanguageCache) *utils.LanguageCache {
 	if update.Message.Contact != nil && update.Message.Contact.PhoneNumber != "" {
 
-		if err := db.Table("bot_users").
+		if err := db.Table("users").
 			Where("telegram_id = ?", update.Message.From.ID).
 			Update("phone_number", update.Message.Contact.PhoneNumber).Error; err != nil {
 			log.Println("Error updating bot user state:", err)

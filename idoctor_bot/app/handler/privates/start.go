@@ -44,16 +44,6 @@ func Start(bot *tgbotapi.BotAPI, update tgbotapi.Update, cfg *config.Config, db 
 		telegramName := update.Message.From.FirstName
 		languageCode := update.Message.From.LanguageCode
 
-		// result := db.
-		// 	Table("users").
-		// 	Where("telegram_id = ?", telegramId).
-		// 	FirstOrCreate(&user, TelegramUser{
-		// 		TelegramId:       telegramId,
-		// 		TelegramUsername: telegramUsername,
-		// 		FirstName:        firstName,
-		// 		LanguageCode:     languageCode,
-		// 	})
-
 		newUser := TelegramUser{
 			TelegramId:       telegramId,
 			TelegramUsername: telegramUsername,

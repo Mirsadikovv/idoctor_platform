@@ -9,9 +9,9 @@ import (
 )
 
 type Order struct {
-	ID            int64                   `json:"id" gorm:"primaryKey;autoIncrement"`
-	ClientID      *int64                  `json:"client_id" gorm:"index"`
-	MasterID      *int64                  `json:"master_id" gorm:"index"`
+	Id            int64                   `json:"id" gorm:"primaryKey;autoIncrement"`
+	ClientId      *int64                  `json:"client_id" gorm:"index"`
+	MasterId      *int64                  `json:"master_id" gorm:"index"`
 	Price         float64                 `json:"price" gorm:"type:decimal(10,2);not null"`
 	Status        string                  `json:"status" gorm:"type:varchar(50);not null"`
 	PaymentType   string                  `json:"payment_type" gorm:"type:varchar(50);not null"`

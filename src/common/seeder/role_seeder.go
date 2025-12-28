@@ -19,33 +19,11 @@ func SeedRoles(db *gorm.DB) {
 		},
 		{
 			ID:          2,
-			Name:        "doctor",
-			Description: "Врач с доступом к медицинским функциям",
+			Name:        "user",
+			Description: "Пользователь системы",
 			Pages:       sharedutil.JsonObject{},
 			Permissions: sharedutil.JsonObject{},
-		},
-		{
-			ID:          3,
-			Name:        "nurse",
-			Description: "Медсестра с ограниченным доступом",
-			Pages:       sharedutil.JsonObject{},
-			Permissions: sharedutil.JsonObject{},
-		},
-		{
-			ID:          4,
-			Name:        "patient",
-			Description: "Пациент с доступом к личному кабинету",
-			Pages:       sharedutil.JsonObject{},
-			Permissions: sharedutil.JsonObject{},
-		},
-		{
-			ID:          5,
-			Name:        "manager",
-			Description: "Менеджер с административными функциями",
-			Pages:       sharedutil.JsonObject{},
-			Permissions: sharedutil.JsonObject{},
-		},
-	}
+		}}
 
 	for _, role := range roles {
 		var existingRole role_model.Role

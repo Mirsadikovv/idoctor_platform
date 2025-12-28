@@ -32,7 +32,7 @@ func NewPartHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMiddl
 	partServiceMiddleware := handler.authMiddleware.BuildMiddleware()
 	partGroup := router.Group("/api/v1/part", partServiceMiddleware)
 	{
-		partGroup.GET("/:id", handler.FindByID)
+		partGroup.GET("/:id", handler.FindById)
 		partGroup.GET("/search", handler.Search)
 		partGroup.GET("/page", handler.Page)
 		partGroup.POST("", handler.Create)
@@ -45,7 +45,7 @@ func NewPartHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMiddl
 // @Summary      Get all parts with search
 // @Description  Get all parts with search
 // @Tags 		 part
-// @ID           search-part
+// @Id           search-part
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
@@ -71,12 +71,12 @@ func (h *partHandler) Search(c echo.Context) error {
 			tx = tx.Where("parts.name ILIKE ?", name)
 		}
 
-		if params.DeviceID != nil {
-			tx = tx.Where("parts.device_id = ?", *params.DeviceID)
+		if params.DeviceId != nil {
+			tx = tx.Where("parts.device_id = ?", *params.DeviceId)
 		}
 
-		if params.SupplierID != nil {
-			tx = tx.Where("parts.supplier_id = ?", *params.SupplierID)
+		if params.SupplierId != nil {
+			tx = tx.Where("parts.supplier_id = ?", *params.SupplierId)
 		}
 
 		// Handle soft delete filtering
@@ -133,12 +133,12 @@ func (h *partHandler) Page(c echo.Context) error {
 			tx = tx.Where("name ILIKE ?", fmt.Sprintf("%%%s%%", *params.Name))
 		}
 
-		if params.DeviceID != nil {
-			tx = tx.Where("device_id = ?", *params.DeviceID)
+		if params.DeviceId != nil {
+			tx = tx.Where("device_id = ?", *params.DeviceId)
 		}
 
-		if params.SupplierID != nil {
-			tx = tx.Where("supplier_id = ?", *params.SupplierID)
+		if params.SupplierId != nil {
+			tx = tx.Where("supplier_id = ?", *params.SupplierId)
 		}
 
 		// Handle soft delete filtering
@@ -169,19 +169,19 @@ func (h *partHandler) Page(c echo.Context) error {
 }
 
 // GetById godoc
-// @Summary      Get part by ID
-// @Description  Get part by ID
+// @Summary      Get part by Id
+// @Description  Get part by Id
 // @Tags 		 part
-// @ID           get-part-by-id
+// @Id           get-part-by-id
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "part ID"
+// @Param        id path string true "part Id"
 // @Success      200 {object} part_dto.Part "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /part/{id} [get]
-func (h *partHandler) FindByID(c echo.Context) error {
+func (h *partHandler) FindById(c echo.Context) error {
 	req := request.RequestWithData[any](c)
 
 	id, err := req.ParamToInt("id")
@@ -209,12 +209,12 @@ func (h *partHandler) FindByID(c echo.Context) error {
 // @Summary      Create part
 // @Description  Create new part
 // @Tags 		 part
-// @ID           create-part
+// @Id           create-part
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
 // @Param        input body part_dto.PartCreate true "part information"
-// @Success      201 {object} response.ID64 "Successful operation"
+// @Success      201 {object} response.Id64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /part [POST]
@@ -242,11 +242,11 @@ func (h *partHandler) Create(c echo.Context) error {
 // @Summary      Update part
 // @Description  Update existing part
 // @Tags 		 part
-// @ID           update-part
+// @Id           update-part
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "part ID"
+// @Param        id path string true "part Id"
 // @Param        input body part_dto.PartUpdate true "part information"
 // @Success      200 {object} response.HttpSuccess "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
@@ -283,11 +283,11 @@ func (h *partHandler) Update(c echo.Context) error {
 // @Summary      Delete or restore part
 // @Description  Soft delete part if active, restore if already deleted
 // @Tags 		 part
-// @ID           delete-or-restore-part
+// @Id           delete-or-restore-part
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "part ID"
+// @Param        id path string true "part Id"
 // @Success      200 {object} response.HttpSuccess "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"

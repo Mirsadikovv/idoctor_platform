@@ -32,7 +32,7 @@ func NewProblemHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMi
 	problemServiceMiddleware := handler.authMiddleware.BuildMiddleware()
 	problemGroup := router.Group("/api/v1/problem", problemServiceMiddleware)
 	{
-		problemGroup.GET("/:id", handler.FindByID)
+		problemGroup.GET("/:id", handler.FindById)
 		problemGroup.GET("/search", handler.Search)
 		problemGroup.GET("/page", handler.Page)
 		problemGroup.POST("", handler.Create)
@@ -45,7 +45,7 @@ func NewProblemHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMi
 // @Summary      Get all problems with search
 // @Description  Get all problems with search
 // @Tags 		 problem
-// @ID           search-problem
+// @Id           search-problem
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
@@ -151,19 +151,19 @@ func (h *problemHandler) Page(c echo.Context) error {
 }
 
 // GetById godoc
-// @Summary      Get problem by ID
-// @Description  Get problem by ID
+// @Summary      Get problem by Id
+// @Description  Get problem by Id
 // @Tags 		 problem
-// @ID           get-problem-by-id
+// @Id           get-problem-by-id
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "problem ID"
+// @Param        id path string true "problem Id"
 // @Success      200 {object} problem_dto.Problem "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /problem/{id} [get]
-func (h *problemHandler) FindByID(c echo.Context) error {
+func (h *problemHandler) FindById(c echo.Context) error {
 	req := request.RequestWithData[any](c)
 
 	id, err := req.ParamToInt("id")
@@ -191,12 +191,12 @@ func (h *problemHandler) FindByID(c echo.Context) error {
 // @Summary      Create problem
 // @Description  Create new problem
 // @Tags 		 problem
-// @ID           create-problem
+// @Id           create-problem
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
 // @Param        input body problem_dto.ProblemCreate true "problem information"
-// @Success      201 {object} response.ID64 "Successful operation"
+// @Success      201 {object} response.Id64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /problem [POST]
@@ -210,7 +210,7 @@ func (h *problemHandler) Create(c echo.Context) error {
 		}
 	}
 
-	problemDto.ID = 0 // Ensure ID is 0 for creation
+	problemDto.Id = 0 // Ensure Id is 0 for creation
 
 	id, err := h.problemService.CreateOrUpdate(c.Request().Context(), &problemDto)
 	{
@@ -226,13 +226,13 @@ func (h *problemHandler) Create(c echo.Context) error {
 // @Summary      Update problem
 // @Description  Update existing problem
 // @Tags 		 problem
-// @ID           update-problem
+// @Id           update-problem
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "problem ID"
+// @Param        id path string true "problem Id"
 // @Param        input body problem_dto.ProblemUpdate true "problem information"
-// @Success      200 {object} response.ID64 "Successful operation"
+// @Success      200 {object} response.Id64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /problem/{id} [PUT]
@@ -254,7 +254,7 @@ func (h *problemHandler) Update(c echo.Context) error {
 	}
 
 	createDto := &problem_dto.ProblemCreate{
-		ID:    id,
+		Id:    id,
 		Name:  problemDto.Name,
 		Price: problemDto.Price,
 	}
@@ -271,13 +271,13 @@ func (h *problemHandler) Update(c echo.Context) error {
 
 // Delete godoc
 // @Summary      Delete problem
-// @Description  Delete problem by ID
+// @Description  Delete problem by Id
 // @Tags 		 problem
-// @ID           delete-problem
+// @Id           delete-problem
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "problem ID"
+// @Param        id path string true "problem Id"
 // @Success      200 {object} response.HttpSuccess "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"

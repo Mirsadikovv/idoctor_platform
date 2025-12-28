@@ -30,7 +30,7 @@ func NewOrderHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMidd
 	orderServiceMiddleware := handler.authMiddleware.BuildMiddleware()
 	orderGroup := router.Group("/api/v1/order", orderServiceMiddleware)
 	{
-		orderGroup.GET("/:id", handler.FindByID)
+		orderGroup.GET("/:id", handler.FindById)
 		orderGroup.GET("/search", handler.Search)
 		orderGroup.GET("/page", handler.Page)
 		orderGroup.POST("", handler.Create)
@@ -43,7 +43,7 @@ func NewOrderHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMidd
 // @Summary      Get all orders with search
 // @Description  Get all orders with search
 // @Tags 		 order
-// @ID           search-order
+// @Id           search-order
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
@@ -64,12 +64,12 @@ func (h *orderHandler) Search(c echo.Context) error {
 	}
 
 	filter := func(tx *gorm.DB) *gorm.DB {
-		if params.ClientID != nil {
-			tx = tx.Where("orders.client_id = ?", *params.ClientID)
+		if params.ClientId != nil {
+			tx = tx.Where("orders.client_id = ?", *params.ClientId)
 		}
 
-		if params.MasterID != nil {
-			tx = tx.Where("orders.master_id = ?", *params.MasterID)
+		if params.MasterId != nil {
+			tx = tx.Where("orders.master_id = ?", *params.MasterId)
 		}
 
 		if params.Status != nil {
@@ -149,12 +149,12 @@ func (h *orderHandler) Page(c echo.Context) error {
 	}
 
 	tx := func(tx *gorm.DB) *gorm.DB {
-		if params.ClientID != nil {
-			tx = tx.Where("client_id = ?", *params.ClientID)
+		if params.ClientId != nil {
+			tx = tx.Where("client_id = ?", *params.ClientId)
 		}
 
-		if params.MasterID != nil {
-			tx = tx.Where("master_id = ?", *params.MasterID)
+		if params.MasterId != nil {
+			tx = tx.Where("master_id = ?", *params.MasterId)
 		}
 
 		if params.Status != nil {
@@ -212,19 +212,19 @@ func (h *orderHandler) Page(c echo.Context) error {
 }
 
 // GetById godoc
-// @Summary      Get order by ID
-// @Description  Get order by ID with parts and problems
+// @Summary      Get order by Id
+// @Description  Get order by Id with parts and problems
 // @Tags 		 order
-// @ID           get-order-by-id
+// @Id           get-order-by-id
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "order ID"
+// @Param        id path string true "order Id"
 // @Success      200 {object} order_dto.Order "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /order/{id} [get]
-func (h *orderHandler) FindByID(c echo.Context) error {
+func (h *orderHandler) FindById(c echo.Context) error {
 	req := request.RequestWithData[any](c)
 
 	id, err := req.ParamToInt("id")
@@ -252,12 +252,12 @@ func (h *orderHandler) FindByID(c echo.Context) error {
 // @Summary      Create order
 // @Description  Create new order with parts and problems
 // @Tags 		 order
-// @ID           create-order
+// @Id           create-order
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
 // @Param        input body order_dto.OrderCreate true "order information"
-// @Success      201 {object} response.ID64 "Successful operation"
+// @Success      201 {object} response.Id64 "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
 // @Router       /order [POST]
@@ -285,11 +285,11 @@ func (h *orderHandler) Create(c echo.Context) error {
 // @Summary      Update order
 // @Description  Update existing order with parts and problems
 // @Tags 		 order
-// @ID           update-order
+// @Id           update-order
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "order ID"
+// @Param        id path string true "order Id"
 // @Param        input body order_dto.OrderUpdate true "order information"
 // @Success      200 {object} response.HttpSuccess "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
@@ -326,11 +326,11 @@ func (h *orderHandler) Update(c echo.Context) error {
 // @Summary      Delete or restore order
 // @Description  Soft delete order if active, restore if already deleted
 // @Tags 		 order
-// @ID           delete-or-restore-order
+// @Id           delete-or-restore-order
 // @Accept       json
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id path string true "order ID"
+// @Param        id path string true "order Id"
 // @Success      200 {object} response.HttpSuccess "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"

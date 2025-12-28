@@ -47,23 +47,23 @@ func (s *problemService) CreateOrUpdate(ctx context.Context, problemDto *problem
 		Price: problemDto.Price,
 	}
 
-	if problemDto.ID == 0 {
+	if problemDto.Id == 0 {
 		if err := pg.Create(s.db.WithContext(ctx), problemModel, "id"); err != nil {
 			return 0, err
 		}
 
-		return problemModel.ID, nil
+		return problemModel.Id, nil
 	}
 
 	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("id = ?", problemDto.ID)
+		return tx.Where("id = ?", problemDto.Id)
 	}
 
 	if _, err := pg.Update[problem_model.Problem](s.db.WithContext(ctx), problemModel, filter, "id"); err != nil {
 		return 0, err
 	}
 
-	return problemDto.ID, nil
+	return problemDto.Id, nil
 }
 
 func (s *problemService) Delete(ctx context.Context, id int64) error {

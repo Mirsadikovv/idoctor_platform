@@ -45,22 +45,22 @@ func (s *partService) Page(ctx context.Context, paginate *request.Paginate, filt
 func (s *partService) Create(ctx context.Context, partDto *part_dto.PartCreate) (int64, error) {
 	partModel := &part_model.Part{
 		Name:       partDto.Name,
-		DeviceID:   partDto.DeviceID,
-		SupplierID: partDto.SupplierID,
+		DeviceId:   partDto.DeviceId,
+		SupplierId: partDto.SupplierId,
 	}
 
 	if err := pg.Create(s.db.WithContext(ctx), partModel, "id"); err != nil {
 		return 0, err
 	}
 
-	return partModel.ID, nil
+	return partModel.Id, nil
 }
 
 func (s *partService) Update(ctx context.Context, id int64, partDto *part_dto.PartUpdate) error {
 	partModel := &part_model.Part{
 		Name:       partDto.Name,
-		DeviceID:   partDto.DeviceID,
-		SupplierID: partDto.SupplierID,
+		DeviceId:   partDto.DeviceId,
+		SupplierId: partDto.SupplierId,
 	}
 
 	filter := func(tx *gorm.DB) *gorm.DB {

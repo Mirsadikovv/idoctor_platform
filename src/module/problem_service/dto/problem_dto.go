@@ -7,7 +7,7 @@ import (
 )
 
 type ProblemCreate struct {
-	ID    int64   `json:"id"`
+	Id    int64   `json:"id"`
 	Name  string  `json:"name" validate:"required"`
 	Price float64 `json:"price" validate:"required,min=0"`
 } // @Name ProblemCreate
@@ -20,7 +20,7 @@ type ProblemUpdate struct {
 type ProblemPage = response.PageData[Problem] // @name ProblemPage
 
 type Problem struct {
-	ID        int64     `json:"id"`
+	Id        int64     `json:"id"`
 	Name      string    `json:"name"`
 	Price     float64   `json:"price"`
 	CreatedAt time.Time `json:"created_at"`

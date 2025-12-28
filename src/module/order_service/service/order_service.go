@@ -49,9 +49,9 @@ func (s *orderService) Find(ctx context.Context, filter pg.Filter) ([]order_dto.
 	result := make([]order_dto.Order, len(orders))
 	for i, order := range orders {
 		result[i] = order_dto.Order{
-			ID:            order.ID,
-			ClientID:      order.ClientID,
-			MasterID:      order.MasterID,
+			Id:            order.Id,
+			ClientId:      order.ClientId,
+			MasterId:      order.MasterId,
 			Price:         order.Price,
 			Status:        order.Status,
 			PaymentType:   order.PaymentType,
@@ -60,19 +60,19 @@ func (s *orderService) Find(ctx context.Context, filter pg.Filter) ([]order_dto.
 			DeletedAt:     convertDeletedAt(order.DeletedAt),
 		}
 
-		// Extract part IDs
+		// Extract part Ids
 		if len(order.Parts) > 0 {
-			result[i].PartIDs = make([]int64, len(order.Parts))
+			result[i].PartIds = make([]int64, len(order.Parts))
 			for j, part := range order.Parts {
-				result[i].PartIDs[j] = part.ID
+				result[i].PartIds[j] = part.Id
 			}
 		}
 
-		// Extract problem IDs
+		// Extract problem Ids
 		if len(order.Problems) > 0 {
-			result[i].ProblemIDs = make([]int64, len(order.Problems))
+			result[i].ProblemIds = make([]int64, len(order.Problems))
 			for j, problem := range order.Problems {
-				result[i].ProblemIDs[j] = problem.ID
+				result[i].ProblemIds[j] = problem.Id
 			}
 		}
 	}
@@ -93,9 +93,9 @@ func (s *orderService) FindOne(ctx context.Context, filter pg.Filter) (*order_dt
 	}
 
 	result := &order_dto.Order{
-		ID:            order.ID,
-		ClientID:      order.ClientID,
-		MasterID:      order.MasterID,
+		Id:            order.Id,
+		ClientId:      order.ClientId,
+		MasterId:      order.MasterId,
 		Price:         order.Price,
 		Status:        order.Status,
 		PaymentType:   order.PaymentType,
@@ -104,19 +104,19 @@ func (s *orderService) FindOne(ctx context.Context, filter pg.Filter) (*order_dt
 		DeletedAt:     convertDeletedAt(order.DeletedAt),
 	}
 
-	// Extract part IDs
+	// Extract part Ids
 	if len(order.Parts) > 0 {
-		result.PartIDs = make([]int64, len(order.Parts))
+		result.PartIds = make([]int64, len(order.Parts))
 		for i, part := range order.Parts {
-			result.PartIDs[i] = part.ID
+			result.PartIds[i] = part.Id
 		}
 	}
 
-	// Extract problem IDs
+	// Extract problem Ids
 	if len(order.Problems) > 0 {
-		result.ProblemIDs = make([]int64, len(order.Problems))
+		result.ProblemIds = make([]int64, len(order.Problems))
 		for i, problem := range order.Problems {
-			result.ProblemIDs[i] = problem.ID
+			result.ProblemIds[i] = problem.Id
 		}
 	}
 
@@ -129,8 +129,8 @@ func (s *orderService) Page(ctx context.Context, paginate *request.Paginate, fil
 
 func (s *orderService) Create(ctx context.Context, orderDto *order_dto.OrderCreate) (int64, error) {
 	orderModel := &order_model.Order{
-		ClientID:      orderDto.ClientID,
-		MasterID:      orderDto.MasterID,
+		ClientId:      orderDto.ClientId,
+		MasterId:      orderDto.MasterId,
 		Price:         orderDto.Price,
 		Status:        orderDto.Status,
 		PaymentType:   orderDto.PaymentType,
@@ -138,16 +138,16 @@ func (s *orderService) Create(ctx context.Context, orderDto *order_dto.OrderCrea
 	}
 
 	// Start transaction
-	return orderModel.ID, s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+	return orderModel.Id, s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		// Create order
 		if err := tx.Create(orderModel).Error; err != nil {
 			return err
 		}
 
 		// Associate parts
-		if len(orderDto.PartIDs) > 0 {
+		if len(orderDto.PartIds) > 0 {
 			var parts []part_model.Part
-			if err := tx.Where("id IN ?", orderDto.PartIDs).Find(&parts).Error; err != nil {
+			if err := tx.Where("id IN ?", orderDto.PartIds).Find(&parts).Error; err != nil {
 				return err
 			}
 			if err := tx.Model(orderModel).Association("Parts").Replace(parts); err != nil {
@@ -156,9 +156,9 @@ func (s *orderService) Create(ctx context.Context, orderDto *order_dto.OrderCrea
 		}
 
 		// Associate problems
-		if len(orderDto.ProblemIDs) > 0 {
+		if len(orderDto.ProblemIds) > 0 {
 			var problems []problem_model.Problem
-			if err := tx.Where("id IN ?", orderDto.ProblemIDs).Find(&problems).Error; err != nil {
+			if err := tx.Where("id IN ?", orderDto.ProblemIds).Find(&problems).Error; err != nil {
 				return err
 			}
 			if err := tx.Model(orderModel).Association("Problems").Replace(problems); err != nil {
@@ -179,8 +179,8 @@ func (s *orderService) Update(ctx context.Context, id int64, orderDto *order_dto
 		}
 
 		// Update basic fields
-		order.ClientID = orderDto.ClientID
-		order.MasterID = orderDto.MasterID
+		order.ClientId = orderDto.ClientId
+		order.MasterId = orderDto.MasterId
 		order.Price = orderDto.Price
 		order.Status = orderDto.Status
 		order.PaymentType = orderDto.PaymentType
@@ -191,10 +191,10 @@ func (s *orderService) Update(ctx context.Context, id int64, orderDto *order_dto
 		}
 
 		// Update parts association
-		if orderDto.PartIDs != nil {
+		if orderDto.PartIds != nil {
 			var parts []part_model.Part
-			if len(orderDto.PartIDs) > 0 {
-				if err := tx.Where("id IN ?", orderDto.PartIDs).Find(&parts).Error; err != nil {
+			if len(orderDto.PartIds) > 0 {
+				if err := tx.Where("id IN ?", orderDto.PartIds).Find(&parts).Error; err != nil {
 					return err
 				}
 			}
@@ -204,10 +204,10 @@ func (s *orderService) Update(ctx context.Context, id int64, orderDto *order_dto
 		}
 
 		// Update problems association
-		if orderDto.ProblemIDs != nil {
+		if orderDto.ProblemIds != nil {
 			var problems []problem_model.Problem
-			if len(orderDto.ProblemIDs) > 0 {
-				if err := tx.Where("id IN ?", orderDto.ProblemIDs).Find(&problems).Error; err != nil {
+			if len(orderDto.ProblemIds) > 0 {
+				if err := tx.Where("id IN ?", orderDto.ProblemIds).Find(&problems).Error; err != nil {
 					return err
 				}
 			}

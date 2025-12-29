@@ -21,6 +21,8 @@ import (
 	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
 	order_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/order_service"
 	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
+	order_parts_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/order_parts_service"
+	order_part_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_parts_service/model"
 	organization_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service"
 	organization_model "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/model"
 	part_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/part_service"
@@ -112,6 +114,7 @@ func Exec(env *Env) {
 	file_cmd.Cmd(router, db, log, authMiddleware)
 	language_cmd.Cmd(router, db, log, authMiddleware)
 	order_cmd.Cmd(router, db, log, authMiddleware)
+	order_parts_cmd.Cmd(router, db, log, authMiddleware)
 	organization_cmd.Cmd(router, db, log, authMiddleware)
 	part_cmd.Cmd(router, db, log, authMiddleware)
 	problem_cmd.Cmd(router, db, log, authMiddleware)
@@ -151,6 +154,7 @@ func migration(db *gorm.DB) error {
 		&device_model.Device{},
 		&part_model.Part{},
 		&order_model.Order{},
+		&order_part_model.OrderPart{},
 	}
 
 	err := db.AutoMigrate(models...)

@@ -6,7 +6,6 @@ import (
 
 	order_dto "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/dto"
 	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
-	part_model "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/model"
 	problem_model "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service/model"
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
@@ -42,7 +41,7 @@ func (s *orderService) Find(ctx context.Context, filter pg.Filter) ([]order_dto.
 		tx = filter(tx)
 	}
 
-	if err := tx.Preload("Client").Preload("Master").Preload("Parts").Preload("Problems").Find(&orders).Error; err != nil {
+	if err := tx.Preload("Client").Preload("Master").Preload("Problems").Find(&orders).Error; err != nil {
 		return nil, err
 	}
 
@@ -61,14 +60,6 @@ func (s *orderService) Find(ctx context.Context, filter pg.Filter) ([]order_dto.
 			PaymentStatus: order.PaymentStatus,
 			CreatedAt:     order.CreatedAt,
 			DeletedAt:     convertDeletedAt(order.DeletedAt),
-		}
-
-		// Extract part Ids
-		if len(order.Parts) > 0 {
-			result[i].PartIds = make([]int64, len(order.Parts))
-			for j, part := range order.Parts {
-				result[i].PartIds[j] = part.Id
-			}
 		}
 
 		// Extract problem Ids
@@ -91,7 +82,7 @@ func (s *orderService) FindOne(ctx context.Context, filter pg.Filter) (*order_dt
 		tx = filter(tx)
 	}
 
-	if err := tx.Preload("Client").Preload("Master").Preload("Parts").Preload("Problems").First(&order).Error; err != nil {
+	if err := tx.Preload("Client").Preload("Master").Preload("Problems").First(&order).Error; err != nil {
 		return nil, err
 	}
 
@@ -107,14 +98,6 @@ func (s *orderService) FindOne(ctx context.Context, filter pg.Filter) (*order_dt
 		PaymentStatus: order.PaymentStatus,
 		CreatedAt:     order.CreatedAt,
 		DeletedAt:     convertDeletedAt(order.DeletedAt),
-	}
-
-	// Extract part Ids
-	if len(order.Parts) > 0 {
-		result.PartIds = make([]int64, len(order.Parts))
-		for i, part := range order.Parts {
-			result.PartIds[i] = part.Id
-		}
 	}
 
 	// Extract problem Ids
@@ -147,17 +130,6 @@ func (s *orderService) Create(ctx context.Context, orderDto *order_dto.OrderCrea
 		// Create order
 		if err := tx.Create(orderModel).Error; err != nil {
 			return err
-		}
-
-		// Associate parts
-		if len(orderDto.PartIds) > 0 {
-			var parts []part_model.Part
-			if err := tx.Where("id IN ?", orderDto.PartIds).Find(&parts).Error; err != nil {
-				return err
-			}
-			if err := tx.Model(orderModel).Association("Parts").Replace(parts); err != nil {
-				return err
-			}
 		}
 
 		// Associate problems
@@ -193,19 +165,6 @@ func (s *orderService) Update(ctx context.Context, id int64, orderDto *order_dto
 
 		if err := tx.Save(&order).Error; err != nil {
 			return err
-		}
-
-		// Update parts association
-		if orderDto.PartIds != nil {
-			var parts []part_model.Part
-			if len(orderDto.PartIds) > 0 {
-				if err := tx.Where("id IN ?", orderDto.PartIds).Find(&parts).Error; err != nil {
-					return err
-				}
-			}
-			if err := tx.Model(&order).Association("Parts").Replace(parts); err != nil {
-				return err
-			}
 		}
 
 		// Update problems association

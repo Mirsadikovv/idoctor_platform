@@ -1,7 +1,7 @@
 package auth_dto
 
 import (
-	"time"
+	"fmt"
 
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
@@ -25,74 +25,69 @@ func (u *AuthUser) ID() int64 {
 }
 
 func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, error) {
-	// Get the route pattern (e.g., /api/v1/role/:id) instead of actual path
-	routePattern := ctx.Path()
-	method := ctx.Request().Method
-
-	// First, get user and role information
-	var result struct {
-		UserId       int64
-		Username     string
-		RoleId       int64
-		RoleName     string
-		LastVisit    *time.Time
-		CreatedAt    *time.Time
-		BlockedAt    *time.Time
-		Permissions  map[string][]string
-	}
-
+	// First, get user with role information
+	var user user_model.User
 	err := db.Table("users").
-		Select(
-			"users.id as user_id",
-			"users.username",
-			"users.role_id",
-			"roles.name as role_name",
-			"users.last_visit",
-			"users.created_at",
-			"users.blocked_at",
-			"roles.permissions",
-		).
+		Select("users.id", "users.username", "users.role_id", "users.last_visit", "users.created_at", "users.blocked_at").
 		Joins("INNER JOIN roles ON roles.id = users.role_id").
 		Where("users.id = ?", u.Id).
 		Where("users.blocked_at IS NULL").
-		Scan(&result).Error
+		First(&user).Error
 
 	if err != nil {
 		return true, err
 	}
 
-	// Create user object
-	user := &user_model.User{
-		Id:        result.UserId,
-		Username:  result.Username,
-		RoleId:    result.RoleId,
-		LastVisit: result.LastVisit,
-		CreatedAt: result.CreatedAt,
-		BlockedAt: result.BlockedAt,
+	// Get role name
+	var roleName string
+	err = db.Table("roles").
+		Select("name").
+		Where("id = ?", user.RoleId).
+		Scan(&roleName).Error
+
+	if err != nil {
+		return true, err
 	}
 
 	// If admin role, skip permission check
-	if result.RoleName == "admin" {
+	if roleName == "admin" {
 		req := request.RequestWithData[user_model.User](ctx)
-		req.SetUser(user)
+		req.SetUser(&user)
 		return false, nil
 	}
 
-	// For non-admin users, check if route pattern exists in permissions
-	// Permissions structure: { "/api/v1/role/:id": ["GET", "POST"], ... }
-	if methods, exists := result.Permissions[routePattern]; exists {
-		// Check if current method is allowed
-		for _, allowedMethod := range methods {
-			if allowedMethod == method {
-				req := request.RequestWithData[user_model.User](ctx)
-				req.SetUser(user)
-				return false, nil
-			}
-		}
+	// For non-admin users, check permissions
+	filter := func(tx *gorm.DB) *gorm.DB {
+		return tx.Joins("INNER JOIN roles ON roles.id = users.role_id").
+			Where("users.id = ?", u.Id).
+			Where("users.blocked_at IS NULL").
+			Where(fmt.Sprintf(`roles.permissions -> '%s' ? '%s'`, ctx.Path(), ctx.Request().Method)).
+			Limit(1)
 	}
 
-	// Permission denied
-	return true, gorm.ErrRecordNotFound
+	result := db.Table("users").
+		Scopes(filter).Select(
+		"users.id",
+		"users.username",
+		"users.role_id",
+		"users.last_visit",
+		"users.created_at",
+		"users.blocked_at",
+	).Scan(&user)
+
+	if err := result.Error; err != nil {
+		return true, err
+	}
+
+	if result.RowsAffected == 0 {
+		return true, gorm.ErrRecordNotFound
+	}
+
+	req := request.RequestWithData[user_model.User](ctx)
+
+	req.SetUser(&user)
+
+	return false, nil
 }
 
 type SingUp struct {

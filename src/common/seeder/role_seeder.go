@@ -9,20 +9,37 @@ import (
 )
 
 func SeedRoles(db *gorm.DB) {
+	// Permissions structure example:
+	// {
+	//   "/api/v1/role/:id": ["GET"],
+	//   "/api/v1/user/:id": ["GET", "PATCH"],
+	//   "/api/v1/order/page": ["GET"],
+	//   ...
+	// }
+	//
+	// Admin role has full access (no permission check)
+	// Other roles must have explicit permissions defined
+
 	roles := []role_model.Role{
 		{
 			ID:          1,
 			Name:        "admin",
 			Description: "Администратор системы с полным доступом",
 			Pages:       sharedutil.JsonObject{},
-			Permissions: sharedutil.JsonObject{},
+			Permissions: sharedutil.JsonObject{}, // Empty - admin bypasses permission check
 		},
 		{
 			ID:          2,
 			Name:        "user",
 			Description: "Пользователь системы",
 			Pages:       sharedutil.JsonObject{},
-			Permissions: sharedutil.JsonObject{},
+			// Example permissions for user role
+			Permissions: sharedutil.JsonObject{
+				"/api/v1/user/:id":    []string{"GET", "PATCH"},
+				"/api/v1/order/page":  []string{"GET"},
+				"/api/v1/order/:id":   []string{"GET"},
+				"/api/v1/part/search": []string{"GET"},
+			},
 		}}
 
 	for _, role := range roles {
@@ -39,18 +56,16 @@ func SeedRoles(db *gorm.DB) {
 		} else if err != nil {
 			log.Printf("Ошибка при проверке роли %s: %v\n", role.Name, err)
 		} else {
-			// Роль существует, обновляем только если изменилась
-			if existingRole.Name != role.Name || existingRole.Description != role.Description {
-				if err := db.Model(&existingRole).Updates(map[string]interface{}{
-					"name":        role.Name,
-					"description": role.Description,
-				}).Error; err != nil {
-					log.Printf("Ошибка при обновлении роли %s: %v\n", role.Name, err)
-				} else {
-					log.Printf("Роль %s успешно обновлена\n", role.Name)
-				}
+			// Роль существует, обновляем name, description и permissions
+			if err := db.Model(&existingRole).Updates(map[string]interface{}{
+				"name":        role.Name,
+				"description": role.Description,
+				"permissions": role.Permissions,
+				"pages":       role.Pages,
+			}).Error; err != nil {
+				log.Printf("Ошибка при обновлении роли %s: %v\n", role.Name, err)
 			} else {
-				log.Printf("Роль %s уже существует и актуальна\n", role.Name)
+				log.Printf("Роль %s успешно обновлена\n", role.Name)
 			}
 		}
 	}

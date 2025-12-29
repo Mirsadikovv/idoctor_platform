@@ -19,10 +19,10 @@ import (
 	file_model "github.com/Mirsadikovv/idoctor_platform/src/module/file_service/model"
 	language_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/language_service"
 	language_model "github.com/Mirsadikovv/idoctor_platform/src/module/language_service/model"
-	order_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/order_service"
-	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
 	order_parts_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/order_parts_service"
 	order_part_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_parts_service/model"
+	order_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/order_service"
+	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
 	organization_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service"
 	organization_model "github.com/Mirsadikovv/idoctor_platform/src/module/organization_service/model"
 	part_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/part_service"
@@ -121,6 +121,7 @@ func Exec(env *Env) {
 	role_cmd.Cmd(router, db, log, authMiddleware)
 	supplier_cmd.Cmd(router, db, log, authMiddleware)
 	user_cmd.Cmd(router, db, log, authMiddleware)
+	order_parts_cmd.Cmd(router, db, log, authMiddleware)
 
 	router.GET("/swagger/dir", swaggerDirs())
 	router.GET("/swagger", func(c echo.Context) error {

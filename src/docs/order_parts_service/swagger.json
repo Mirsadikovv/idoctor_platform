@@ -1,0 +1,471 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is an Order Parts Service API.",
+        "title": "Order Parts Service API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/order-part": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create new order part",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order-part"
+                ],
+                "summary": "Create order part",
+                "operationId": "create-order-part",
+                "parameters": [
+                    {
+                        "description": "order part information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/order_part_dto.OrderPartCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ID64"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/order-part/page": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "order-part-service-page",
+                "tags": [
+                    "order-part"
+                ],
+                "summary": "order-part-service-page",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "name": "include_deleted",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "only_deleted",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "order_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "part_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "supplier_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Items per page",
+                        "name": "perpage",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/OrderPartPage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/order-part/search": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all order parts with search",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order-part"
+                ],
+                "summary": "Get all order parts with search",
+                "operationId": "search-order-part",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "name": "include_deleted",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "only_deleted",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "order_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "part_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "supplier_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "Limit the number of results",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/order_part_dto.OrderPartResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/order-part/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get order part by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order-part"
+                ],
+                "summary": "Get order part by ID",
+                "operationId": "get-order-part-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order part ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/order_part_dto.OrderPartResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update existing order part",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order-part"
+                ],
+                "summary": "Update order part",
+                "operationId": "update-order-part",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order part ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "order part information",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/order_part_dto.OrderPartUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {}
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Soft delete order part if active, restore if already deleted",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order-part"
+                ],
+                "summary": "Delete or restore order part",
+                "operationId": "delete-or-restore-order-part",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order part ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {}
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ID64": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "OrderPartPage": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/order_part_dto.OrderPartResponse"
+                    }
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "order_part_dto.OrderPartCreate": {
+            "type": "object",
+            "required": [
+                "income_price",
+                "order_id",
+                "part_id",
+                "price",
+                "supplier_id"
+            ],
+            "properties": {
+                "income_price": {
+                    "type": "number"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "part_id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "supplier_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "order_part_dto.OrderPartResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "income_price": {
+                    "type": "number"
+                },
+                "order": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "part": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "part_id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "supplier": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "supplier_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "order_part_dto.OrderPartUpdate": {
+            "type": "object",
+            "properties": {
+                "income_price": {
+                    "type": "number"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "supplier_id": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

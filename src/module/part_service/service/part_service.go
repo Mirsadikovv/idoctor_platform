@@ -35,7 +35,7 @@ func NewPartService(db *gorm.DB) PartService {
 }
 
 func (s *partService) Find(ctx context.Context, filter pg.Filter) ([]part_dto.Part, error) {
-	var parts []part_model.Part
+	var parts []part_dto.Part
 
 	tx := s.db.WithContext(ctx)
 	if filter != nil {
@@ -46,12 +46,7 @@ func (s *partService) Find(ctx context.Context, filter pg.Filter) ([]part_dto.Pa
 		return nil, err
 	}
 
-	result := make([]part_dto.Part, len(parts))
-	for i, part := range parts {
-		result[i] = convertPartToDTO(&part)
-	}
-
-	return result, nil
+	return parts, nil
 }
 
 func (s *partService) FindOne(ctx context.Context, filter pg.Filter) (*part_dto.Part, error) {
@@ -124,22 +119,22 @@ func (s *partService) DeleteOrRestore(ctx context.Context, id int64) error {
 	}
 }
 
-func convertPartToDTO(part *part_model.Part) part_dto.Part {
-	return part_dto.Part{
-		Id:          part.Id,
-		Name:        part.Name,
-		DeviceId:    part.DeviceId,
-		SupplierId:  part.SupplierId,
-		MasterId:    part.MasterId,
-		Device:      convertDeviceToInfo(part.Device),
-		Supplier:    convertSupplierToInfo(part.Supplier),
-		Master:      convertMasterToInfo(part.Master),
-		IncomePrice: part.IncomePrice,
-		Price:       part.Price,
-		CreatedAt:   part.CreatedAt,
-		DeletedAt:   convertDeletedAt(part.DeletedAt),
-	}
-}
+// func convertPartToDTO(part *part_model.Part) part_dto.Part {
+// 	return part_dto.Part{
+// 		Id:          part.Id,
+// 		Name:        part.Name,
+// 		DeviceId:    part.DeviceId,
+// 		SupplierId:  part.SupplierId,
+// 		MasterId:    part.MasterId,
+// 		Device:      convertDeviceToInfo(part.Device),
+// 		Supplier:    convertSupplierToInfo(part.Supplier),
+// 		Master:      convertMasterToInfo(part.Master),
+// 		IncomePrice: part.IncomePrice,
+// 		Price:       part.Price,
+// 		CreatedAt:   part.CreatedAt,
+// 		DeletedAt:   convertDeletedAt(part.DeletedAt),
+// 	}
+// }
 
 func convertDeviceToInfo(device *device_model.Device) *part_dto.DeviceInfo {
 	if device == nil {

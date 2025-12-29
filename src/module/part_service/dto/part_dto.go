@@ -1,6 +1,7 @@
 package part_dto
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/Mirsadikovv/shared/response"
@@ -18,11 +19,11 @@ type SupplierInfo struct {
 } // @Name SupplierInfo
 
 type MasterInfo struct {
-	Id         int64   `json:"id"`
-	FirstName  string  `json:"first_name"`
-	LastName   string  `json:"last_name"`
-	MiddleName string  `json:"middle_name"`
-	Username   string  `json:"username"`
+	Id          int64   `json:"id"`
+	FirstName   string  `json:"first_name"`
+	LastName    string  `json:"last_name"`
+	MiddleName  string  `json:"middle_name"`
+	Username    string  `json:"username"`
 	PhoneNumber *string `json:"phone_number,omitempty"`
 } // @Name MasterInfo
 
@@ -41,18 +42,18 @@ type PartUpdate struct {
 type PartPage = response.PageData[Part] // @name PartPage
 
 type Part struct {
-	Id          int64         `json:"id"`
-	Name        string        `json:"name"`
-	DeviceId    int64         `json:"device_id"`
-	SupplierId  int64         `json:"supplier_id"`
-	MasterId    int64         `json:"master_id"`
-	Device      *DeviceInfo   `json:"device,omitempty"`
-	Supplier    *SupplierInfo `json:"supplier,omitempty"`
-	Master      *MasterInfo   `json:"master,omitempty"`
-	IncomePrice float64       `json:"income_price"`
-	Price       float64       `json:"price"`
-	CreatedAt   *time.Time    `json:"created_at"`
-	DeletedAt   *time.Time    `json:"deleted_at,omitempty"`
+	Id          int64            `json:"id"`
+	Name        string           `json:"name"`
+	DeviceId    int64            `json:"device_id"`
+	SupplierId  int64            `json:"supplier_id"`
+	MasterId    int64            `json:"master_id"`
+	Device      *json.RawMessage `json:"device,omitempty"`
+	Supplier    *json.RawMessage `json:"supplier,omitempty"`
+	Master      *json.RawMessage `json:"master,omitempty"`
+	IncomePrice float64          `json:"income_price"`
+	Price       float64          `json:"price"`
+	CreatedAt   *time.Time       `json:"created_at"`
+	DeletedAt   *time.Time       `json:"deleted_at,omitempty"`
 } // @Name Part
 
 type PartParams struct {

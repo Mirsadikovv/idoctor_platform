@@ -55,7 +55,7 @@ func (s *partService) Find(ctx context.Context, filter pg.Filter) ([]part_dto.Pa
 }
 
 func (s *partService) FindOne(ctx context.Context, filter pg.Filter) (*part_dto.Part, error) {
-	var part part_model.Part
+	var part part_dto.Part
 
 	tx := s.db.WithContext(ctx)
 	if filter != nil {
@@ -66,8 +66,8 @@ func (s *partService) FindOne(ctx context.Context, filter pg.Filter) (*part_dto.
 		return nil, err
 	}
 
-	result := convertPartToDTO(&part)
-	return &result, nil
+	// result := convertPartToDTO(&part)
+	return &part, nil
 }
 
 func (s *partService) Page(ctx context.Context, paginate *request.Paginate, filter pg.Filter) (*part_dto.PartPage, error) {

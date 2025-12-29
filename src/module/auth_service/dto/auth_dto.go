@@ -39,7 +39,6 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, erro
 		Scopes(filter).Select(
 		"users.id",
 		"users.username",
-		"users.name",
 		"users.role_id",
 		"users.last_visit",
 		"users.created_at",

@@ -29,7 +29,7 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, erro
 	var user user_model.User
 	err := db.Table("users").
 		Select("users.id", "users.username", "users.role_id", "users.last_visit", "users.created_at", "users.blocked_at").
-		Joins("INNER JOIN roles ON roles.id = users.role_id").
+		Joins("LEFT JOIN roles ON roles.id = users.role_id").
 		Where("users.id = ?", u.Id).
 		Where("users.blocked_at IS NULL").
 		First(&user).Error

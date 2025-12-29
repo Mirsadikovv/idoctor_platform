@@ -9,3 +9,4 @@ Makefile.local
 .claude
 /bin
 letsencrypt/
+t.json

@@ -39,6 +39,7 @@ func NewPartHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMiddl
 		partGroup.PUT("/:id", handler.Update)
 		partGroup.DELETE("/:id", handler.DeleteOrRestore)
 	}
+
 }
 
 // Search godoc
@@ -192,7 +193,10 @@ func (h *partHandler) FindById(c echo.Context) error {
 	}
 
 	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("id = ?", id)
+		return tx.Preload("Device").
+			Preload("Supplier").
+			Preload("Master").
+			Where("id = ?", id)
 	}
 
 	part, err := h.partService.FindOne(req.Context(), filter)

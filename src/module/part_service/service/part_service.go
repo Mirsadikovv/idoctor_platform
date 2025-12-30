@@ -50,19 +50,7 @@ func (s *partService) Find(ctx context.Context, filter pg.Filter) ([]part_dto.Pa
 }
 
 func (s *partService) FindOne(ctx context.Context, filter pg.Filter) (*part_dto.Part, error) {
-	var part part_dto.Part
-
-	tx := s.db.WithContext(ctx)
-	if filter != nil {
-		tx = filter(tx)
-	}
-
-	if err := tx.Preload("Device").Preload("Supplier").Preload("Master").First(&part).Error; err != nil {
-		return nil, err
-	}
-
-	// result := convertPartToDTO(&part)
-	return &part, nil
+	return pg.FindOneWithScan[part_model.Part, part_dto.Part](s.db.WithContext(ctx), filter)
 }
 
 func (s *partService) Page(ctx context.Context, paginate *request.Paginate, filter pg.Filter) (*part_dto.PartPage, error) {

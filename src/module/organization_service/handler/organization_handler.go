@@ -48,7 +48,7 @@ func NewOrganizationHandler(group *echo.Group, db *gorm.DB, log logger.Logger, a
 		organizationTranslationGroup.PATCH("/:translation_id", handler.UpdateTranslation)
 	}
 
-	invitationGroup := group.Group("/invitation", organizationAuthMiddleware)
+	invitationGroup := group.Group("/invitation")
 	{
 		invitationGroup.POST("/create", handler.AddInvitation)
 		invitationGroup.PATCH("/delete_or_restore/:id", handler.DeleteOrRestoreInvitation)

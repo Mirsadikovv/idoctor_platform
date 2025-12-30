@@ -1,7 +1,6 @@
 package auth_dto
 
 import (
-	"fmt"
 	"log"
 
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
@@ -30,7 +29,7 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, erro
 		return tx.Joins("LEFT JOIN roles ON roles.id = users.role_id").
 			Where("users.id = ?", u.Id).
 			Where("users.blocked_at IS NULL").
-			Where(fmt.Sprintf(`roles.permissions -> '%s' ? '%s'`, ctx.Path(), ctx.Request().Method)).
+			Where(gorm.Expr(`roles.permissions -> '%s' ? '%s'`, ctx.Path(), ctx.Request().Method)).
 			Limit(1)
 	}
 

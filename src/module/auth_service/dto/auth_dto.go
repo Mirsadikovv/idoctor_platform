@@ -49,15 +49,13 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, erro
 	if err := result.Error; err != nil {
 		return true, err
 	}
+	req := request.RequestWithData[user_model.User](ctx)
+	req.SetUser(&user)
 
 	log.Println(result.RowsAffected, "------------------")
 	if result.RowsAffected == 0 {
 		return true, gorm.ErrRecordNotFound
 	}
-
-	req := request.RequestWithData[user_model.User](ctx)
-
-	req.SetUser(&user)
 
 	return false, nil
 }

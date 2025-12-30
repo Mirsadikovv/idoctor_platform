@@ -1,29 +1,36 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { LanguageService, type LanguagePartialType, type LanguageType } from "@/service";
-import Form from "@/components/quasar/form/Form.vue";
-import Button from "@/components/quasar/btn/Button.vue";
-import Input from "@/components/quasar/form/Input.vue";
 import { ref } from "vue";
+import { formRequired } from "@/common";
+import { initalBatch } from "../utils";
+import { LanguageContentService, type LangContentCreateOrUpdate } from "@/service";
+
 import Title from "@/components/Title.vue";
+import Form from "@/components/quasar/form/Form.vue";
+import Input from "@/components/quasar/form/Input.vue";
+import Button from "@/components/quasar/btn/Button.vue";
 import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
-import { formRequired } from "@/common/validator";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-const LanguageModel = ref<LanguagePartialType>({});
+const model = ref<LangContentCreateOrUpdate>();
 
-async function save(model: LanguageType) {
-	const response = await LanguageService.create(model);
+initalBatch().then((res) => (model.value = res));
+
+async function save(newModel: LangContentCreateOrUpdate) {
+	const response = await LanguageContentService.createOrUpdate({
+		...newModel,
+		contents: newModel.contents.map((item) => ({ ...item, key: newModel.key })),
+	});
 
 	if (!response) return false;
 
 	router.push({
-		name: "LANGUAGE_PAGE",
+		name: "TRANSLATED_CONTENT",
 	});
 
 	return true;
@@ -43,32 +50,49 @@ async function save(model: LanguageType) {
 					<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
 					<q-breadcrumbs>
 						<q-breadcrumbs-el
-							:label="$tl('language_list')"
+							:label="$tl('translated_content_page')"
 							icon="article"
-							:to="{ name: 'LANGUAGE_PAGE' }"
+							:to="{ name: 'TRANSLATED_CONTENT' }"
 						/>
 						<q-breadcrumbs-el :label="$tl('page_for_create')" />
 					</q-breadcrumbs>
 				</div>
-				<Form v-model="LanguageModel" :save="save">
+				<Form :model-value="model" :save="save">
 					<template #title>
-						<Title class="mb-5">{{ $tl("create_lang") }}</Title>
+						<Title class="mb-5">{{ $tl("add_translate") }}</Title>
 					</template>
 
-					<template #name="{ model }">
+					<template #key="{ model }">
 						<Input
-							:rules="[formRequired()]"
-							v-model="model.name"
-							label="name"
+							v-model="model.key"
+							label="key"
 							class="col-lg-6 col-md-6 col-12"
+							:rules="[formRequired($tl('this_field_is_required'))]"
 						/>
 					</template>
-					<template #description="{ model }">
-						<Input
-							v-model="model.description"
-							label="description"
-							class="col-lg-6 col-md-6 col-12"
-						/>
+
+					<template #separator>
+						<div class="col-12">
+							<q-separator class="mx--4! my-4px!" />
+						</div>
+					</template>
+
+					<template #values>
+						<div
+							v-if="model?.contents"
+							class="col-lg-4 col-md-6 col-12"
+							v-for="item in model.contents"
+							:key="item.languageId"
+						>
+							<div class="mb-2 text-base font-medium">
+								{{ item.langName }} | {{ item.LangDescp }}
+							</div>
+							<Input
+								v-model="item.value"
+								label="value"
+								:rules="[formRequired($tl('this_field_is_required'))]"
+							/>
+						</div>
 					</template>
 
 					<template #actions="{ loading }">

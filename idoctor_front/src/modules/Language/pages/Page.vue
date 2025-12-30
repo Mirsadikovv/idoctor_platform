@@ -2,10 +2,18 @@
 import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
 import { ref } from "vue";
 import { LanguageService, type LanguagePageData } from "@/service";
+import { useAppNavigation } from "@/composables/useAppNavigation";
+import { useAuthStore } from "@/store/auth-store";
 import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import PageLoading from "@/components/PageLoading.vue";
-import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
-import CreateLang from "@module/Language/pages/Create.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
+import AppFooter from "@/components/AppFooter.vue";
+import IconDialog from "@/components/quasar/dialog/IconDialog.vue";
+import EditLang from "@module/Language/pages/Edit.vue";
+import ConfirmDialog from "@module/Language/components/ConfirmDialog.vue";
+
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
 const languagePage = ref<LanguagePageData>({
 	data: [],
@@ -34,132 +42,155 @@ async function page(query: string = "") {
 </script>
 
 <template>
-	<PageLoading :find="page" #="{ fetch }">
-		<div class="flex! height-full gap-x-4 items-center mb-3">
-			<q-breadcrumbs>
-				<q-breadcrumbs-el :label="$tl('language_list')" icon="article" />
-			</q-breadcrumbs>
-			<q-space></q-space>
+	<PageLoading :find="page" #="{ fetch, loading }">
+		<LoadingSkeleton v-if="loading" />
 
-			<ButtonDialog label="create" :style="'width: 100%;'" :fetch="fetch">
-				<CreateLang :fetch="fetch" />
-			</ButtonDialog>
-		</div>
-
-		<ResponsiveTable :models="languagePage" hasOrder>
-			<template #name:thead> </template>
-			<template #name="{ model }">
-				<router-link
-					:to="{ name: 'LANGUAGE_VIEW', params: { id: model.id } }"
-					class="text-primary text-decoration-none"
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
 				>
-					{{ model.name }}
-				</router-link>
-			</template>
+					<ResponsiveTable :models="languagePage" hasOrder>
+						<template #name:thead> </template>
+						<template #name="{ model }">
+							<router-link
+								:to="{ name: 'LANGUAGE_VIEW', params: { id: model.id } }"
+								class="text-primary text-decoration-none"
+							>
+								{{ model.name }}
+							</router-link>
+						</template>
 
-			<template #description:thead> </template>
-			<template #description="{ model }">
-				{{ model.description }}
-			</template>
-
-			<template #status:thead> </template>
-			<template #status="{ model }">
-				<q-chip :color="!model.deletedAt ? 'positive' : 'negative'" text-color="white">
-					{{ !model.deletedAt ? $tl("ACTIVE") : $tl("DELETED") }}
-				</q-chip>
-			</template>
-
-			<template #edit:thead>
-				<div class="text-center">
-					{{ $tl("action") }}
-				</div>
-			</template>
-			<template #edit="{ model }">
-				<div class="text-center">
-					<IconDialog
-						v-if="!model.deletedAt"
-						icon="edit"
-						:style="'width: 40%;'"
-						:fetch="fetch"
-						tooltipText="edit_lang"
-						withTooltip
-					>
-						<EditLang :id="model.id" :fetch="fetch" />
-					</IconDialog>
-
-					<IconDialog
-						v-if="model.deletedAt"
-						icon="sync"
-						iconColor="positive"
-						tooltipText="restore_lang"
-						withTooltip
-					>
-						<ConfirmDialog :fetch="fetch" :id="model.id" :isRemove="false" />
-					</IconDialog>
-					<IconDialog
-						v-if="!model.deletedAt"
-						icon="delete"
-						iconColor="negative"
-						tooltipText="remove_lang"
-						withTooltip
-					>
-						<ConfirmDialog :fetch="fetch" :id="model.id" :isRemove="true" />
-					</IconDialog>
-				</div>
-			</template>
-
-			<!-- Кастомный мобильный вид для языков -->
-			<template #card="{ model, orderNumber }">
-				<q-item
-					class="language-item-telegram"
-					clickable
-					:to="{ name: 'LANGUAGE_VIEW', params: { id: model.id } }"
-				>
-					<q-item-section avatar v-if="orderNumber">
-						<q-avatar color="primary" text-color="white" size="md">
-							{{ orderNumber }}
-						</q-avatar>
-					</q-item-section>
-
-					<q-item-section>
-						<q-item-label class="text-weight-bold text-h6">
-							{{ model.name }}
-						</q-item-label>
-						<q-item-label caption class="text-body2">
+						<template #description:thead> </template>
+						<template #description="{ model }">
 							{{ model.description }}
-						</q-item-label>
-						<!-- Чип статуса -->
-						<div class="q-mt-xs">
+						</template>
+
+						<template #status:thead> </template>
+						<template #status="{ model }">
 							<q-chip
 								:color="!model.deletedAt ? 'positive' : 'negative'"
-								outline
-								size="sm"
-								dense
+								text-color="white"
 							>
-								{{ !model.deletedAt ? $tl("active") : $tl("deleted") }}
+								{{ !model.deletedAt ? $tl("ACTIVE") : $tl("DELETED") }}
 							</q-chip>
-						</div>
-					</q-item-section>
+						</template>
 
-					<q-item-section side>
-						<q-icon name="chevron_right" color="grey-6" />
-					</q-item-section>
-				</q-item>
-			</template>
+						<template #edit:thead>
+							<div class="text-center">
+								{{ $tl("action") }}
+							</div>
+						</template>
+						<template #edit="{ model }">
+							<div class="text-center">
+								<IconDialog
+									v-if="!model.deletedAt"
+									icon="edit"
+									:style="'width: 40%;'"
+									:fetch="fetch"
+									tooltipText="edit_lang"
+									withTooltip
+								>
+									<EditLang :id="model.id" :fetch="fetch" />
+								</IconDialog>
 
-			<template #tfoot="{ totalPages }">
-				<TablePaginate
-					v-model:pikers="pikers"
-					:total="totalPages"
-					:pick="pick"
-					@page="fetch"
-				/>
-			</template>
-		</ResponsiveTable>
+								<IconDialog
+									v-if="model.deletedAt"
+									icon="sync"
+									iconColor="positive"
+									tooltipText="restore_lang"
+									withTooltip
+								>
+									<ConfirmDialog
+										:fetch="fetch"
+										:id="model.id"
+										:isRemove="false"
+									/>
+								</IconDialog>
+								<IconDialog
+									v-if="!model.deletedAt"
+									icon="delete"
+									iconColor="negative"
+									tooltipText="remove_lang"
+									withTooltip
+								>
+									<ConfirmDialog :fetch="fetch" :id="model.id" :isRemove="true" />
+								</IconDialog>
+							</div>
+						</template>
+
+						<!-- Кастомный мобильный вид для языков -->
+						<template #card="{ model, orderNumber }">
+							<q-item
+								class="language-item-telegram"
+								clickable
+								:to="{ name: 'LANGUAGE_EDIT', params: { id: model.id } }"
+							>
+								<q-item-section avatar v-if="orderNumber">
+									<q-avatar color="primary" text-color="white" size="md">
+										{{ orderNumber }}
+									</q-avatar>
+								</q-item-section>
+
+								<q-item-section>
+									<q-item-label class="text-weight-bold text-h6">
+										{{ model.name }}
+									</q-item-label>
+									<q-item-label caption class="text-body2">
+										{{ model.description }}
+									</q-item-label>
+									<!-- Чип статуса -->
+									<div class="q-mt-xs">
+										<q-chip
+											:color="!model.deletedAt ? 'positive' : 'negative'"
+											outline
+											size="sm"
+											dense
+										>
+											{{ !model.deletedAt ? $tl("active") : $tl("deleted") }}
+										</q-chip>
+									</div>
+								</q-item-section>
+
+								<q-item-section side>
+									<q-icon name="chevron_right" color="grey-6" />
+								</q-item-section>
+							</q-item>
+						</template>
+
+						<template #tfoot="{ totalPages }">
+							<TablePaginate
+								v-model:pikers="pikers"
+								:total="totalPages"
+								:pick="pick"
+								@page="fetch"
+							/>
+						</template>
+					</ResponsiveTable>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'LANGUAGE_CREATE' }"
+				add-button-icon="add_circle"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
+			/>
+		</q-layout>
 	</PageLoading>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
+@import "@/styles/telegram-app.scss";
 .language-item-telegram {
 	max-height: 120px;
 	min-height: 90px;

@@ -56,7 +56,7 @@ async function save(model: UserUpdateType) {
 					:style="{
 						height: 'calc(var(--app-height, 100vh) - 150px)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-16"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
 				>
 					<div class="flex! gap-x-4 items-center mb-3">
 						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
@@ -66,7 +66,6 @@ async function save(model: UserUpdateType) {
 								icon="article"
 								:to="{ name: 'PAGE_USER' }"
 							/>
-							<q-breadcrumbs-el :label="$tl('page_for_edit')" />
 						</q-breadcrumbs>
 					</div>
 					<Form v-model="userModel" :save="save">
@@ -74,18 +73,23 @@ async function save(model: UserUpdateType) {
 							<Title class="mb-5">{{ $tl("edit_user_credentials") }}</Title>
 						</template>
 
-		<template #username="{ model }">
-			<Input
-				v-model="model.username"
-				label="Username"
-				class="col-12"
-				:rules="[formRequired()]"
-			/>
-		</template>
+						<template #username="{ model }">
+							<Input
+								v-model="model.username"
+								label="Username"
+								class="col-12"
+								:rules="[formRequired()]"
+							/>
+						</template>
 
-		<template #password="{ model }">
-			<Input v-model="model.password" label="New Password" type="password" class="col-12" />
-		</template>
+						<template #password="{ model }">
+							<Input
+								v-model="model.password"
+								label="New Password"
+								type="password"
+								class="col-12"
+							/>
+						</template>
 
 						<template #actions="{ loading }">
 							<Button :loading="loading" type="submit" class="ml-auto">

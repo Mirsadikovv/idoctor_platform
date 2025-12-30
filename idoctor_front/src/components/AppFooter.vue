@@ -42,7 +42,9 @@
 				dropdown-icon="settings"
 				class="flex clean-menu-dropdown bg-transparent! text-white! rounded-lg! transition-all duration-200 min-h-44px! min-w-44px!"
 			>
-				<q-list class="telegram-menu-list min-w-200px max-w-320px bg-white/95 backdrop-blur-20 rounded-xl border border-black/10 shadow-2xl p-2">
+				<q-list
+					class="telegram-menu-list min-w-200px max-w-320px bg-white/95 backdrop-blur-20 rounded-xl border border-black/10 shadow-2xl p-2"
+				>
 					<!-- Profile Item -->
 					<q-item
 						clickable
@@ -126,11 +128,11 @@
 				label="logout"
 			>
 				<q-card class="min-w-300px w-400px rounded-xl overflow-hidden">
-					<q-card-section class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+					<q-card-section
+						class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6"
+					>
 						<div class="text-2xl font-bold">{{ $tl("logout_confirm") }}</div>
-						<div class="text-lg opacity-90 mt-1">
-							{{ $tl("are_you_sure") }}?
-						</div>
+						<div class="text-lg opacity-90 mt-1">{{ $tl("are_you_sure") }}?</div>
 					</q-card-section>
 
 					<q-card-actions align="center" class="flex gap-3 p-4">

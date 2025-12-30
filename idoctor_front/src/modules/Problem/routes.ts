@@ -19,7 +19,7 @@ const problemCreateRoute: RouteRecordRaw = {
 	path: "problems/create",
 	name: "PROBLEM_CREATE",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Problem/pages/Create.vue"),
 	meta: {
 		title: "problem_create_title",
 		activeLinkGroup: "PROBLEM_GROUP",
@@ -41,7 +41,7 @@ const problemEditRoute: RouteRecordRaw = {
 	path: "problems/:id/edit",
 	name: "PROBLEM_EDIT",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Problem/pages/Edit.vue"),
 	meta: {
 		title: "problem_edit_title",
 		activeLinkGroup: "PROBLEM_GROUP",
@@ -49,16 +49,18 @@ const problemEditRoute: RouteRecordRaw = {
 };
 
 export function ProblemRoutes(sort: number): RouteRecordRaw[] {
-	return [problemPageRoute, problemCreateRoute, problemViewRoute, problemEditRoute].map((route) => {
-		if (route?.meta?.sidebar) {
-			return {
-				...route,
-				meta: {
-					...route.meta,
-					sort,
-				},
-			};
-		}
-		return route;
-	});
+	return [problemPageRoute, problemCreateRoute, problemViewRoute, problemEditRoute].map(
+		(route) => {
+			if (route?.meta?.sidebar) {
+				return {
+					...route,
+					meta: {
+						...route.meta,
+						sort,
+					},
+				};
+			}
+			return route;
+		},
+	);
 }

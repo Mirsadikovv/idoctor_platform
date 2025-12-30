@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
 import { ref } from "vue";
 import { SupplierService, type SupplierPageData } from "../service";
-import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import PageLoading from "@/components/PageLoading.vue";
-import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
-import CreateSupplier from "./Create.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
+import AppFooter from "@/components/AppFooter.vue";
+import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
+import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
+import { useAppNavigation } from "@/composables/useAppNavigation";
+import { useAuthStore } from "@/store/auth-store";
+
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
 const supplierPage = ref<SupplierPageData>({
 	data: [],
@@ -42,125 +47,115 @@ async function page(query: string = "") {
 </script>
 
 <template>
-	<PageLoading :find="page" #="{ fetch }">
-		<div class="flex! gap-x-4 items-center mb-3">
-			<q-breadcrumbs>
-				<q-breadcrumbs-el :label="$tl('supplier_list')" icon="business" />
-			</q-breadcrumbs>
-			<q-space></q-space>
+	<PageLoading :find="page" #="{ fetch, loading }">
+		<LoadingSkeleton v-if="loading" />
 
-			<ButtonDialog label="create" :style="'width: auto;'" :fetch="fetch">
-				<CreateSupplier :fetch="fetch" />
-			</ButtonDialog>
-		</div>
-
-		<ResponsiveTable :models="supplierPage" hasOrder>
-			<template #name:thead>
-				{{ $tl("supplier_name") }}
-			</template>
-			<template #name="{ model }">
-				<router-link
-					:to="{ name: 'SUPPLIER_VIEW', params: { id: model.id } }"
-					class="text-primary text-decoration-none"
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
 				>
-					{{ model.name }}
-				</router-link>
-			</template>
+					<ResponsiveTable :models="supplierPage" hasOrder :loading="loading">
+						<template #name:thead>
+							{{ $tl("supplier_name") }}
+						</template>
+						<template #name="{ model }">
+							<router-link
+								:to="{ name: 'SUPPLIER_VIEW', params: { id: model.id } }"
+								class="text-primary text-decoration-none"
+							>
+								{{ model.name }}
+							</router-link>
+						</template>
 
-			<template #created_at:thead>
-				{{ $tl("created_at") }}
-			</template>
-			<template #created_at="{ model }">
-				{{ new Date(model.created_at).toLocaleDateString() }}
-			</template>
-
-			<template #status:thead>
-				{{ $tl("status") }}
-			</template>
-			<template #status="{ model }">
-				<q-chip :color="!model.deleted_at ? 'positive' : 'negative'" text-color="white">
-					{{ !model.deleted_at ? $tl("ACTIVE") : $tl("DELETED") }}
-				</q-chip>
-			</template>
-
-
-			<template #tfoot="{ totalPages }">
-				<TablePaginate
-					v-model:pikers="pikers"
-					:total="totalPages"
-					:pick="pick"
-					@page="fetch"
-				/>
-			</template>
-			<!-- Кастомный мобильный вид для поставщиков -->
-			<template #card="{ model, orderNumber }">
-				<q-item
-					class="supplier-item-telegram"
-					clickable
-					:to="{ name: 'SUPPLIER_VIEW', params: { id: model.id } }"
-				>
-					<q-item-section avatar v-if="orderNumber">
-						<q-avatar color="primary" text-color="white" size="md">
-							{{ orderNumber }}
-						</q-avatar>
-					</q-item-section>
-
-					<q-item-section>
-						<q-item-label class="text-weight-bold text-h6">
-							{{ model.name }}
-						</q-item-label>
-						<q-item-label caption class="text-body2">
+						<template #created_at:thead>
+							{{ $tl("created_at") }}
+						</template>
+						<template #created_at="{ model }">
 							{{ new Date(model.created_at).toLocaleDateString() }}
-						</q-item-label>
-						<!-- Чип статуса -->
-						<div class="q-mt-xs">
+						</template>
+
+						<template #status:thead>
+							{{ $tl("status") }}
+						</template>
+						<template #status="{ model }">
 							<q-chip
 								:color="!model.deleted_at ? 'positive' : 'negative'"
-								outline
-								size="sm"
-								dense
+								text-color="white"
 							>
 								{{ !model.deleted_at ? $tl("ACTIVE") : $tl("DELETED") }}
 							</q-chip>
-						</div>
-					</q-item-section>
+						</template>
 
-					<q-item-section side>
-						<q-icon name="chevron_right" color="grey-6" />
-					</q-item-section>
-				</q-item>
-			</template>
-		</ResponsiveTable>
+						<template #tfoot="{ totalPages }">
+							<TablePaginate
+								v-model:pikers="pikers"
+								:total="totalPages"
+								:pick="pick"
+								@page="fetch"
+							/>
+						</template>
+						<!-- Кастомный мобильный вид для поставщиков -->
+						<template #card="{ model, orderNumber }">
+							<q-item
+								class="supplier-item-telegram"
+								clickable
+								:to="{ name: 'SUPPLIER_EDIT', params: { id: model.id } }"
+							>
+								<q-item-section avatar v-if="orderNumber">
+									<q-avatar color="primary" text-color="white" size="md">
+										{{ orderNumber }}
+									</q-avatar>
+								</q-item-section>
+
+								<q-item-section>
+									<q-item-label class="text-weight-bold text-h6">
+										{{ model.name }}
+									</q-item-label>
+									<q-item-label caption class="text-body2">
+										{{ new Date(model.created_at).toLocaleDateString() }}
+									</q-item-label>
+									<!-- Чип статуса -->
+									<div class="q-mt-xs">
+										<q-chip
+											:color="!model.deleted_at ? 'positive' : 'negative'"
+											outline
+											size="sm"
+											dense
+										>
+											{{ !model.deleted_at ? $tl("ACTIVE") : $tl("DELETED") }}
+										</q-chip>
+									</div>
+								</q-item-section>
+
+								<q-item-section side>
+									<q-icon name="chevron_right" color="grey-6" />
+								</q-item-section>
+							</q-item>
+						</template>
+					</ResponsiveTable>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'SUPPLIER_CREATE' }"
+				add-button-icon="business"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
+			/>
+		</q-layout>
 	</PageLoading>
 </template>
 
-<style scoped lang="scss">
-.supplier-item-telegram {
-	max-height: 120px;
-	min-height: 90px;
-	background: white;
-	padding: 12px;
-	transition: all 0.2s ease;
-	cursor: pointer;
-
-	&:hover {
-		background: rgba(0, 0, 0, 0.02);
-		border-color: rgba(0, 0, 0, 0.12);
-		transform: translateY(-1px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	}
-
-	&:active {
-		transform: translateY(0);
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-	}
-
-	.q-item__section--avatar {
-		padding-right: 16px;
-	}
-
-	.q-item__section--side {
-		padding-left: 8px;
-	}
-}
+<style scoped>
+@import "@/styles/telegram-app.scss";
 </style>

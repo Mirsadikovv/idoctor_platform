@@ -41,6 +41,7 @@ func NewUserHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddl
 		userGroup.GET("/search", handler.Search)
 		userGroup.GET("/:id", handler.GetByID)
 		userGroup.PATCH("/:id", handler.Update)
+		userGroup.PATCH("/:id/full-update", handler.FullUpdate)
 		userGroup.DELETE("/:id", handler.Delete)
 		userGroup.PATCH("/:id/restore", handler.Restore)
 	}
@@ -310,6 +311,46 @@ func (h *userHandler) Update(ctx echo.Context) error {
 	}
 
 	if err := h.userService.Update(ctx, id, &userUpdate); err != nil {
+		return req.BadRequest(err)
+	}
+
+	return req.NoContent()
+}
+
+// FullUpdate godoc
+// @Summary      Full update user
+// @Description  Update all user fields including profile information
+// @Tags 		 user
+// @ID           full-update-user
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Param        id path int true "User ID"
+// @Param        user body user_dto.UserFullUpdate true "User full information to update"
+// @Success      204 "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      404 {object} response.HttpSuccess "User not found"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /user/{id}/full-update [patch]
+func (h *userHandler) FullUpdate(ctx echo.Context) error {
+
+	req := request.Request(ctx)
+
+	id, err := req.ParamToInt("id")
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	var userFullUpdate user_dto.UserFullUpdate
+	{
+		if err := req.BindBody(&userFullUpdate); err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	if err := h.userService.FullUpdate(ctx, id, &userFullUpdate); err != nil {
 		return req.BadRequest(err)
 	}
 

@@ -19,7 +19,7 @@ const languageCreateRoute: RouteRecordRaw = {
 	path: "languages/create",
 	name: "LANGUAGE_CREATE",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Language/pages/Create.vue"),
 	meta: {
 		title: "language_create_title",
 		activeLinkGroup: "LANGUAGE_GROUP",
@@ -41,7 +41,7 @@ const languageEditRoute: RouteRecordRaw = {
 	path: "languages/:id/edit",
 	name: "LANGUAGE_EDIT",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Language/pages/Edit.vue"),
 	meta: {
 		title: "language_edit_title",
 		activeLinkGroup: "LANGUAGE_GROUP",
@@ -49,21 +49,18 @@ const languageEditRoute: RouteRecordRaw = {
 };
 
 export function LanguageRoutes(sort: number): RouteRecordRaw[] {
-	return [
-		languagePageRoute,
-		languageCreateRoute,
-		languageViewRoute,
-		languageEditRoute,
-	].map((route) => {
-		if (route?.meta?.sidebar) {
-			return {
-				...route,
-				meta: {
-					...route.meta,
-					sort,
-				},
-			};
-		}
-		return route;
-	});
+	return [languagePageRoute, languageCreateRoute, languageViewRoute, languageEditRoute].map(
+		(route) => {
+			if (route?.meta?.sidebar) {
+				return {
+					...route,
+					meta: {
+						...route.meta,
+						sort,
+					},
+				};
+			}
+			return route;
+		},
+	);
 }

@@ -15,9 +15,9 @@ const translatedContentRoute: RouteRecordRaw = {
 	},
 };
 const translateCreateRoute: RouteRecordRaw = {
-	path: "",
+	path: "translated-content/create",
 	name: "TRANSLATE_CREATE",
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/TranslatedContent/pages/Create.vue"),
 	meta: {
 		title: "translate_create_page",
 		activeLinkGroup: "TRANSLATED_GROUP",
@@ -25,9 +25,10 @@ const translateCreateRoute: RouteRecordRaw = {
 };
 
 const translateUpdateRoute: RouteRecordRaw = {
-	path: "",
+	path: "translated-content/:id/edit",
 	name: "TRANSLATE_UPDATE",
-	component: () => import("@layout/EmptyLayout.vue"),
+	props: true,
+	component: () => import("@module/TranslatedContent/pages/Edit.vue"),
 	meta: {
 		title: "translate_update_page",
 		activeLinkGroup: "TRANSLATED_GROUP",

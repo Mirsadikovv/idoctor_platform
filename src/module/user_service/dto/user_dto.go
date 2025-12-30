@@ -100,3 +100,19 @@ type UserUpdate struct {
 	Username *string `json:"username,omitempty"`
 	Password *string `json:"password,omitempty"`
 } // @name UserUpdate
+
+type UserFullUpdate struct {
+	Username         *string `json:"username,omitempty"`
+	Password         *string `json:"password,omitempty"`
+	FirstName        *string `json:"firstName,omitempty"`
+	LastName         *string `json:"lastName,omitempty"`
+	MiddleName       *string `json:"middleName,omitempty"`
+	DateOfBirth      *string `json:"dateOfBirth,omitempty"`
+	Gender           *string `json:"gender,omitempty"`
+	RoleId           *int64  `json:"roleId,omitempty"`
+	OrganizationId   *int64  `json:"organizationId,omitempty"`
+	TelegramId       *int64  `json:"telegramId,omitempty"`
+	TelegramUsername *string `json:"telegramUsername,omitempty"`
+	PhoneNumber      *string `json:"phoneNumber,omitempty"`
+	LanguageCode     *string `json:"languageCode,omitempty"`
+} // @name UserFullUpdate

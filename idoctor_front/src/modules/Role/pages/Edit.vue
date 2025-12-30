@@ -59,7 +59,7 @@ async function getByID() {
 					:style="{
 						height: 'calc(var(--app-height, 100vh) - 150px)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-16"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
 				>
 					<div class="flex! gap-x-4 items-center mb-3">
 						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
@@ -69,7 +69,6 @@ async function getByID() {
 								icon="article"
 								:to="{ name: 'PAGE_ROLE' }"
 							/>
-							<q-breadcrumbs-el :label="$tl('page_for_edit')" />
 						</q-breadcrumbs>
 					</div>
 					<Form v-model="role" :save="save">

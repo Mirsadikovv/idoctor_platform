@@ -19,7 +19,7 @@ const orderCreateRoute: RouteRecordRaw = {
 	path: "orders/create",
 	name: "ORDER_CREATE",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Order/pages/Create.vue"),
 	meta: {
 		title: "order_create_title",
 		activeLinkGroup: "ORDER_GROUP",
@@ -30,7 +30,7 @@ const orderEditRoute: RouteRecordRaw = {
 	path: "orders/:id/edit",
 	name: "ORDER_EDIT",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Order/pages/Edit.vue"),
 	meta: {
 		title: "order_edit_title",
 		activeLinkGroup: "ORDER_GROUP",

@@ -26,6 +26,17 @@ const partCreateRoute: RouteRecordRaw = {
 	},
 };
 
+const partViewRoute: RouteRecordRaw = {
+	path: "parts/:id",
+	name: "PART_VIEW",
+	props: true,
+	component: () => import("@module/Part/pages/View.vue"),
+	meta: {
+		title: "part_view_title",
+		activeLinkGroup: "PART_GROUP",
+	},
+};
+
 const partEditRoute: RouteRecordRaw = {
 	path: "parts/:id/edit",
 	name: "PART_EDIT",
@@ -38,7 +49,7 @@ const partEditRoute: RouteRecordRaw = {
 };
 
 export function PartRoutes(sort: number): RouteRecordRaw[] {
-	return [partPageRoute, partCreateRoute, partEditRoute].map((route) => {
+	return [partPageRoute, partCreateRoute, partViewRoute, partEditRoute].map((route) => {
 		if (route?.meta?.sidebar) {
 			return {
 				...route,

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import PerPage from "@/components/PerPage.vue";
 import Paginate from "./Paginate.vue";
-import ColumsPiker from "@/components/ColumsPiker.vue";
 
 export interface Props {
 	total: number;
@@ -12,7 +11,7 @@ export interface Props {
 	hidePerPage?: boolean;
 }
 
-const { maxPages, name, total, pick, pikers } = defineProps<Props>();
+const { maxPages, name, total } = defineProps<Props>();
 
 const emits = defineEmits<{
 	(e: "page", page: number): void;
@@ -24,12 +23,12 @@ const emits = defineEmits<{
 	<tr class="mobile-foot">
 		<th colspan="99" class="border-t! w-full">
 			<div class="flex justify-between items-center w-full!">
-				<ColumsPiker
+				<!-- <ColumsPiker
 					:name="$tl('columns')"
 					:model-value="pikers"
 					:picker="pick"
 					@update:model-value="(value) => emits('update:pikers', value)"
-				/>
+				/> -->
 
 				<Paginate
 					v-if="!hidePerPage"

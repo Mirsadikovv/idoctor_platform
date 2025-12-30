@@ -123,14 +123,42 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 </template>
 
 <style scoped>
+/* Telegram Web App CSS Variables и настройки */
+:root {
+	/* Telegram Web App переменные для поддержки тем */
+	--tg-color-scheme: var(--tg-theme-color-scheme, light);
+	--tg-bg-color: var(--tg-theme-bg-color, #ffffff);
+	--tg-text-color: var(--tg-theme-text-color, #000000);
+	--tg-hint-color: var(--tg-theme-hint-color, #999999);
+	--tg-button-color: var(--tg-theme-button-color, #3390ec);
+	--tg-button-text-color: var(--tg-theme-button-text-color, #ffffff);
+	
+	/* Высота viewport для Telegram Web App */
+	--app-height: var(--tg-viewport-height, 100vh);
+}
+
+/* Поддержка темной темы Telegram */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--tg-bg-color: var(--tg-theme-bg-color, #212121);
+		--tg-text-color: var(--tg-theme-text-color, #ffffff);
+		--tg-hint-color: var(--tg-theme-hint-color, #cccccc);
+	}
+}
+
+/* Telegram Web App optimized styles */
 .auth-container {
 	position: relative;
 	width: 100vw;
-	height: 100vh;
+	height: var(--tg-viewport-height, 100vh);
+	min-height: 100vh;
+	min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
 	overflow: hidden;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	/* Safe area support for Telegram app */
+	padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
 }
 
 /* Анимированный фон */
@@ -154,6 +182,9 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 		radial-gradient(circle at 80% 70%, rgba(57, 73, 171, 0.4) 0%, transparent 50%),
 		radial-gradient(circle at 40% 80%, rgba(94, 53, 177, 0.4) 0%, transparent 50%);
 	animation: meshShift 20s ease-in-out infinite;
+	/* Hardware acceleration для плавности */
+	will-change: transform;
+	transform: translateZ(0);
 }
 
 @keyframes meshShift {
@@ -182,6 +213,9 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	border-radius: 50%;
 	backdrop-filter: blur(10px);
 	animation: float 15s infinite;
+	/* Оптимизация для мобильных */
+	will-change: transform, opacity;
+	transform: translateZ(0); /* Hardware acceleration */
 }
 
 .orb-1 {
@@ -259,8 +293,10 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	position: relative;
 	z-index: 10;
 	width: 100%;
-	max-width: 400px;
+	max-width: min(400px, calc(100vw - 2rem));
 	padding: 1rem;
+	/* Telegram Web App optimized spacing */
+	margin: auto;
 }
 
 .login-card {
@@ -272,6 +308,9 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
 	text-align: center;
 	animation: slideUp 0.8s ease-out;
+	/* GPU ускорение */
+	transform: translateZ(0);
+	will-change: transform, opacity;
 }
 
 @keyframes slideUp {
@@ -396,36 +435,201 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	transform: translateY(0) !important;
 }
 
-/* Мобильная адаптация */
+/* Telegram Web App мобильная адаптация */
 @media (max-width: 768px) {
 	.content-wrapper {
-		max-width: 350px;
+		max-width: min(350px, calc(100vw - 1rem));
 		padding: 0.5rem;
 	}
 
 	.login-card {
-		padding: 2rem 1.5rem;
+		padding: 1.5rem 1rem;
+		border-radius: 20px;
+		margin: 0.5rem;
 	}
 
 	.welcome-text h1 {
 		font-size: 1.75rem;
+		line-height: 1.2;
+	}
+
+	.welcome-text p {
+		font-size: 0.9rem;
 	}
 
 	.icon-inner {
-		width: 70px;
-		height: 70px;
+		width: 64px;
+		height: 64px;
 	}
 
 	.medical-icon {
-		width: 35px;
-		height: 35px;
+		width: 32px;
+		height: 32px;
+	}
+
+	.app-icon {
+		margin-bottom: 1.5rem;
+	}
+
+	.welcome-text {
+		margin-bottom: 1.5rem;
 	}
 }
 
 @media (max-width: 480px) {
+	.content-wrapper {
+		padding: 0.25rem;
+		max-width: calc(100vw - 0.5rem);
+	}
+
 	.login-card {
-		padding: 1.5rem 1rem;
-		border-radius: 20px;
+		padding: 1.25rem 0.75rem;
+		border-radius: 16px;
+		margin: 0.25rem;
+	}
+
+	.welcome-text h1 {
+		font-size: 1.5rem;
+	}
+
+	.welcome-text p {
+		font-size: 0.85rem;
+	}
+
+	.icon-inner {
+		width: 56px;
+		height: 56px;
+	}
+
+	.medical-icon {
+		width: 28px;
+		height: 28px;
+	}
+}
+
+/* Специальные стили для очень узких экранов (типичные для Telegram) */
+@media (max-width: 360px) {
+	.content-wrapper {
+		max-width: calc(100vw - 0.5rem);
+		padding: 0.25rem;
+	}
+
+	.login-card {
+		padding: 1rem 0.5rem;
+		margin: 0.25rem;
+	}
+
+	.welcome-text h1 {
+		font-size: 1.35rem;
+	}
+
+	.app-icon {
+		margin-bottom: 1rem;
+	}
+
+	.welcome-text {
+		margin-bottom: 1rem;
+	}
+}
+
+/* Оптимизация анимаций для слабых устройств */
+@media (prefers-reduced-motion: reduce) {
+	.orb,
+	.gradient-mesh,
+	.login-card {
+		animation: none;
+	}
+	
+	.icon-inner {
+		animation: none;
+		transform: scale(1);
+	}
+}
+
+/* Упрощение анимаций на мобильных для экономии батареи */
+@media (max-width: 768px) {
+	.orb {
+		animation-duration: 20s; /* Замедление анимации */
+	}
+	
+	.gradient-mesh {
+		animation-duration: 30s; /* Замедление фоновой анимации */
+	}
+	
+	/* Уменьшение размытия для лучшей производительности */
+	.orb {
+		backdrop-filter: blur(5px);
+	}
+	
+	.login-card {
+		backdrop-filter: blur(15px);
+	}
+}
+
+/* Отключение тяжелых анимаций для очень слабых устройств */
+@media (max-width: 480px) and (max-height: 700px) {
+	.floating-orbs {
+		display: none; /* Полное отключение орбов на малых экранах */
+	}
+	
+	.gradient-mesh {
+		animation: none; /* Статичный фон */
+	}
+}
+
+/* Telegram Web App специфичные стили */
+/* Отключение выделения текста для лучшего UX */
+.auth-container {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	/* Отключение подсветки тапов */
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Разрешить выделение в полях ввода */
+:deep(.q-field__native) {
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+}
+
+/* Улучшение тач-интерфейса */
+:deep(.login-button) {
+	touch-action: manipulation;
+	/* Минимальный размер для тач-целей */
+	min-height: 44px !important;
+	min-width: 44px !important;
+}
+
+/* Поддержка iOS Safe Area для Telegram */
+@supports(padding: max(0px)) {
+	.auth-container {
+		padding-left: max(env(safe-area-inset-left), 1rem);
+		padding-right: max(env(safe-area-inset-right), 1rem);
+		padding-bottom: max(env(safe-area-inset-bottom), 0);
+		padding-top: max(env(safe-area-inset-top), 0);
+	}
+}
+
+/* Стили для Telegram Desktop Web App */
+@media (min-width: 1024px) {
+	.content-wrapper {
+		max-width: 420px;
+	}
+	
+	.login-card {
+		padding: 3rem 2.5rem;
+	}
+}
+
+/* Высота статус-бара для iOS в Telegram */
+@media (max-height: 667px) {
+	.auth-container {
+		min-height: 100vh;
+		min-height: calc(var(--vh, 1vh) * 100);
 	}
 }
 </style>

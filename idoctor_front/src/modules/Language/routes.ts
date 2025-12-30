@@ -26,6 +26,17 @@ const languageCreateRoute: RouteRecordRaw = {
 	},
 };
 
+const languageViewRoute: RouteRecordRaw = {
+	path: "languages/:id",
+	name: "LANGUAGE_VIEW",
+	props: true,
+	component: () => import("@module/Language/pages/View.vue"),
+	meta: {
+		title: "language_view_title",
+		activeLinkGroup: "LANGUAGE_GROUP",
+	},
+};
+
 const languageEditRoute: RouteRecordRaw = {
 	path: "languages/:id/edit",
 	name: "LANGUAGE_EDIT",
@@ -41,6 +52,7 @@ export function LanguageRoutes(sort: number): RouteRecordRaw[] {
 	return [
 		languagePageRoute,
 		languageCreateRoute,
+		languageViewRoute,
 		languageEditRoute,
 	].map((route) => {
 		if (route?.meta?.sidebar) {

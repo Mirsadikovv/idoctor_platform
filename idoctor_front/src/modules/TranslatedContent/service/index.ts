@@ -13,7 +13,7 @@ export type SelectableRoute = {
 	label: string;
 };
 
-export type LanguageContnetType = {
+export type LanguageContentType = {
 	id: number;
 	key: string;
 	value: string;
@@ -48,6 +48,18 @@ export interface LangContentCreateOrUpdate {
 		  }[]
 		| []; // Allow for an empty array
 }
+
+export type LangContent = {
+	id: number;
+	languageId: number;
+	value: string;
+};
+
+export type LangContentType = {
+	key: string;
+	category: "GLOBAL" | string;
+	contents: LangContent[];
+};
 
 export type LanguageContentPartialType = Partial<LanguageContent>;
 export type LanguageContentPageData = PageDataType<LanguageContent>;
@@ -116,7 +128,7 @@ class LanguageContentService {
 		},
 	})
 	async search(q: string = "") {
-		const { data } = await api.get<LanguageContnetType[]>(`/language/search?q=${q}`);
+		const { data } = await api.get<LanguageContentType[]>(`/language/search?q=${q}`);
 
 		return data;
 	}
@@ -128,9 +140,7 @@ class LanguageContentService {
 		},
 	})
 	async getByKey(key: string = "") {
-		const { data } = await api.get<LangContentCreateOrUpdate>(
-			`/language-content/by-key/${key}`,
-		);
+		const { data } = await api.get<LangContentType>(`/language-content/by-key/${key}`);
 
 		return data;
 	}
@@ -182,7 +192,7 @@ class LanguageContentService {
 			);
 		},
 	})
-	async delete(_languageId: number, key: string) {
+	async delete(key: string) {
 		await api.delete(`/language-content/${key}`);
 		return true;
 	}

@@ -26,6 +26,17 @@ const problemCreateRoute: RouteRecordRaw = {
 	},
 };
 
+const problemViewRoute: RouteRecordRaw = {
+	path: "problems/:id",
+	name: "PROBLEM_VIEW",
+	props: true,
+	component: () => import("@module/Problem/pages/View.vue"),
+	meta: {
+		title: "problem_view_title",
+		activeLinkGroup: "PROBLEM_GROUP",
+	},
+};
+
 const problemEditRoute: RouteRecordRaw = {
 	path: "problems/:id/edit",
 	name: "PROBLEM_EDIT",
@@ -38,7 +49,7 @@ const problemEditRoute: RouteRecordRaw = {
 };
 
 export function ProblemRoutes(sort: number): RouteRecordRaw[] {
-	return [problemPageRoute, problemCreateRoute, problemEditRoute].map((route) => {
+	return [problemPageRoute, problemCreateRoute, problemViewRoute, problemEditRoute].map((route) => {
 		if (route?.meta?.sidebar) {
 			return {
 				...route,

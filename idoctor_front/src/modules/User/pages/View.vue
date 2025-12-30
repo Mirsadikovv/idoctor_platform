@@ -3,6 +3,11 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { UserService, type UserPartial } from "@/service";
 
+import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
+import IconDialog from "@/components/quasar/dialog/IconDialog.vue";
+import EditUser from "./Edit.vue";
+import ConfirmDialog from "../components/ConfirmDialog.vue";
+
 export interface Props {
 	id: number | string;
 }
@@ -12,9 +17,16 @@ const router = useRouter();
 
 let model = ref<UserPartial>({});
 
-UserService.findByID(+id).then((data) => {
+const loadUser = async () => {
+	const data = await UserService.findByID(+id);
 	model.value = data;
-});
+};
+
+const fetchUser = () => {
+	loadUser();
+};
+
+loadUser();
 </script>
 
 <template>
@@ -28,6 +40,28 @@ UserService.findByID(+id).then((data) => {
 			/>
 			<q-breadcrumbs-el :label="$tl('page_for_view')" />
 		</q-breadcrumbs>
+		<q-space />
+		
+		<!-- Кнопки действий -->
+		<div class="flex gap-2" v-if="model.id">
+			<ButtonDialog
+				label="edit_user"
+				icon="edit"
+				color="primary"
+				:fetch="fetchUser"
+			>
+				<EditUser :id="model.id" :fetch="fetchUser" />
+			</ButtonDialog>
+			
+			<IconDialog
+				iconColor="negative"
+				icon="delete"
+				tooltipText="delete_user"
+				withTooltip
+			>
+				<ConfirmDialog :fetch="fetchUser" :id="model.id" :isRemove="true" />
+			</IconDialog>
+		</div>
 	</div>
 	<div class="bg-secondary text-white p-4 mb-4 flex justify-between items-center rounded">
 		<div class="text-xl font-bold">

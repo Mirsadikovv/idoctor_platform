@@ -18,9 +18,6 @@ import {
 import { useLanguageStore } from "@/store/language-store";
 import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
 import CreateTranslate from "../components/Create.vue";
-import UpdateTranslate from "../components/Update.vue";
-import IconDialog from "@/components/quasar/dialog/IconDialog.vue";
-import ConfirmDelete from "../components/ConfirmDelete.vue";
 import Autocomplete from "@/components/quasar/form/Autocomplete.vue";
 import { searchLangs } from "../utils";
 import Button from "@/components/quasar/btn/Button.vue";
@@ -42,7 +39,6 @@ const models = ref<LanguageContentPageData>({
 
 const pick = {
 	id: false,
-	edit: false,
 	language: true,
 	key: true,
 	value: true,
@@ -140,43 +136,17 @@ async function updateLang(item: LanguagePartialType) {
 			</template>
 
 			<template #key:thead> </template>
-			<template #key></template>
+			<template #key="{ model }">
+				<router-link
+					:to="{ name: 'TRANSLATED_CONTENT_VIEW', params: { id: model.key } }"
+					class="text-primary text-decoration-none"
+				>
+					{{ model.key }}
+				</router-link>
+			</template>
 
 			<template #value:thead> </template>
 			<template #value></template>
-
-			<template #edit:thead>
-				<div class="text-center">
-					{{ $tl("action") }}
-				</div>
-			</template>
-			<template #edit="{ model }">
-				<div class="text-center w-100px mx-auto">
-					<IconDialog
-						:key="model.id"
-						icon="edit"
-						:style="'width: auto;'"
-						tooltipText="update_translate"
-						withTooltip
-					>
-						<UpdateTranslate :keyWord="model.key" :fetch="fetch" />
-					</IconDialog>
-
-					<IconDialog
-						icon="delete"
-						iconColor="negative"
-						tooltipText="remove_lang"
-						withTooltip
-					>
-						<ConfirmDelete
-							:fetch="fetch"
-							:id="model.id"
-							:key-value="model.key"
-							:isRemove="true"
-						/>
-					</IconDialog>
-				</div>
-			</template>
 
 			<template #tfoot="{ totalPages }">
 				<TablePaginate
@@ -188,82 +158,65 @@ async function updateLang(item: LanguagePartialType) {
 			</template>
 			<!-- Кастомный мобильный вид для переводов -->
 			<template #card="{ model, orderNumber }">
-				<q-item class="q-mb-md translatedcontent-item-bordered">
+				<q-item
+					class="translatedcontent-item-telegram"
+					clickable
+					:to="{ name: 'TRANSLATED_CONTENT_VIEW', params: { id: model.key } }"
+				>
 					<q-item-section avatar v-if="orderNumber">
-						<q-avatar color="purple" text-color="white" size="sm">
-							<q-icon name="translate" />
+						<q-avatar color="primary" text-color="white" size="md">
+							{{ orderNumber }}
 						</q-avatar>
 					</q-item-section>
 
 					<q-item-section>
-						<q-item-label>
-							<strong>№ {{ orderNumber }}</strong>
+						<q-item-label class="text-weight-bold text-h6">
+							{{ model.key }}
 						</q-item-label>
-
-						<q-item-label>
-							<strong>Язык:</strong>
-							{{ model?.language?.name }}
+						<q-item-label caption class="text-body2">
+							{{ $tl("language") }}: {{ model?.language?.name }}
 						</q-item-label>
-						<q-item-label><strong>Ключ:</strong> {{ model.key }}</q-item-label>
-						<q-item-label class="text-caption">
-							<strong>Значение:</strong> {{ model.value || "-" }}
+						<q-item-label caption class="text-body2">
+							{{ model.value || "-" }}
 						</q-item-label>
 					</q-item-section>
-				</q-item>
 
-				<!-- Кнопки действий -->
-				<div class="card-actions flex justify-end gap-4">
-					<ButtonDialog
-						:key="model.id"
-						icon="edit"
-						:style="'width: auto;'"
-						tooltipText="update_translate"
-						withTooltip
-						flat
-						round
-						color="primary"
-					>
-						<UpdateTranslate :keyWord="model.key" :fetch="fetch" />
-					</ButtonDialog>
-					<ButtonDialog
-						icon="delete"
-						iconColor="negative"
-						tooltipText="remove_lang"
-						withTooltip
-						flat
-						round
-					>
-						<ConfirmDelete
-							:fetch="fetch"
-							:id="model.id"
-							:key-value="model.key"
-							:isRemove="true"
-						/>
-					</ButtonDialog>
-				</div>
+					<q-item-section side>
+						<q-icon name="chevron_right" color="grey-6" />
+					</q-item-section>
+				</q-item>
 			</template>
 		</ResponsiveTable>
 	</PageLoading>
 </template>
 
 <style scoped lang="scss">
-.translatedcontent-item-bordered {
-	border: 1px solid rgba(0, 0, 0, 0.12);
-	border-radius: 8px;
+.translatedcontent-item-telegram {
+	max-height: 120px;
+	min-height: 90px;
+	background: white;
 	padding: 12px;
-}
+	transition: all 0.2s ease;
+	cursor: pointer;
 
-.card-actions {
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
-	padding-top: 12px;
+	&:hover {
+		background: rgba(0, 0, 0, 0.02);
+		border-color: rgba(0, 0, 0, 0.12);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
 
-	@media (max-width: 480px) {
-		flex-direction: column;
-		gap: 8px !important;
+	&:active {
+		transform: translateY(0);
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	}
 
-		:deep(.q-btn) {
-			width: 100% !important;
-		}
+	.q-item__section--avatar {
+		padding-right: 16px;
+	}
+
+	.q-item__section--side {
+		padding-left: 8px;
 	}
 }
 </style>

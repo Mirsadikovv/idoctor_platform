@@ -34,6 +34,17 @@ const translateUpdateRoute: RouteRecordRaw = {
 	},
 };
 
+const translatedContentViewRoute: RouteRecordRaw = {
+	path: "translated-content/:id",
+	name: "TRANSLATED_CONTENT_VIEW",
+	props: true,
+	component: () => import("@module/TranslatedContent/pages/View.vue"),
+	meta: {
+		title: "translated_content_view_page",
+		activeLinkGroup: "TRANSLATED_GROUP",
+	},
+};
+
 const translateDeleteRoute: RouteRecordRaw = {
 	path: "",
 	name: "TRANSLATE_DELETE",
@@ -47,6 +58,7 @@ const translateDeleteRoute: RouteRecordRaw = {
 export function TranslatedContentRoutes(sort: number): RouteRecordRaw[] {
 	return [
 		translatedContentRoute,
+		translatedContentViewRoute,
 		translateCreateRoute,
 		translateUpdateRoute,
 		translateDeleteRoute,

@@ -19,9 +19,20 @@ const deviceCreateRoute: RouteRecordRaw = {
 	path: "devices/create",
 	name: "DEVICE_CREATE",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Device/pages/Create.vue"),
 	meta: {
 		title: "device_create_title",
+		activeLinkGroup: "DEVICE_GROUP",
+	},
+};
+
+const deviceViewRoute: RouteRecordRaw = {
+	path: "devices/:id",
+	name: "DEVICE_VIEW",
+	props: true,
+	component: () => import("@module/Device/pages/View.vue"),
+	meta: {
+		title: "device_view_title",
 		activeLinkGroup: "DEVICE_GROUP",
 	},
 };
@@ -30,7 +41,7 @@ const deviceEditRoute: RouteRecordRaw = {
 	path: "devices/:id/edit",
 	name: "DEVICE_EDIT",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Device/pages/Edit.vue"),
 	meta: {
 		title: "device_edit_title",
 		activeLinkGroup: "DEVICE_GROUP",
@@ -38,7 +49,7 @@ const deviceEditRoute: RouteRecordRaw = {
 };
 
 export function DeviceRoutes(sort: number): RouteRecordRaw[] {
-	return [devicePageRoute, deviceCreateRoute, deviceEditRoute].map((route) => {
+	return [devicePageRoute, deviceCreateRoute, deviceViewRoute, deviceEditRoute].map((route) => {
 		if (route?.meta?.sidebar) {
 			return {
 				...route,

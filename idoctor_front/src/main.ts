@@ -1,5 +1,6 @@
 import "uno.css";
 import "@/style/style.scss";
+import "@/styles/telegram-app.scss";
 import { createApp, h } from "vue";
 import App from "./App.vue";
 import install from "./plugins/install";

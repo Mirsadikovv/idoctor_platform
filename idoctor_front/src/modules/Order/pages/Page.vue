@@ -6,12 +6,7 @@ import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import PageLoading from "@/components/PageLoading.vue";
 import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
 import CreateOrder from "./Create.vue";
-import EditOrder from "./Edit.vue";
-import IconDialog from "@/components/quasar/dialog/IconDialog.vue";
-import IconBtn from "@/components/quasar/btn/IconBtn.vue";
-import ConfirmDialog from "../components/ConfirmDialog.vue";
 import { orderStatusOptions, paymentStatusOptions } from "../utils";
-import Button from "@/components/quasar/btn/Button.vue";
 
 const orderPage = ref<OrderPageData>({
 	data: [],
@@ -22,8 +17,7 @@ const orderPage = ref<OrderPageData>({
 });
 
 const pick = {
-	id: false,
-	edit: false,
+	id: true,
 	client_name: true,
 	master_name: true,
 	problem_names: true,
@@ -32,7 +26,6 @@ const pick = {
 	status: true,
 	payment_status: true,
 	created_at: true,
-	deleted_at: true,
 };
 
 const pikers = ref({});
@@ -60,6 +53,16 @@ async function page(query: string = "") {
 		</div>
 
 		<ResponsiveTable :models="orderPage" hasOrder>
+			<template #id:thead>{{ $tl("id") }}</template>
+			<template #id="{ model }">
+				<router-link
+					:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
+					class="text-primary text-decoration-none"
+				>
+					#{{ model.id }}
+				</router-link>
+			</template>
+
 			<template #client_name:thead>
 				{{ $tl("client") }}
 			</template>
@@ -100,49 +103,6 @@ async function page(query: string = "") {
 				</q-chip>
 			</template>
 
-			<template #edit:thead>
-				<div class="text-center">
-					{{ $tl("action") }}
-				</div>
-			</template>
-			<template #edit="{ model }">
-				<div class="text-center">
-					<IconBtn
-						:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
-						icon="visibility"
-						tooltipText="view_order"
-						withTooltip
-					/>
-					<IconDialog
-						v-if="!model.deleted_at"
-						icon="edit"
-						:style="'width: 50%;'"
-						:fetch="fetch"
-						tooltipText="edit_order"
-						withTooltip
-					>
-						<EditOrder :id="model.id" :fetch="fetch" />
-					</IconDialog>
-					<IconDialog
-						v-if="model.deleted_at"
-						icon="sync"
-						iconColor="positive"
-						tooltipText="restore_order"
-						withTooltip
-					>
-						<ConfirmDialog :fetch="fetch" :id="model.id" :isRemove="false" />
-					</IconDialog>
-					<IconDialog
-						v-if="!model.deleted_at"
-						icon="delete"
-						iconColor="negative"
-						tooltipText="remove_order"
-						withTooltip
-					>
-						<ConfirmDialog :fetch="fetch" :id="model.id" :isRemove="true" />
-					</IconDialog>
-				</div>
-			</template>
 
 			<template #tfoot="{ totalPages }">
 				<TablePaginate
@@ -154,38 +114,34 @@ async function page(query: string = "") {
 			</template>
 			<!-- Кастомный мобильный вид для заказов -->
 			<template #card="{ model, orderNumber }">
-				<q-item class="q-mb-md order-item-bordered">
+				<q-item
+					class="order-item-telegram"
+					clickable
+					:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
+				>
 					<q-item-section avatar v-if="orderNumber">
-						<q-avatar color="orange" text-color="white" size="sm">
-							<q-icon name="assignment" />
+						<q-avatar color="primary" text-color="white" size="md">
+							{{ orderNumber }}
 						</q-avatar>
 					</q-item-section>
 
 					<q-item-section>
-						<q-item-label>
+						<q-item-label class="text-weight-bold text-h6">
+							{{ $tl("order") }} #{{ model.id }}
+						</q-item-label>
+						<q-item-label caption class="text-body2">
 							{{ $tl("client") }}: {{ model?.client_id || "-" }}
 						</q-item-label>
-						<q-item-label>
-							{{ $tl("master") }}: {{ model.master_id || "-" }}
+						<q-item-label caption class="text-body2" v-if="model.price">
+							{{ model.price?.toLocaleString() }} сум
 						</q-item-label>
-						<q-item-label v-if="model.price">
-							{{ $tl("price") }}: {{ model.price?.toLocaleString() }} сум
-						</q-item-label>
-						<q-item-label>
-							{{ $tl("status") }}:
-							<q-chip color="primary" outline size="sm">
-								{{
-									orderStatusOptions.find((item) => item.value === model.status)
-										?.label
-								}}
-							</q-chip>
-						</q-item-label>
-						<q-item-label>
-							{{ $tl("payment_status") }}:
+						<!-- Чипы статусов -->
+						<div class="q-mt-xs flex gap-1">
 							<q-chip
 								:color="model.payment_status === 'paid' ? 'positive' : 'warning'"
 								outline
 								size="sm"
+								dense
 							>
 								{{
 									paymentStatusOptions.find(
@@ -193,78 +149,51 @@ async function page(query: string = "") {
 									)?.label
 								}}
 							</q-chip>
-						</q-item-label>
-						<q-item-label>№ {{ orderNumber }}</q-item-label>
+							<q-chip color="primary" outline size="sm" dense>
+								{{
+									orderStatusOptions.find((item) => item.value === model.status)
+										?.label
+								}}
+							</q-chip>
+						</div>
+					</q-item-section>
+
+					<q-item-section side>
+						<q-icon name="chevron_right" color="grey-6" />
 					</q-item-section>
 				</q-item>
-
-				<!-- Кнопки действий -->
-				<div class="card-actions flex justify-end gap-4">
-					<Button
-						:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
-						icon="visibility"
-						tooltipText="view_order"
-						withTooltip
-					/>
-					<ButtonDialog
-						v-if="!model.deleted_at"
-						icon="edit"
-						:style="'width: auto;'"
-						:fetch="fetch"
-						tooltipText="edit_order"
-						withTooltip
-						flat
-						round
-						color="primary"
-					>
-						<EditOrder :id="model.id" :fetch="fetch" />
-					</ButtonDialog>
-					<ButtonDialog
-						v-if="model.deleted_at"
-						icon="sync"
-						iconColor="positive"
-						tooltipText="restore_order"
-						withTooltip
-						flat
-						round
-					>
-						<ConfirmDialog :fetch="fetch" :id="model.id" :isRemove="false" />
-					</ButtonDialog>
-					<ButtonDialog
-						v-if="!model.deleted_at"
-						icon="delete"
-						iconColor="negative"
-						tooltipText="remove_order"
-						withTooltip
-						flat
-						round
-					>
-						<ConfirmDialog :fetch="fetch" :id="model.id" :isRemove="true" />
-					</ButtonDialog>
-				</div>
 			</template>
 		</ResponsiveTable>
 	</PageLoading>
 </template>
 
 <style scoped lang="scss">
-.order-item-bordered {
-	border: 1px solid rgba(0, 0, 0, 0.12);
-	border-radius: 8px;
+.order-item-telegram {
+	max-height: 120px;
+	min-height: 90px;
+	background: white;
 	padding: 12px;
-}
+	transition: all 0.2s ease;
+	cursor: pointer;
 
-.card-actions {
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
-	padding-top: 12px;
+	&:hover {
+		background: rgba(0, 0, 0, 0.02);
+		border-color: rgba(0, 0, 0, 0.12);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
 
-	@media (max-width: 480px) {
-		flex-direction: column;
-		gap: 8px !important;
+	&:active {
+		transform: translateY(0);
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	}
 
-		:deep(.q-btn) {
-			width: 100% !important;
-		}
+	.q-item__section--avatar {
+		padding-right: 16px;
+	}
+
+	.q-item__section--side {
+		padding-left: 8px;
 	}
 }
 </style>

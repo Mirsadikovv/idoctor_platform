@@ -26,6 +26,17 @@ const supplierCreateRoute: RouteRecordRaw = {
 	},
 };
 
+const supplierViewRoute: RouteRecordRaw = {
+	path: "suppliers/:id",
+	name: "SUPPLIER_VIEW",
+	props: true,
+	component: () => import("@module/Supplier/pages/View.vue"),
+	meta: {
+		title: "supplier_view_title",
+		activeLinkGroup: "SUPPLIER_GROUP",
+	},
+};
+
 const supplierEditRoute: RouteRecordRaw = {
 	path: "suppliers/:id/edit",
 	name: "SUPPLIER_EDIT",
@@ -38,7 +49,7 @@ const supplierEditRoute: RouteRecordRaw = {
 };
 
 export function SupplierRoutes(sort: number): RouteRecordRaw[] {
-	return [supplierPageRoute, supplierCreateRoute, supplierEditRoute].map((route) => {
+	return [supplierPageRoute, supplierCreateRoute, supplierViewRoute, supplierEditRoute].map((route) => {
 		if (route?.meta?.sidebar) {
 			return {
 				...route,

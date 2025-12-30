@@ -111,7 +111,7 @@ export async function normalaizeRoute(router: Router) {
 	const layout: RouteRecordRaw = {
 		path: "/:lang?/admin",
 		props: true,
-		component: () => import("@layout/BaseLayout.vue"),
+		component: () => import("@layout/EmptyLayout.vue"),
 		children: flatRoutes,
 	};
 

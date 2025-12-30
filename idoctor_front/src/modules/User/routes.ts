@@ -30,7 +30,7 @@ const userCreateRoute: RouteRecordRaw = {
 	path: "users/create",
 	name: "USER_CREATE",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/User/pages/Create.vue"),
 	meta: {
 		title: "user_create_title",
 		activeLinkGroup: "USER_GROUP",
@@ -39,9 +39,9 @@ const userCreateRoute: RouteRecordRaw = {
 
 const userEditRoute: RouteRecordRaw = {
 	path: "users/:id/edit",
-	name: "USER_EDIT", 
+	name: "USER_EDIT",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/User/pages/Edit.vue"),
 	meta: {
 		title: "user_edit_title",
 		activeLinkGroup: "USER_GROUP",
@@ -59,22 +59,18 @@ const userDeleteRoute: RouteRecordRaw = {
 };
 
 export function UserRoutes(sort: number): RouteRecordRaw[] {
-	return [
-		userPageRoute,
-		userCreateRoute,
-		userEditRoute,
-		userViewRoute,
-		userDeleteRoute,
-	].map((route) => {
-		if (route?.meta?.sidebar) {
-			return {
-				...route,
-				meta: {
-					...route.meta,
-					sort,
-				},
-			};
-		}
-		return route;
-	});
+	return [userPageRoute, userCreateRoute, userEditRoute, userViewRoute, userDeleteRoute].map(
+		(route) => {
+			if (route?.meta?.sidebar) {
+				return {
+					...route,
+					meta: {
+						...route.meta,
+						sort,
+					},
+				};
+			}
+			return route;
+		},
+	);
 }

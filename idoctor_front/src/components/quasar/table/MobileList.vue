@@ -80,12 +80,13 @@ const visibleFields = computed(() => extractFields(slots, pick));
 		</div>
 
 		<div v-else class="mobile-cards-container">
-			<div 
-				v-for="(data, index) of models.data" 
-				:key="index" 
+			<div
+				v-for="(data, index) of models.data"
+				:key="index"
 				class="mobile-card"
 				:class="traction(data, index)"
 			>
+				<!-- @vue-ignore -->
 				<slot
 					name="card"
 					:model="data"
@@ -98,6 +99,7 @@ const visibleFields = computed(() => extractFields(slots, pick));
 						<q-item class="q-mb-md default-item-bordered">
 							<q-item-section avatar v-if="hasOrder">
 								<q-avatar color="primary" text-color="white" size="sm">
+									<!-- @vue-ignore -->
 									{{ calculateOrderNumber(models, index) }}
 								</q-avatar>
 							</q-item-section>
@@ -105,9 +107,10 @@ const visibleFields = computed(() => extractFields(slots, pick));
 							<q-item-section>
 								<div v-for="field in visibleFields" :key="field" class="q-mb-xs">
 									<q-item-label>
+										<!-- @vue-ignore -->
 										<slot :name="`${field}:thead`" :key="field">
-											{{ $tl(field) }}
-										</slot>:
+											{{ $tl(field) }} </slot
+										>:
 										<slot :name="field" :model="data" :index="index">
 											{{ (data as any)?.[field] }}
 										</slot>
@@ -143,7 +146,7 @@ const visibleFields = computed(() => extractFields(slots, pick));
 	border-radius: 12px;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-	padding: 16px;
+	padding: 4px;
 	transition: all 0.3s ease;
 
 	&:hover {

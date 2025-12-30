@@ -29,14 +29,14 @@ func NewSupplierHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authM
 		supplierService: supplier_service.NewSupplierService(db),
 	}
 
-	// supplierServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	supplierGroup := router.Group("/api/v1/supplier")
+	supplierServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	supplierGroup := router.Group("/api/v1/supplier", supplierServiceMiddleware)
 	{
-		supplierGroup.GET("/:id", handler.FindByID)
-		supplierGroup.GET("/search", handler.Search)
-		supplierGroup.GET("/page", handler.Page)
 		supplierGroup.POST("", handler.Create)
 		supplierGroup.PUT("/:id", handler.Update)
+		supplierGroup.GET("/:id", handler.FindByID)
+		supplierGroup.GET("/page", handler.Page)
+		supplierGroup.GET("/search", handler.Search)
 		supplierGroup.DELETE("/:id", handler.DeleteOrRestore)
 	}
 }
@@ -71,7 +71,6 @@ func (h *supplierHandler) Search(c echo.Context) error {
 			tx = tx.Where("suppliers.name ILIKE ?", name)
 		}
 
-		// Handle soft delete filtering
 		if params.OnlyDeleted != nil && *params.OnlyDeleted {
 			tx = tx.Unscoped().Where("suppliers.deleted_at IS NOT NULL")
 		} else if params.IncludeDeleted != nil && *params.IncludeDeleted {

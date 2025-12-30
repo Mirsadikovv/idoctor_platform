@@ -2,6 +2,7 @@ package auth_dto
 
 import (
 	"fmt"
+	"log"
 
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
@@ -35,7 +36,7 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, erro
 
 	var user user_model.User
 
-	result := db.Table("users").
+	result := db.Table("users").Debug().
 		Scopes(filter).Select(
 		"users.id",
 		"users.username",
@@ -49,6 +50,7 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, erro
 		return true, err
 	}
 
+	log.Println(result.RowsAffected, "------------------")
 	if result.RowsAffected == 0 {
 		return true, gorm.ErrRecordNotFound
 	}

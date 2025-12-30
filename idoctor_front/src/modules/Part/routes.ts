@@ -19,7 +19,7 @@ const partCreateRoute: RouteRecordRaw = {
 	path: "parts/create",
 	name: "PART_CREATE",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Part/pages/Create.vue"),
 	meta: {
 		title: "part_create_title",
 		activeLinkGroup: "PART_GROUP",
@@ -41,7 +41,7 @@ const partEditRoute: RouteRecordRaw = {
 	path: "parts/:id/edit",
 	name: "PART_EDIT",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Part/pages/Edit.vue"),
 	meta: {
 		title: "part_edit_title",
 		activeLinkGroup: "PART_GROUP",

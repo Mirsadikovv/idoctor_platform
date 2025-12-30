@@ -19,7 +19,7 @@ const supplierCreateRoute: RouteRecordRaw = {
 	path: "suppliers/create",
 	name: "SUPPLIER_CREATE",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Supplier/pages/Create.vue"),
 	meta: {
 		title: "supplier_create_title",
 		activeLinkGroup: "SUPPLIER_GROUP",
@@ -41,7 +41,7 @@ const supplierEditRoute: RouteRecordRaw = {
 	path: "suppliers/:id/edit",
 	name: "SUPPLIER_EDIT",
 	props: true,
-	component: () => import("@layout/EmptyLayout.vue"),
+	component: () => import("@module/Supplier/pages/Edit.vue"),
 	meta: {
 		title: "supplier_edit_title",
 		activeLinkGroup: "SUPPLIER_GROUP",
@@ -49,16 +49,18 @@ const supplierEditRoute: RouteRecordRaw = {
 };
 
 export function SupplierRoutes(sort: number): RouteRecordRaw[] {
-	return [supplierPageRoute, supplierCreateRoute, supplierViewRoute, supplierEditRoute].map((route) => {
-		if (route?.meta?.sidebar) {
-			return {
-				...route,
-				meta: {
-					...route.meta,
-					sort,
-				},
-			};
-		}
-		return route;
-	});
+	return [supplierPageRoute, supplierCreateRoute, supplierViewRoute, supplierEditRoute].map(
+		(route) => {
+			if (route?.meta?.sidebar) {
+				return {
+					...route,
+					meta: {
+						...route.meta,
+						sort,
+					},
+				};
+			}
+			return route;
+		},
+	);
 }

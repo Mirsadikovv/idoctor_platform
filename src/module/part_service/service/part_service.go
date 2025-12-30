@@ -50,7 +50,7 @@ func (s *partService) Find(ctx context.Context, filter pg.Filter) ([]part_dto.Pa
 }
 
 func (s *partService) FindOne(ctx context.Context, filter pg.Filter) (*part_dto.Part, error) {
-	return pg.FindOneWithScan[part_model.Part, part_dto.Part](s.db.WithContext(ctx), filter)
+	return pg.FindOneWithScan[part_model.Part, part_dto.Part](s.db, filter)
 }
 
 func (s *partService) Page(ctx context.Context, paginate *request.Paginate, filter pg.Filter) (*part_dto.PartPage, error) {

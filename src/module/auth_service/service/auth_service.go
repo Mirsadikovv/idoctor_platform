@@ -116,9 +116,9 @@ func (a *authService) Me(ctx context.Context, token string) (*user_dto.User, err
 	return a.userService.FindOne(ctx, filter)
 }
 
+// TODO: check possible mistakes
 func (a *authService) SignInTelegram(ctx context.Context, telegramId *int64) (*auth_dto.TelegramRole, error) {
 
-	// Если telegram_id не указан, возвращаем роль "user" с токеном role_id = 0
 	if telegramId == nil {
 		authUser := auth_dto.AuthUser{
 			Id:     0,
@@ -136,7 +136,6 @@ func (a *authService) SignInTelegram(ctx context.Context, telegramId *int64) (*a
 		}, nil
 	}
 
-	// Ищем пользователя по telegram_id и получаем его роль и id
 	filter := func(tx *gorm.DB) *gorm.DB {
 		return tx.Select(
 			"users.id",

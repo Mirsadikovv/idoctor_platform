@@ -4,7 +4,6 @@ import (
 	"time"
 
 	problem_model "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service/model"
-	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +17,5 @@ type Order struct {
 	PaymentStatus string                  `json:"payment_status" gorm:"type:varchar(50);not null"`
 	CreatedAt     *time.Time              `json:"created_at" gorm:"autoCreateTime"`
 	DeletedAt     *gorm.DeletedAt         `json:"deleted_at" gorm:"index"`
-	Client        *user_model.User        `json:"client,omitempty" gorm:"foreignKey:ClientId;references:Id"`
-	Master        *user_model.User        `json:"master,omitempty" gorm:"foreignKey:MasterId;references:Id"`
 	Problems      []problem_model.Problem `json:"problems" gorm:"many2many:order_problems;"`
 } // @name Order

@@ -29,8 +29,8 @@ func NewDeviceHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMid
 		deviceService:  device_service.NewDeviceService(db),
 	}
 
-	// deviceServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	deviceGroup := router.Group("/api/v1/device")
+	deviceServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	deviceGroup := router.Group("/api/v1/device", deviceServiceMiddleware)
 	{
 		deviceGroup.GET("/brands", handler.GetUniqueBrandNames)
 		deviceGroup.GET("/:id", handler.FindByID)
@@ -77,7 +77,6 @@ func (h *deviceHandler) Search(c echo.Context) error {
 			tx = tx.Where("devices.brand_name ILIKE ?", brandName)
 		}
 
-		// Handle soft delete filtering
 		if params.OnlyDeleted != nil && *params.OnlyDeleted {
 			tx = tx.Unscoped().Where("devices.deleted_at IS NOT NULL")
 		} else if params.IncludeDeleted != nil && *params.IncludeDeleted {
@@ -134,7 +133,6 @@ func (h *deviceHandler) Page(c echo.Context) error {
 			tx = tx.Where("brand_name ILIKE ?", fmt.Sprintf("%%%s%%", *params.BrandName))
 		}
 
-		// Handle soft delete filtering
 		if params.OnlyDeleted != nil && *params.OnlyDeleted {
 			tx = tx.Unscoped().Where("deleted_at IS NOT NULL")
 		} else if params.IncludeDeleted != nil && *params.IncludeDeleted {

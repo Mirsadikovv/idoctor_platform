@@ -129,7 +129,7 @@ func convertDeviceToInfo(device *device_model.Device) *part_dto.DeviceInfo {
 		return nil
 	}
 	return &part_dto.DeviceInfo{
-		Id:        device.ID,
+		Id:        device.Id,
 		Name:      device.Name,
 		BrandName: device.BrandName,
 	}

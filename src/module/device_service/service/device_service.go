@@ -53,7 +53,7 @@ func (s *deviceService) Create(ctx context.Context, deviceDto *device_dto.Device
 		return 0, err
 	}
 
-	return deviceModel.ID, nil
+	return deviceModel.Id, nil
 }
 
 func (s *deviceService) Update(ctx context.Context, id int64, deviceDto *device_dto.DeviceUpdate) error {

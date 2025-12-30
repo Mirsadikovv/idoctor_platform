@@ -170,20 +170,20 @@ func (a *authHandler) Me(ctx echo.Context) error {
 func (a *authHandler) SignInTelegram(ctx echo.Context) error {
 
 	req := request.Request(ctx)
-	a.log.Info("SignInTelegram\n")
 
-	// Получаем telegram_id из header
-	telegramIdHeader := ctx.Request().Header.Get("telegram_id")
 	var telegramId *int64
-	if telegramIdHeader != "" {
-		// Парсим telegram_id из строки в int64
-		var id int64
-		_, err := fmt.Sscanf(telegramIdHeader, "%d", &id)
-		if err != nil {
-			a.log.Error(err)
-			return req.BadRequest(err)
+	{
+		telegramIdHeader := ctx.Request().Header.Get("telegram_id")
+
+		if telegramIdHeader != "" {
+			var id int64
+			_, err := fmt.Sscanf(telegramIdHeader, "%d", &id)
+			if err != nil {
+				a.log.Error(err)
+				return req.BadRequest(err)
+			}
+			telegramId = &id
 		}
-		telegramId = &id
 	}
 	role, err := a.authService.SignInTelegram(req.Context(), telegramId)
 	{

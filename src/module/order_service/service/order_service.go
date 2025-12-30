@@ -2,12 +2,10 @@ package order_service
 
 import (
 	"context"
-	"time"
 
 	order_dto "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/dto"
 	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
 	problem_model "github.com/Mirsadikovv/idoctor_platform/src/module/problem_service/model"
-	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
 	"github.com/Mirsadikovv/shared/pg"
 	"github.com/Mirsadikovv/shared/request"
@@ -34,81 +32,22 @@ func NewOrderService(db *gorm.DB) OrderService {
 }
 
 func (s *orderService) Find(ctx context.Context, filter pg.Filter) ([]order_dto.Order, error) {
-	var orders []order_model.Order
+	var orders []order_dto.Order
 
 	tx := s.db.WithContext(ctx)
 	if filter != nil {
 		tx = filter(tx)
 	}
 
-	if err := tx.Preload("Client").Preload("Master").Preload("Problems").Find(&orders).Error; err != nil {
+	if err := tx.Find(&orders).Error; err != nil {
 		return nil, err
 	}
 
-	// Convert to DTOs
-	result := make([]order_dto.Order, len(orders))
-	for i, order := range orders {
-		result[i] = order_dto.Order{
-			Id:            order.Id,
-			ClientId:      order.ClientId,
-			MasterId:      order.MasterId,
-			Client:        convertUserToUserInfo(order.Client),
-			Master:        convertUserToUserInfo(order.Master),
-			Price:         order.Price,
-			Status:        order.Status,
-			PaymentType:   order.PaymentType,
-			PaymentStatus: order.PaymentStatus,
-			CreatedAt:     order.CreatedAt,
-			DeletedAt:     convertDeletedAt(order.DeletedAt),
-		}
-
-		// Extract problem Ids
-		if len(order.Problems) > 0 {
-			result[i].ProblemIds = make([]int64, len(order.Problems))
-			for j, problem := range order.Problems {
-				result[i].ProblemIds[j] = problem.Id
-			}
-		}
-	}
-
-	return result, nil
+	return orders, nil
 }
 
 func (s *orderService) FindOne(ctx context.Context, filter pg.Filter) (*order_dto.Order, error) {
-	var order order_model.Order
-
-	tx := s.db.WithContext(ctx)
-	if filter != nil {
-		tx = filter(tx)
-	}
-
-	if err := tx.Preload("Client").Preload("Master").Preload("Problems").First(&order).Error; err != nil {
-		return nil, err
-	}
-
-	result := &order_dto.Order{
-		Id:            order.Id,
-		ClientId:      order.ClientId,
-		MasterId:      order.MasterId,
-		Client:        convertUserToUserInfo(order.Client),
-		Master:        convertUserToUserInfo(order.Master),
-		Price:         order.Price,
-		Status:        order.Status,
-		PaymentType:   order.PaymentType,
-		PaymentStatus: order.PaymentStatus,
-		CreatedAt:     order.CreatedAt,
-		DeletedAt:     convertDeletedAt(order.DeletedAt),
-	}
-
-	// Extract problem Ids
-	if len(order.Problems) > 0 {
-		result.ProblemIds = make([]int64, len(order.Problems))
-		for i, problem := range order.Problems {
-			result.ProblemIds[i] = problem.Id
-		}
-	}
-
-	return result, nil
+	return pg.FindOneWithScan[order_model.Order, order_dto.Order](s.db.WithContext(ctx), filter)
 }
 
 func (s *orderService) Page(ctx context.Context, paginate *request.Paginate, filter pg.Filter) (*order_dto.OrderPage, error) {
@@ -202,23 +141,3 @@ func (s *orderService) DeleteOrRestore(ctx context.Context, id int64) error {
 	}
 }
 
-func convertDeletedAt(deletedAt *gorm.DeletedAt) *time.Time {
-	if deletedAt != nil && deletedAt.Valid {
-		return &deletedAt.Time
-	}
-	return nil
-}
-
-func convertUserToUserInfo(user *user_model.User) *order_dto.UserInfo {
-	if user == nil {
-		return nil
-	}
-	return &order_dto.UserInfo{
-		Id:          user.Id,
-		FirstName:   user.FirstName,
-		LastName:    user.LastName,
-		MiddleName:  user.MiddleName,
-		Username:    user.Username,
-		PhoneNumber: user.PhoneNumber,
-	}
-}

@@ -1,6 +1,7 @@
 package order_dto
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/Mirsadikovv/shared/response"
@@ -40,19 +41,19 @@ type OrderUpdate struct {
 type OrderPage = response.PageData[Order] // @name OrderPage
 
 type Order struct {
-	Id            int64      `json:"id"`
-	ClientId      *int64     `json:"client_id"`
-	MasterId      *int64     `json:"master_id"`
-	Client        *UserInfo  `json:"client,omitempty"`
-	Master        *UserInfo  `json:"master,omitempty"`
-	Price         float64    `json:"price"`
-	Status        string     `json:"status"`
-	PaymentType   string     `json:"payment_type"`
-	PaymentStatus string     `json:"payment_status"`
-	CreatedAt     *time.Time `json:"created_at"`
-	DeletedAt     *time.Time `json:"deleted_at,omitempty"`
-	PartIds       []int64    `json:"part_ids,omitempty"`
-	ProblemIds    []int64    `json:"problem_ids,omitempty"`
+	Id            int64            `json:"id"`
+	ClientId      *int64           `json:"client_id"`
+	MasterId      *int64           `json:"master_id"`
+	Client        *json.RawMessage `json:"client,omitempty"`
+	Master        *json.RawMessage `json:"master,omitempty"`
+	Price         float64          `json:"price"`
+	Status        string           `json:"status"`
+	PaymentType   string           `json:"payment_type"`
+	PaymentStatus string           `json:"payment_status"`
+	CreatedAt     *time.Time       `json:"created_at"`
+	DeletedAt     *time.Time       `json:"deleted_at,omitempty"`
+	PartIds       []int64          `json:"part_ids,omitempty"`
+	ProblemIds    []int64          `json:"problem_ids,omitempty"`
 } // @Name Order
 
 type OrderParams struct {

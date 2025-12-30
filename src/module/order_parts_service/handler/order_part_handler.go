@@ -173,7 +173,10 @@ func (h *orderPartHandler) FindByID(c echo.Context) error {
 	}
 
 	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("order_parts.id = ?", id)
+		return tx.Preload("Order").
+			Preload("Part").
+			Preload("Supplier").
+			Where("order_parts.id = ?", id)
 	}
 
 	orderPart, err := h.orderPartService.FindOne(req.Context(), filter)

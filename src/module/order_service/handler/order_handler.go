@@ -235,7 +235,9 @@ func (h *orderHandler) FindById(c echo.Context) error {
 	}
 
 	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.Where("id = ?", id)
+		return tx.Preload("Client").
+			Preload("Master").
+			Where("id = ?", id)
 	}
 
 	order, err := h.orderService.FindOne(req.Context(), filter)

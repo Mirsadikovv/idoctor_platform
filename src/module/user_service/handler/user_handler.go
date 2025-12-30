@@ -260,6 +260,7 @@ func (h *userHandler) GetByID(ctx echo.Context) error {
 				"organizations.soato_id AS soato_id",
 				"organizations.id AS org_id",
 				"roles.pages AS pages",
+				"roles.permissions AS permissions",
 			).Where("users.id = ?", id)
 	}
 

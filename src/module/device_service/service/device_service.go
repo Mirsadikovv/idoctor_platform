@@ -18,6 +18,7 @@ type DeviceService interface {
 	Create(ctx context.Context, deviceDto *device_dto.DeviceCreate) (int64, error)
 	Update(ctx context.Context, id int64, deviceDto *device_dto.DeviceUpdate) error
 	DeleteOrRestore(ctx context.Context, id int64) error
+	GetUniqueBrandNames(ctx context.Context) ([]string, error)
 }
 
 type deviceService struct {
@@ -88,4 +89,22 @@ func (s *deviceService) DeleteOrRestore(ctx context.Context, id int64) error {
 		// Soft delete
 		return s.db.WithContext(ctx).Where("id = ?", id).Delete(&device_model.Device{}).Error
 	}
+}
+
+func (s *deviceService) GetUniqueBrandNames(ctx context.Context) ([]string, error) {
+	var brandNames []string
+
+	err := s.db.WithContext(ctx).
+		Model(&device_model.Device{}).
+		Distinct("brand_name").
+		Where("brand_name != ?", "").
+		Where("deleted_at IS NULL").
+		Order("brand_name ASC").
+		Pluck("brand_name", &brandNames).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return brandNames, nil
 }

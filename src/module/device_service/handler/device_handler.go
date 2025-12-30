@@ -32,6 +32,7 @@ func NewDeviceHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMid
 	deviceServiceMiddleware := handler.authMiddleware.BuildMiddleware()
 	deviceGroup := router.Group("/api/v1/device", deviceServiceMiddleware)
 	{
+		deviceGroup.GET("/brands", handler.GetUniqueBrandNames)
 		deviceGroup.GET("/:id", handler.FindByID)
 		deviceGroup.GET("/search", handler.Search)
 		deviceGroup.GET("/page", handler.Page)
@@ -301,4 +302,29 @@ func (h *deviceHandler) DeleteOrRestore(c echo.Context) error {
 	}
 
 	return req.OK(map[string]string{"message": "Device status toggled successfully"})
+}
+
+// GetUniqueBrandNames godoc
+// @Summary      Get unique brand names
+// @Description  Get list of unique brand names from devices
+// @Tags 		 device
+// @ID           get-unique-brand-names
+// @Accept       json
+// @Produce      json
+// @Security     ApiKeyAuth
+// @Success      200 {object} []string "Successful operation"
+// @Failure      400 {object} response.HttpSuccess "Bad request"
+// @Failure      500 {object} response.HttpSuccess "Internal server error"
+// @Router       /device/brands [get]
+func (h *deviceHandler) GetUniqueBrandNames(c echo.Context) error {
+	req := request.Request(c)
+
+	brandNames, err := h.deviceService.GetUniqueBrandNames(req.Context())
+	{
+		if err != nil {
+			return req.BadRequest(err)
+		}
+	}
+
+	return req.OK(brandNames)
 }

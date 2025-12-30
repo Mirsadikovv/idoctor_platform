@@ -192,40 +192,40 @@ func (h *partHandler) FindById(c echo.Context) error {
 		}
 	}
 
-	// filter := func(tx *gorm.DB) *gorm.DB {
-	// 	return tx.Preload("Device").
-	// 		Preload("Supplier").
-	// 		Preload("Master").
-	// 		Where("id = ?", id)
-	// }
-
 	filter := func(tx *gorm.DB) *gorm.DB {
-		return tx.
-			Select("parts.*",
-				`JSONB_BUILD_OBJECT(
-				'device', JSONB_BUILD_OBJECT(
-					'id', parts.device_id,
-					'name', devices.name,
-					'brand_name', devices.brand_name
-				),
-				'supplier', JSONB_BUILD_OBJECT(
-					'id', parts.supplier_id,
-					'name', suppliers.name
-				),
-				'master', JSONB_BUILD_OBJECT(
-					'id', parts.master_id,
-					'first_name', users.first_name,
-					'last_name', users.last_name,
-					'middle_name', users.middle_name,
-					'username', users.username,
-					'phone_number', users.phone_number
-				)
-			)`).
-			Joins("LEFT JOIN devices ON parts.device_id = devices.id").
-			Joins("LEFT JOIN suppliers ON parts.supplier_id = suppliers.id").
-			Joins("LEFT JOIN users ON parts.master_id = users.id").
-			Where("parts.id = ?", id)
+		return tx.Preload("Device").
+			Preload("Supplier").
+			Preload("Master").
+			Where("id = ?", id)
 	}
+
+	// filter := func(tx *gorm.DB) *gorm.DB {
+	// 	return tx.
+	// 		Select("parts.*",
+	// 			`JSONB_BUILD_OBJECT(
+	// 			'device', JSONB_BUILD_OBJECT(
+	// 				'id', parts.device_id,
+	// 				'name', devices.name,
+	// 				'brand_name', devices.brand_name
+	// 			),
+	// 			'supplier', JSONB_BUILD_OBJECT(
+	// 				'id', parts.supplier_id,
+	// 				'name', suppliers.name
+	// 			),
+	// 			'master', JSONB_BUILD_OBJECT(
+	// 				'id', parts.master_id,
+	// 				'first_name', users.first_name,
+	// 				'last_name', users.last_name,
+	// 				'middle_name', users.middle_name,
+	// 				'username', users.username,
+	// 				'phone_number', users.phone_number
+	// 			)
+	// 		)`).
+	// 		Joins("LEFT JOIN devices ON parts.device_id = devices.id").
+	// 		Joins("LEFT JOIN suppliers ON parts.supplier_id = suppliers.id").
+	// 		Joins("LEFT JOIN users ON parts.master_id = users.id").
+	// 		Where("parts.id = ?", id)
+	// }
 	part, err := h.partService.FindOne(req.Context(), filter)
 	{
 		if err != nil {

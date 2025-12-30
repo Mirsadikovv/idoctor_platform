@@ -31,8 +31,8 @@ func NewRoleHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMiddl
 		roleService:    role_service.NewRoleService(db),
 	}
 
-	roleServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	roleGroup := router.Group("/api/v1/role", roleServiceMiddleware)
+	// roleServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	roleGroup := router.Group("/api/v1/role")
 	{
 		roleGroup.GET("/permissions", handler.Permissions)
 		roleGroup.GET("/:id", handler.FindByID)

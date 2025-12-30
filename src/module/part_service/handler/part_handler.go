@@ -29,8 +29,8 @@ func NewPartHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMiddl
 		partService:    part_service.NewPartService(db),
 	}
 
-	partServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	partGroup := router.Group("/api/v1/part", partServiceMiddleware)
+	// partServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	partGroup := router.Group("/api/v1/part")
 	{
 		partGroup.GET("/:id", handler.FindById)
 		partGroup.GET("/search", handler.Search)

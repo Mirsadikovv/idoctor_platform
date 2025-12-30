@@ -29,8 +29,8 @@ func NewSupplierHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authM
 		supplierService: supplier_service.NewSupplierService(db),
 	}
 
-	supplierServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	supplierGroup := router.Group("/api/v1/supplier", supplierServiceMiddleware)
+	// supplierServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	supplierGroup := router.Group("/api/v1/supplier")
 	{
 		supplierGroup.GET("/:id", handler.FindByID)
 		supplierGroup.GET("/search", handler.Search)

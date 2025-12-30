@@ -32,7 +32,9 @@ func NewUserHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authMiddl
 		userService:    user_service.NewUserService(db),
 	}
 
-	userGroup := group.Group("/user", authMiddleware.BuildMiddleware())
+	// userGroup := group.Group("/user", authMiddleware.BuildMiddleware())
+	userGroup := group.Group("/user")
+
 	{
 		userGroup.POST("", handler.Create)
 		userGroup.GET("/page", handler.Page)

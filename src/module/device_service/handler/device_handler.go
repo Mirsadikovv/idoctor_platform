@@ -29,8 +29,8 @@ func NewDeviceHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMid
 		deviceService:  device_service.NewDeviceService(db),
 	}
 
-	deviceServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	deviceGroup := router.Group("/api/v1/device", deviceServiceMiddleware)
+	// deviceServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	deviceGroup := router.Group("/api/v1/device")
 	{
 		deviceGroup.GET("/brands", handler.GetUniqueBrandNames)
 		deviceGroup.GET("/:id", handler.FindByID)

@@ -4,9 +4,14 @@ import { ref } from "vue";
 import { OrderService, type OrderPageData } from "../service";
 import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import PageLoading from "@/components/PageLoading.vue";
-import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
-import CreateOrder from "./Create.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
+import AppFooter from "@/components/AppFooter.vue";
 import { orderStatusOptions, paymentStatusOptions } from "../utils";
+import { useAppNavigation } from "@/composables/useAppNavigation";
+import { useAuthStore } from "@/store/auth-store";
+
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
 const orderPage = ref<OrderPageData>({
 	data: [],
@@ -40,108 +45,68 @@ async function page(query: string = "") {
 </script>
 
 <template>
-	<PageLoading :find="page" #="{ fetch }">
-		<div class="flex! gap-x-4 items-center mb-3">
-			<q-breadcrumbs>
-				<q-breadcrumbs-el :label="$tl('order_list')" icon="assignment" />
-			</q-breadcrumbs>
-			<q-space></q-space>
+	<PageLoading :find="page" #="{ fetch, loading }">
+		<LoadingSkeleton v-if="loading" />
 
-			<ButtonDialog label="create" :style="'width: auto;'" :fetch="fetch">
-				<CreateOrder :fetch="fetch" />
-			</ButtonDialog>
-		</div>
-
-		<ResponsiveTable :models="orderPage" hasOrder>
-			<template #id:thead>{{ $tl("id") }}</template>
-			<template #id="{ model }">
-				<router-link
-					:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
-					class="text-primary text-decoration-none"
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
 				>
-					#{{ model.id }}
-				</router-link>
-			</template>
+					<ResponsiveTable :models="orderPage" hasOrder>
+						<template #id:thead>{{ $tl("id") }}</template>
+						<template #id="{ model }">
+							<router-link
+								:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
+								class="text-primary text-decoration-none"
+							>
+								#{{ model.id }}
+							</router-link>
+						</template>
 
-			<template #client_name:thead>
-				{{ $tl("client") }}
-			</template>
-			<template #client_name="{ model }">
-				{{ model?.client_id }}
-			</template>
+						<template #client_name:thead>
+							{{ $tl("client") }}
+						</template>
+						<template #client_name="{ model }">
+							{{ model?.client_id }}
+						</template>
 
-			<template #master_name:thead>
-				{{ $tl("master") }}
-			</template>
-			<template #master_name="{ model }">
-				{{ model.master_id }}
-			</template>
+						<template #master_name:thead>
+							{{ $tl("master") }}
+						</template>
+						<template #master_name="{ model }">
+							{{ model.master_id }}
+						</template>
 
-			<template #price:thead>
-				{{ $tl("price") }}
-			</template>
-			<template #price="{ model }"> {{ model.price?.toLocaleString() }} сум </template>
-
-			<template #status:thead>
-				{{ $tl("status") }}
-			</template>
-			<template #status="{ model }">
-				<q-chip color="primary" outline>
-					{{ orderStatusOptions.find((item) => item.value === model.status)?.label }}
-				</q-chip>
-			</template>
-
-			<template #payment_status:thead>
-				{{ $tl("payment_status") }}
-			</template>
-			<template #payment_status="{ model }">
-				<q-chip :color="model.payment_status === 'paid' ? 'positive' : 'warning'" outline>
-					{{
-						paymentStatusOptions.find((item) => item.value === model.payment_status)
-							?.label
-					}}
-				</q-chip>
-			</template>
-
-
-			<template #tfoot="{ totalPages }">
-				<TablePaginate
-					v-model:pikers="pikers"
-					:total="totalPages"
-					:pick="pick"
-					@page="fetch"
-				/>
-			</template>
-			<!-- Кастомный мобильный вид для заказов -->
-			<template #card="{ model, orderNumber }">
-				<q-item
-					class="order-item-telegram"
-					clickable
-					:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
-				>
-					<q-item-section avatar v-if="orderNumber">
-						<q-avatar color="primary" text-color="white" size="md">
-							{{ orderNumber }}
-						</q-avatar>
-					</q-item-section>
-
-					<q-item-section>
-						<q-item-label class="text-weight-bold text-h6">
-							{{ $tl("order") }} #{{ model.id }}
-						</q-item-label>
-						<q-item-label caption class="text-body2">
-							{{ $tl("client") }}: {{ model?.client_id || "-" }}
-						</q-item-label>
-						<q-item-label caption class="text-body2" v-if="model.price">
+						<template #price:thead>
+							{{ $tl("price") }}
+						</template>
+						<template #price="{ model }">
 							{{ model.price?.toLocaleString() }} сум
-						</q-item-label>
-						<!-- Чипы статусов -->
-						<div class="q-mt-xs flex gap-1">
+						</template>
+
+						<template #status:thead>
+							{{ $tl("status") }}
+						</template>
+						<template #status="{ model }">
+							<q-chip color="primary" outline>
+								{{
+									orderStatusOptions.find((item) => item.value === model.status)
+										?.label
+								}}
+							</q-chip>
+						</template>
+
+						<template #payment_status:thead>
+							{{ $tl("payment_status") }}
+						</template>
+						<template #payment_status="{ model }">
 							<q-chip
 								:color="model.payment_status === 'paid' ? 'positive' : 'warning'"
 								outline
-								size="sm"
-								dense
 							>
 								{{
 									paymentStatusOptions.find(
@@ -149,25 +114,94 @@ async function page(query: string = "") {
 									)?.label
 								}}
 							</q-chip>
-							<q-chip color="primary" outline size="sm" dense>
-								{{
-									orderStatusOptions.find((item) => item.value === model.status)
-										?.label
-								}}
-							</q-chip>
-						</div>
-					</q-item-section>
+						</template>
 
-					<q-item-section side>
-						<q-icon name="chevron_right" color="grey-6" />
-					</q-item-section>
-				</q-item>
-			</template>
-		</ResponsiveTable>
+						<template #tfoot="{ totalPages }">
+							<TablePaginate
+								v-model:pikers="pikers"
+								:total="totalPages"
+								:pick="pick"
+								@page="fetch"
+							/>
+						</template>
+						<!-- Кастомный мобильный вид для заказов -->
+						<template #card="{ model, orderNumber }">
+							<q-item
+								class="order-item-telegram"
+								clickable
+								:to="{ name: 'ORDER_EDIT', params: { id: model.id } }"
+							>
+								<q-item-section avatar v-if="orderNumber">
+									<q-avatar color="primary" text-color="white" size="md">
+										{{ orderNumber }}
+									</q-avatar>
+								</q-item-section>
+
+								<q-item-section>
+									<q-item-label class="text-weight-bold text-h6">
+										{{ $tl("order") }} #{{ model.id }}
+									</q-item-label>
+									<q-item-label caption class="text-body2">
+										{{ $tl("client") }}: {{ model?.client_id || "-" }}
+									</q-item-label>
+									<q-item-label caption class="text-body2" v-if="model.price">
+										{{ model.price?.toLocaleString() }} сум
+									</q-item-label>
+									<!-- Чипы статусов -->
+									<div class="q-mt-xs flex gap-1">
+										<q-chip
+											:color="
+												model.payment_status === 'paid'
+													? 'positive'
+													: 'warning'
+											"
+											outline
+											size="sm"
+											dense
+										>
+											{{
+												paymentStatusOptions.find(
+													(item) => item.value === model.payment_status,
+												)?.label
+											}}
+										</q-chip>
+										<q-chip color="primary" outline size="sm" dense>
+											{{
+												orderStatusOptions.find(
+													(item) => item.value === model.status,
+												)?.label
+											}}
+										</q-chip>
+									</div>
+								</q-item-section>
+
+								<q-item-section side>
+									<q-icon name="chevron_right" color="grey-6" />
+								</q-item-section>
+							</q-item>
+						</template>
+					</ResponsiveTable>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'ORDER_CREATE' }"
+				add-button-icon="add_circle"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
+			/>
+		</q-layout>
 	</PageLoading>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
+@import "@/styles/telegram-app.scss";
 .order-item-telegram {
 	max-height: 120px;
 	min-height: 90px;

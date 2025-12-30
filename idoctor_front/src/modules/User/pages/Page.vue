@@ -50,7 +50,7 @@ async function page(query: string = "") {
 					:style="{
 						height: 'calc(var(--app-height, 100vh) - 150px)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-16"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
 				>
 					<ResponsiveTable :models="userPage" hasOrder :pick="pikers" :loading="loading">
 						<template #fullName:thead>{{ $tl("full_name") }}</template>

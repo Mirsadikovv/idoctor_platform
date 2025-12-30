@@ -22,6 +22,7 @@ type UserService interface {
 	DeleteOrRestore(ctx echo.Context, filter pg.Filter) error
 	Create(userDto *user_dto.UserCreate) (int64, error)
 	Update(ctx echo.Context, id int64, userDto *user_dto.UserUpdate) error
+	FullUpdate(ctx echo.Context, id int64, userDto *user_dto.UserFullUpdate) error
 }
 
 type userService struct {
@@ -169,6 +170,72 @@ func (s *userService) Update(ctx echo.Context, id int64, userDto *user_dto.UserU
 	}
 	if userDto.Password != nil {
 		data["password"] = gorm.Expr("HASH_MAKE(?)", *userDto.Password)
+	}
+
+	// Если нет данных для обновления, возвращаем ошибку
+	if len(data) == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	// Обновляем пользователя
+	result := s.db.WithContext(ctx.Request().Context()).
+		Table("users").
+		Where("id = ?", id).
+		Updates(data)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	return nil
+}
+
+func (s *userService) FullUpdate(ctx echo.Context, id int64, userDto *user_dto.UserFullUpdate) error {
+	data := make(map[string]any)
+
+	// Добавляем все поля, которые были переданы
+	if userDto.Username != nil {
+		data["username"] = *userDto.Username
+	}
+	if userDto.Password != nil {
+		data["password"] = gorm.Expr("HASH_MAKE(?)", *userDto.Password)
+	}
+	if userDto.FirstName != nil {
+		data["first_name"] = *userDto.FirstName
+	}
+	if userDto.LastName != nil {
+		data["last_name"] = *userDto.LastName
+	}
+	if userDto.MiddleName != nil {
+		data["middle_name"] = *userDto.MiddleName
+	}
+	if userDto.DateOfBirth != nil {
+		data["date_of_birth"] = *userDto.DateOfBirth
+	}
+	if userDto.Gender != nil {
+		data["gender"] = *userDto.Gender
+	}
+	if userDto.RoleId != nil {
+		data["role_id"] = *userDto.RoleId
+	}
+	if userDto.OrganizationId != nil {
+		data["organization_id"] = *userDto.OrganizationId
+	}
+	if userDto.TelegramId != nil {
+		data["telegram_id"] = *userDto.TelegramId
+	}
+	if userDto.TelegramUsername != nil {
+		data["telegram_username"] = *userDto.TelegramUsername
+	}
+	if userDto.PhoneNumber != nil {
+		data["phone_number"] = *userDto.PhoneNumber
+	}
+	if userDto.LanguageCode != nil {
+		data["language_code"] = *userDto.LanguageCode
 	}
 
 	// Если нет данных для обновления, возвращаем ошибку

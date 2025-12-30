@@ -1,66 +1,114 @@
 <script setup lang="ts">
-import Form from "@/components/quasar/form/Form.vue";
-import { inject, ref } from "vue";
+import { useRouter } from "vue-router";
 import { LanguageService, type LanguagePartialType, type LanguageType } from "@/service";
+import Form from "@/components/quasar/form/Form.vue";
 import Button from "@/components/quasar/btn/Button.vue";
 import Input from "@/components/quasar/form/Input.vue";
+import { ref } from "vue";
 import Title from "@/components/Title.vue";
+import PageLoading from "@/components/PageLoading.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
+import AppFooter from "@/components/AppFooter.vue";
+import { useAppNavigation } from "@/composables/useAppNavigation";
+import { useAuthStore } from "@/store/auth-store";
 
 export interface Props {
-	id: string | number;
-	fetch: Function;
+	id: number;
 }
 
-const { id, fetch } = defineProps<Props>();
+const { id } = defineProps<Props>();
 
 const LanguageModel = ref<LanguagePartialType>({});
-
-const onClose = inject<() => Promise<void>>("onClose");
+const router = useRouter();
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
 async function save(model: LanguageType) {
 	const response = await LanguageService.update(+id, model);
 
 	if (!response) return false;
 
-	await onClose?.();
-	fetch();
+	router.push({
+		name: "LANGUAGE_PAGE",
+	});
 	return true;
 }
 
-LanguageService.getByID(+id).then((data) => (LanguageModel.value = data));
+async function getByID() {
+	const response = await LanguageService.getByID(+id);
+
+	if (!response) return;
+
+	LanguageModel.value = response;
+}
 </script>
 
 <template>
-	<Form v-model="LanguageModel" :save="save">
-		<template #title>
-			<Title class="mb-5">
-				{{ $tl("edit_lang") }}
-				<q-space></q-space>
-			</Title>
-		</template>
+	<PageLoading :find="getByID" #="{ loading }">
+		<LoadingSkeleton v-if="loading" />
 
-		<template #name="{ model }">
-			<Input v-model="model.name" label="name" class="col-12" />
-		</template>
-		<template #description="{ model }">
-			<Input v-model="model.description" label="description" class="col-12" />
-		</template>
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+				>
+					<div class="flex! gap-x-4 items-center mb-3">
+						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
+						<q-breadcrumbs>
+							<q-breadcrumbs-el
+								:label="$tl('language_list')"
+								icon="article"
+								:to="{ name: 'LANGUAGE_PAGE' }"
+							/>
+						</q-breadcrumbs>
+					</div>
+					<Form v-model="LanguageModel" :save="save">
+						<template #title>
+							<Title class="mb-5">{{ $tl("edit_lang") }}</Title>
+						</template>
 
-		<template #actions="{ loading }">
-			<div class="col-12">
-				<div class="row my-row justify-center">
-					<div class="col max-w-240px!">
-						<Button :loading="loading" v-close-popup ui-type="danger" class="w-full!">
-							{{ $tl("cancel") }}
-						</Button>
-					</div>
-					<div class="col max-w-240px!">
-						<Button :loading="loading" type="submit" class="w-full!">
-							{{ $tl("save") }}
-						</Button>
-					</div>
-				</div>
-			</div>
-		</template>
-	</Form>
+						<template #name="{ model }">
+							<Input
+								v-model="model.name"
+								label="name"
+								class="col-lg-6 col-md-6 col-12"
+							/>
+						</template>
+						<template #description="{ model }">
+							<Input
+								v-model="model.description"
+								label="description"
+								class="col-lg-6 col-md-6 col-12"
+							/>
+						</template>
+
+						<template #actions="{ loading }">
+							<Button :loading="loading" type="submit" class="ml-auto">
+								{{ $tl("save") }}
+							</Button>
+						</template>
+					</Form>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'LANGUAGE_CREATE' }"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
+			/>
+		</q-layout>
+	</PageLoading>
 </template>
+
+<style scoped>
+@import "@/styles/telegram-app.scss";
+</style>

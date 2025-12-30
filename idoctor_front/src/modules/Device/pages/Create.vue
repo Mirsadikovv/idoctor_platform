@@ -17,7 +17,7 @@ const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
 const deviceModel = ref<DeviceCreateType>({
 	name: "",
-	brand_name: ""
+	brand_name: "",
 });
 
 async function save(model: DeviceCreateType) {
@@ -40,7 +40,7 @@ async function save(model: DeviceCreateType) {
 				:style="{
 					height: 'calc(var(--app-height, 100vh) - 150px)',
 				}"
-				class="bg-white text-gray-900 overflow-auto p-4 pt-16"
+				class="bg-white text-gray-900 overflow-auto p-4 pt-20"
 			>
 				<div class="flex! gap-x-4 items-center mb-3">
 					<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
@@ -59,18 +59,18 @@ async function save(model: DeviceCreateType) {
 					</template>
 
 					<template #name="{ model }">
-						<Input 
-							v-model="model.name" 
-							label="Device Name" 
+						<Input
+							v-model="model.name"
+							label="Device Name"
 							class="col-lg-6 col-md-6 col-12"
 							:rules="[formRequired()]"
 						/>
 					</template>
 					<template #brand_name="{ model }">
-						<Input 
-							v-model="model.brand_name" 
-							label="Brand Name" 
-							class="col-lg-6 col-md-6 col-12" 
+						<Input
+							v-model="model.brand_name"
+							label="Brand Name"
+							class="col-lg-6 col-md-6 col-12"
 						/>
 					</template>
 

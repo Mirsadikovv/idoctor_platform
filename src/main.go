@@ -197,14 +197,18 @@ func createOrg(db *gorm.DB, r *echo.Echo) {
 			// fmt.Println("Skipping route:", route.Path, "Method:", route.Method)
 			continue
 		}
-		routers[route.Path] = []string{route.Method}
+		if existing, ok := routers[route.Path]; ok {
+			routers[route.Path] = append(existing.([]string), route.Method)
+		} else {
+			routers[route.Path] = []string{route.Method}
+		}
 	}
 	fmt.Println(db.Where("roles.id = 1").Delete(&role_model.Role{}).Error)
 
 	db.Create(&role_model.Role{
 		ID:          1,
-		Name:        "Admin",
-		Description: "Admin",
+		Name:        "admin",
+		Description: "admin",
 		Permissions: routers,
 	})
 }

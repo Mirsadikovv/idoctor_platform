@@ -64,7 +64,7 @@ func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, erro
 
 	log.Println(result.RowsAffected, "------------------")
 	if result.RowsAffected == 0 {
-		return true, nil
+		return true, gorm.ErrRecordNotFound
 	}
 
 	return false, nil

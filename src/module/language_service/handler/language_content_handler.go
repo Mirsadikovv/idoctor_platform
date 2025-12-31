@@ -30,14 +30,14 @@ func NewLanguageContentHandler(group *echo.Group, db *gorm.DB, log logger.Logger
 		languageContentService: language_service.NewLanguageContentService(db),
 	}
 
-	// languageAuthMiddleware := authMiddleware.BuildMiddleware()
+	languageAuthMiddleware := authMiddleware.BuildMiddleware()
 	languageGroup := group.Group("/language-content")
 	{
 		languageGroup.GET("/by-key/:key", handler.FindByKey)
-		languageGroup.PUT("", handler.CreateOrUpdate) //
+		languageGroup.PUT("", handler.CreateOrUpdate, languageAuthMiddleware)
 		languageGroup.GET("/:language_id", handler.GetByLangId)
 		languageGroup.GET("/page/:language_id", handler.PageByLangId)
-		languageGroup.DELETE("/:key", handler.DeleteByKey) //
+		languageGroup.DELETE("/:key", handler.DeleteByKey, languageAuthMiddleware)
 	}
 }
 

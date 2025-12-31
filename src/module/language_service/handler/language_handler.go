@@ -27,7 +27,7 @@ func NewLanguageHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authM
 		languageService: language_service.NewLanguageService(db),
 	}
 
-	// languageAuthMiddleware := authMiddleware.BuildMiddleware()
+	languageAuthMiddleware := authMiddleware.BuildMiddleware()
 	languageGroup := group.Group("/language")
 	{
 		languageGroup.GET("/first", handler.First)
@@ -35,10 +35,10 @@ func NewLanguageHandler(group *echo.Group, db *gorm.DB, log logger.Logger, authM
 		languageGroup.GET("/search", handler.Find)
 		languageGroup.GET("/page", handler.Page)
 
-		languageGroup.POST("", handler.Create)               //
-		languageGroup.PATCH("/:id", handler.Update)          //
-		languageGroup.PATCH("/:id/restore", handler.Restore) //
-		languageGroup.DELETE("/:id", handler.Delete)         //
+		languageGroup.POST("", handler.Create, languageAuthMiddleware)               //
+		languageGroup.PATCH("/:id", handler.Update, languageAuthMiddleware)          //
+		languageGroup.PATCH("/:id/restore", handler.Restore, languageAuthMiddleware) //
+		languageGroup.DELETE("/:id", handler.Delete, languageAuthMiddleware)         //
 	}
 }
 

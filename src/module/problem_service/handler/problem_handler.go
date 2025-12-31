@@ -29,8 +29,8 @@ func NewProblemHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMi
 		problemService: problem_service.NewProblemService(db),
 	}
 
-	// problemServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	problemGroup := router.Group("/api/v1/problem")
+	problemServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	problemGroup := router.Group("/api/v1/problem", problemServiceMiddleware)
 	{
 		problemGroup.GET("/:id", handler.FindById)
 		problemGroup.GET("/search", handler.Search)

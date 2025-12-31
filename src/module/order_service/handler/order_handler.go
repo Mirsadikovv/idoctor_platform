@@ -27,8 +27,8 @@ func NewOrderHandler(router *echo.Echo, db *gorm.DB, log logger.Logger, authMidd
 		orderService:   order_service.NewOrderService(db),
 	}
 
-	// orderServiceMiddleware := handler.authMiddleware.BuildMiddleware()
-	orderGroup := router.Group("/api/v1/order")
+	orderServiceMiddleware := handler.authMiddleware.BuildMiddleware()
+	orderGroup := router.Group("/api/v1/order", orderServiceMiddleware)
 	{
 		orderGroup.GET("/:id", handler.FindById)
 		orderGroup.GET("/search", handler.Search)

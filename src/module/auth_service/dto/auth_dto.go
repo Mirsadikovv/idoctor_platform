@@ -26,11 +26,21 @@ func (u *AuthUser) ID() int64 {
 }
 
 func (u *AuthUser) Pre(ctx echo.Context, db *gorm.DB, _ ...struct{}) (bool, error) {
+
+	var (
+		path   = ctx.Path()
+		method = ctx.Request().Method
+	)
+
+	log.Println("1------------------", path, "1------------------", method)
+
+	log.Println("2------------------", path, "2------------------", method)
+
 	filter := func(tx *gorm.DB) *gorm.DB {
 		return tx.Joins("LEFT JOIN roles ON roles.id = users.role_id").
 			Where("users.id = ?", u.Id).
 			Where("users.blocked_at IS NULL").
-			Where(fmt.Sprintf(`roles.permissions -> '%s' ? '%s'`, ctx.Path(), ctx.Request().Method)).
+			Where(fmt.Sprintf(`roles.permissions -> '%s' ? '%s'`, path, method)).
 			Limit(1)
 	}
 

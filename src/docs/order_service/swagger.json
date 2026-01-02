@@ -416,12 +416,24 @@
             "type": "object",
             "properties": {
                 "client": {
-                    "$ref": "#/definitions/UserInfo"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "client_id": {
                     "type": "integer"
                 },
+                "client_name": {
+                    "type": "string"
+                },
+                "client_phone": {
+                    "type": "string"
+                },
                 "created_at": {
+                    "type": "string"
+                },
+                "deadline": {
                     "type": "string"
                 },
                 "deleted_at": {
@@ -431,7 +443,10 @@
                     "type": "integer"
                 },
                 "master": {
-                    "$ref": "#/definitions/UserInfo"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "master_id": {
                     "type": "integer"
@@ -446,6 +461,9 @@
                     "type": "string"
                 },
                 "payment_type": {
+                    "type": "string"
+                },
+                "phone_password": {
                     "type": "string"
                 },
                 "price": {
@@ -474,6 +492,15 @@
                 "client_id": {
                     "type": "integer"
                 },
+                "client_name": {
+                    "type": "string"
+                },
+                "client_phone": {
+                    "type": "string"
+                },
+                "deadline": {
+                    "type": "string"
+                },
                 "master_id": {
                     "type": "integer"
                 },
@@ -487,6 +514,9 @@
                     "type": "string"
                 },
                 "payment_type": {
+                    "type": "string"
+                },
+                "phone_password": {
                     "type": "string"
                 },
                 "price": {
@@ -539,6 +569,15 @@
                 "client_id": {
                     "type": "integer"
                 },
+                "client_name": {
+                    "type": "string"
+                },
+                "client_phone": {
+                    "type": "string"
+                },
+                "deadline": {
+                    "type": "string"
+                },
                 "master_id": {
                     "type": "integer"
                 },
@@ -554,6 +593,9 @@
                 "payment_type": {
                     "type": "string"
                 },
+                "phone_password": {
+                    "type": "string"
+                },
                 "price": {
                     "type": "number",
                     "minimum": 0
@@ -565,29 +607,6 @@
                     }
                 },
                 "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "UserInfo": {
-            "type": "object",
-            "properties": {
-                "first_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "middle_name": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }

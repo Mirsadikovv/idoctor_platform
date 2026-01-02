@@ -357,6 +357,62 @@
                 }
             }
         },
+        "/user/{id}/full-update": {
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update all user fields including profile information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Full update user",
+                "operationId": "full-update-user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User full information to update",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserFullUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/user/{id}/restore": {
             "patch": {
                 "security": [
@@ -472,6 +528,50 @@
                 },
                 "middleName": {
                     "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "roleId": {
+                    "type": "integer"
+                },
+                "telegramId": {
+                    "type": "integer"
+                },
+                "telegramUsername": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserFullUpdate": {
+            "type": "object",
+            "properties": {
+                "dateOfBirth": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "languageCode": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "middleName": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "integer"
                 },
                 "password": {
                     "type": "string"

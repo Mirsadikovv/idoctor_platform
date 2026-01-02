@@ -60,6 +60,46 @@
                 }
             }
         },
+        "/device/brands": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get list of unique brand names from devices",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "Get unique brand names",
+                "operationId": "get-unique-brand-names",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/device/page": {
             "get": {
                 "security": [

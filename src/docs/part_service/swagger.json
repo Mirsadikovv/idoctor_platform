@@ -344,48 +344,11 @@
         }
     },
     "definitions": {
-        "DeviceInfo": {
-            "type": "object",
-            "properties": {
-                "brand_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "ID64": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "integer"
-                }
-            }
-        },
-        "MasterInfo": {
-            "type": "object",
-            "properties": {
-                "first_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "middle_name": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },
@@ -399,7 +362,10 @@
                     "type": "string"
                 },
                 "device": {
-                    "$ref": "#/definitions/DeviceInfo"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "device_id": {
                     "type": "integer"
@@ -411,7 +377,10 @@
                     "type": "number"
                 },
                 "master": {
-                    "$ref": "#/definitions/MasterInfo"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "master_id": {
                     "type": "integer"
@@ -423,7 +392,10 @@
                     "type": "number"
                 },
                 "supplier": {
-                    "$ref": "#/definitions/SupplierInfo"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "supplier_id": {
                     "type": "integer"
@@ -488,17 +460,6 @@
                 },
                 "supplier_id": {
                     "type": "integer"
-                }
-            }
-        },
-        "SupplierInfo": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
                 }
             }
         }

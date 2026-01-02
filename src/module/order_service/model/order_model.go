@@ -18,6 +18,7 @@ type Order struct {
 	Status        string                  `json:"status" gorm:"type:varchar(50);not null"`
 	PaymentType   string                  `json:"payment_type" gorm:"type:varchar(50);not null"`
 	PaymentStatus string                  `json:"payment_status" gorm:"type:varchar(50);not null"`
+	Deadline      *time.Time              `json:"deadline" gorm:"type:timestamp"`
 	CreatedAt     *time.Time              `json:"created_at" gorm:"autoCreateTime"`
 	DeletedAt     *gorm.DeletedAt         `json:"deleted_at" gorm:"index"`
 	Problems      []problem_model.Problem `json:"problems" gorm:"many2many:order_problems;"`

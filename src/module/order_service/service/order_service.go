@@ -81,6 +81,7 @@ func (s *orderService) Create(ctx context.Context, orderDto *order_dto.OrderCrea
 		Status:        orderDto.Status,
 		PaymentType:   orderDto.PaymentType,
 		PaymentStatus: orderDto.PaymentStatus,
+		Deadline:      orderDto.Deadline,
 	}
 
 	// Start transaction
@@ -138,6 +139,7 @@ func (s *orderService) Update(ctx context.Context, id int64, orderDto *order_dto
 		order.Status = orderDto.Status
 		order.PaymentType = orderDto.PaymentType
 		order.PaymentStatus = orderDto.PaymentStatus
+		order.Deadline = orderDto.Deadline
 
 		if err := tx.Save(&order).Error; err != nil {
 			return err

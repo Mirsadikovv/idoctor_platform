@@ -114,6 +114,7 @@ func (h *orderHandler) Search(c echo.Context) error {
 			"orders.status",
 			"orders.payment_type",
 			"orders.payment_status",
+			"orders.deadline",
 			"orders.created_at",
 			"orders.deleted_at",
 		).Order("orders.id DESC")
@@ -202,6 +203,7 @@ func (h *orderHandler) Page(c echo.Context) error {
 			"orders.status",
 			"orders.payment_type",
 			"orders.payment_status",
+			"orders.deadline",
 			"orders.created_at",
 			"orders.deleted_at",
 		).Order("orders.id DESC")

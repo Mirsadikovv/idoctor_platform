@@ -17,31 +17,33 @@ type UserInfo struct {
 } // @Name UserInfo
 
 type OrderCreate struct {
-	ClientId      *int64  `json:"client_id"`
-	ClientPhone   string  `json:"client_phone"`
-	ClientName    string  `json:"client_name"`
-	PhonePassword string  `json:"phone_password"`
-	MasterId      *int64  `json:"master_id"`
-	Price         float64 `json:"price" validate:"required,min=0"`
-	Status        string  `json:"status" validate:"required"`
-	PaymentType   string  `json:"payment_type" validate:"required"`
-	PaymentStatus string  `json:"payment_status" validate:"required"`
-	PartIds       []int64 `json:"part_ids"`
-	ProblemIds    []int64 `json:"problem_ids"`
+	ClientId      *int64     `json:"client_id"`
+	ClientPhone   string     `json:"client_phone"`
+	ClientName    string     `json:"client_name"`
+	PhonePassword string     `json:"phone_password"`
+	MasterId      *int64     `json:"master_id"`
+	Price         float64    `json:"price" validate:"required,min=0"`
+	Status        string     `json:"status" validate:"required"`
+	PaymentType   string     `json:"payment_type" validate:"required"`
+	PaymentStatus string     `json:"payment_status" validate:"required"`
+	Deadline      *time.Time `json:"deadline"`
+	PartIds       []int64    `json:"part_ids"`
+	ProblemIds    []int64    `json:"problem_ids"`
 } // @Name OrderCreate
 
 type OrderUpdate struct {
-	ClientId      *int64  `json:"client_id"`
-	ClientPhone   string  `json:"client_phone"`
-	ClientName    string  `json:"client_name"`
-	PhonePassword string  `json:"phone_password"`
-	MasterId      *int64  `json:"master_id"`
-	Price         float64 `json:"price" validate:"required,min=0"`
-	Status        string  `json:"status" validate:"required"`
-	PaymentType   string  `json:"payment_type" validate:"required"`
-	PaymentStatus string  `json:"payment_status" validate:"required"`
-	PartIds       []int64 `json:"part_ids"`
-	ProblemIds    []int64 `json:"problem_ids"`
+	ClientId      *int64     `json:"client_id"`
+	ClientPhone   string     `json:"client_phone"`
+	ClientName    string     `json:"client_name"`
+	PhonePassword string     `json:"phone_password"`
+	MasterId      *int64     `json:"master_id"`
+	Price         float64    `json:"price" validate:"required,min=0"`
+	Status        string     `json:"status" validate:"required"`
+	PaymentType   string     `json:"payment_type" validate:"required"`
+	PaymentStatus string     `json:"payment_status" validate:"required"`
+	Deadline      *time.Time `json:"deadline"`
+	PartIds       []int64    `json:"part_ids"`
+	ProblemIds    []int64    `json:"problem_ids"`
 } // @Name OrderUpdate
 
 type OrderPage = response.PageData[Order] // @name OrderPage
@@ -59,6 +61,7 @@ type Order struct {
 	Status        string           `json:"status"`
 	PaymentType   string           `json:"payment_type"`
 	PaymentStatus string           `json:"payment_status"`
+	Deadline      *time.Time       `json:"deadline"`
 	CreatedAt     *time.Time       `json:"created_at"`
 	DeletedAt     *time.Time       `json:"deleted_at,omitempty"`
 	PartIds       []int64          `json:"part_ids,omitempty"`

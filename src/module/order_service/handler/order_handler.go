@@ -106,6 +106,9 @@ func (h *orderHandler) Search(c echo.Context) error {
 		return tx.Select(
 			"orders.id",
 			"orders.client_id",
+			"orders.client_phone",
+			"orders.client_name",
+			"orders.phone_password",
 			"orders.master_id",
 			"orders.price",
 			"orders.status",
@@ -191,6 +194,9 @@ func (h *orderHandler) Page(c echo.Context) error {
 		return tx.Select(
 			"orders.id",
 			"orders.client_id",
+			"orders.client_phone",
+			"orders.client_name",
+			"orders.phone_password",
 			"orders.master_id",
 			"orders.price",
 			"orders.status",

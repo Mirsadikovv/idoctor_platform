@@ -2,6 +2,7 @@ package order_service
 
 import (
 	"context"
+	"fmt"
 
 	order_dto "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/dto"
 	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
@@ -55,8 +56,26 @@ func (s *orderService) Page(ctx context.Context, paginate *request.Paginate, fil
 }
 
 func (s *orderService) Create(ctx context.Context, orderDto *order_dto.OrderCreate) (int64, error) {
+	// Validate status
+	if !order_model.IsValidStatus(orderDto.Status) {
+		return 0, fmt.Errorf("invalid order status: %s", orderDto.Status)
+	}
+
+	// Validate payment type
+	if !order_model.IsValidPaymentType(orderDto.PaymentType) {
+		return 0, fmt.Errorf("invalid payment type: %s", orderDto.PaymentType)
+	}
+
+	// Validate payment status
+	if !order_model.IsValidPaymentStatus(orderDto.PaymentStatus) {
+		return 0, fmt.Errorf("invalid payment status: %s", orderDto.PaymentStatus)
+	}
+
 	orderModel := &order_model.Order{
 		ClientId:      orderDto.ClientId,
+		ClientPhone:   orderDto.ClientPhone,
+		ClientName:    orderDto.ClientName,
+		PhonePassword: orderDto.PhonePassword,
 		MasterId:      orderDto.MasterId,
 		Price:         orderDto.Price,
 		Status:        orderDto.Status,
@@ -87,6 +106,21 @@ func (s *orderService) Create(ctx context.Context, orderDto *order_dto.OrderCrea
 }
 
 func (s *orderService) Update(ctx context.Context, id int64, orderDto *order_dto.OrderUpdate) error {
+	// Validate status
+	if !order_model.IsValidStatus(orderDto.Status) {
+		return fmt.Errorf("invalid order status: %s", orderDto.Status)
+	}
+
+	// Validate payment type
+	if !order_model.IsValidPaymentType(orderDto.PaymentType) {
+		return fmt.Errorf("invalid payment type: %s", orderDto.PaymentType)
+	}
+
+	// Validate payment status
+	if !order_model.IsValidPaymentStatus(orderDto.PaymentStatus) {
+		return fmt.Errorf("invalid payment status: %s", orderDto.PaymentStatus)
+	}
+
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		// Find existing order
 		var order order_model.Order
@@ -96,6 +130,9 @@ func (s *orderService) Update(ctx context.Context, id int64, orderDto *order_dto
 
 		// Update basic fields
 		order.ClientId = orderDto.ClientId
+		order.ClientPhone = orderDto.ClientPhone
+		order.ClientName = orderDto.ClientName
+		order.PhonePassword = orderDto.PhonePassword
 		order.MasterId = orderDto.MasterId
 		order.Price = orderDto.Price
 		order.Status = orderDto.Status

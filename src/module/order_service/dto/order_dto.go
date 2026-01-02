@@ -18,6 +18,9 @@ type UserInfo struct {
 
 type OrderCreate struct {
 	ClientId      *int64  `json:"client_id"`
+	ClientPhone   string  `json:"client_phone"`
+	ClientName    string  `json:"client_name"`
+	PhonePassword string  `json:"phone_password"`
 	MasterId      *int64  `json:"master_id"`
 	Price         float64 `json:"price" validate:"required,min=0"`
 	Status        string  `json:"status" validate:"required"`
@@ -29,6 +32,9 @@ type OrderCreate struct {
 
 type OrderUpdate struct {
 	ClientId      *int64  `json:"client_id"`
+	ClientPhone   string  `json:"client_phone"`
+	ClientName    string  `json:"client_name"`
+	PhonePassword string  `json:"phone_password"`
 	MasterId      *int64  `json:"master_id"`
 	Price         float64 `json:"price" validate:"required,min=0"`
 	Status        string  `json:"status" validate:"required"`
@@ -43,6 +49,9 @@ type OrderPage = response.PageData[Order] // @name OrderPage
 type Order struct {
 	Id            int64            `json:"id"`
 	ClientId      *int64           `json:"client_id"`
+	ClientPhone   string           `json:"client_phone"`
+	ClientName    string           `json:"client_name"`
+	PhonePassword string           `json:"phone_password"`
 	MasterId      *int64           `json:"master_id"`
 	Client        *json.RawMessage `json:"client,omitempty"`
 	Master        *json.RawMessage `json:"master,omitempty"`

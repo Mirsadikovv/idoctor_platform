@@ -10,6 +10,9 @@ import (
 type Order struct {
 	Id            int64                   `json:"id" gorm:"primaryKey;autoIncrement"`
 	ClientId      *int64                  `json:"client_id" gorm:"index"`
+	ClientPhone   string                  `json:"client_phone" gorm:"type:varchar(20)"`
+	ClientName    string                  `json:"client_name" gorm:"type:varchar(255)"`
+	PhonePassword string                  `json:"phone_password" gorm:"type:varchar(50)"`
 	MasterId      *int64                  `json:"master_id" gorm:"index"`
 	Price         float64                 `json:"price" gorm:"type:decimal(10,2);not null"`
 	Status        string                  `json:"status" gorm:"type:varchar(50);not null"`

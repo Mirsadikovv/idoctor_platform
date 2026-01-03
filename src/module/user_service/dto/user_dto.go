@@ -68,6 +68,7 @@ type User struct {
 	DateOfBirth      string     `json:"dateOfBirth"`
 	Gender           Gender     `json:"gender"`
 	RoleId           int64      `json:"roleId"`
+	Role             string     `json:"role"`
 	TelegramId       *int64     `json:"telegramId,omitempty"`
 	TelegramUsername *string    `json:"telegramUsername,omitempty"`
 	PhoneNumber      *string    `json:"phoneNumber,omitempty"`

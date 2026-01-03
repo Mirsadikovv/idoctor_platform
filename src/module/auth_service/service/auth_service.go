@@ -105,6 +105,7 @@ func (a *authService) Me(ctx context.Context, token string) (*user_dto.User, err
 			"users.id",
 			"users.username",
 			"users.role_id",
+			"roles.name as role",
 			"roles.pages",
 			"users.last_visit",
 			"users.created_at",

@@ -32,26 +32,26 @@ const (
 
 // ValidOrderStatuses returns all valid order statuses
 var ValidOrderStatuses = []string{
-	StatusPending,
-	StatusReceived,
-	StatusDiagnostic,
-	StatusCompleted,
-	StatusCancelled,
+	"PENDING",
+	"RECEIVED",
+	"DIAGNOSTIC",
+	"COMPLETED",
+	"CANCELLED",
 }
 
 // ValidPaymentTypes returns all valid payment types
 var ValidPaymentTypes = []string{
-	PaymentTypeCash,
-	PaymentTypeCard,
-	PaymentTypeOnline,
+	"CASH",
+	"CARD",
+	"ONLINE",
 }
 
 // ValidPaymentStatuses returns all valid payment statuses
 var ValidPaymentStatuses = []string{
-	PaymentStatusPending,
-	PaymentStatusPaid,
-	PaymentStatusRefunded,
-	PaymentStatusCancelled,
+	"PENDING",
+	"PAID",
+	"REFUNDED",
+	"CANCELLED",
 }
 
 // IsValidStatus checks if the given status is valid

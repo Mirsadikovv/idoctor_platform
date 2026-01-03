@@ -80,6 +80,11 @@
                     },
                     {
                         "type": "string",
+                        "name": "client_phone",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "name": "end_date",
                         "in": "query"
                     },
@@ -182,6 +187,11 @@
                     {
                         "type": "integer",
                         "name": "client_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "client_phone",
                         "in": "query"
                     },
                     {

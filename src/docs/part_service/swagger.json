@@ -376,15 +376,6 @@
                 "income_price": {
                     "type": "number"
                 },
-                "master": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "master_id": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string"
                 },

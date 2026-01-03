@@ -6,9 +6,9 @@ import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import PageLoading from "@/components/PageLoading.vue";
 import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 import AppFooter from "@/components/AppFooter.vue";
-import { orderStatusOptions, paymentStatusOptions } from "../utils";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
+import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
@@ -54,18 +54,11 @@ async function page(query: string = "") {
 					:style="{
 						height: 'calc(var(--app-height, 100vh) - 150px)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 				>
 					<ResponsiveTable :models="orderPage" hasOrder>
 						<template #id:thead>{{ $tl("id") }}</template>
-						<template #id="{ model }">
-							<router-link
-								:to="{ name: 'ORDER_VIEW', params: { id: model.id } }"
-								class="text-primary text-decoration-none"
-							>
-								#{{ model.id }}
-							</router-link>
-						</template>
+						<template #id="{ model }"> #{{ model.id }} </template>
 
 						<template #client_name:thead>
 							{{ $tl("client") }}
@@ -93,10 +86,7 @@ async function page(query: string = "") {
 						</template>
 						<template #status="{ model }">
 							<q-chip color="primary" outline>
-								{{
-									orderStatusOptions.find((item) => item.value === model.status)
-										?.label
-								}}
+								{{ model.status }}
 							</q-chip>
 						</template>
 
@@ -108,12 +98,20 @@ async function page(query: string = "") {
 								:color="model.payment_status === 'paid' ? 'positive' : 'warning'"
 								outline
 							>
-								{{
-									paymentStatusOptions.find(
-										(item) => item.value === model.payment_status,
-									)?.label
-								}}
+								{{ model.payment_status }}
 							</q-chip>
+						</template>
+
+						<template #edit="{ model }">
+							<div class="text-center">
+								<IconBtn
+									:to="{
+										name: 'ORDER_EDIT',
+										params: { id: model.id },
+									}"
+									icon="edit"
+								/>
+							</div>
 						</template>
 
 						<template #tfoot="{ totalPages }">
@@ -138,41 +136,31 @@ async function page(query: string = "") {
 								</q-item-section>
 
 								<q-item-section>
-									<q-item-label class="text-weight-bold text-h6">
-										{{ $tl("order") }} #{{ model.id }}
+									<q-item-label caption class="text-body2">
+										{{ $tl("client_name") }}: {{ model?.client_name || "-" }}
 									</q-item-label>
 									<q-item-label caption class="text-body2">
-										{{ $tl("client") }}: {{ model?.client_id || "-" }}
+										{{ $tl("client_phone") }}: {{ model?.client_phone || "-" }}
 									</q-item-label>
 									<q-item-label caption class="text-body2" v-if="model.price">
 										{{ model.price?.toLocaleString() }} сум
 									</q-item-label>
+
+									<q-item-label
+										caption
+										class="text-body2"
+										v-if="model.payment_status"
+									>
+										<div class="q-mt-xs flex gap-1">
+											<q-chip color="secondary" outline dense>
+												{{ model.payment_status }}
+											</q-chip>
+											<q-chip color="accent" outline dense>
+												{{ model.status }}
+											</q-chip>
+										</div>
+									</q-item-label>
 									<!-- Чипы статусов -->
-									<div class="q-mt-xs flex gap-1">
-										<q-chip
-											:color="
-												model.payment_status === 'paid'
-													? 'positive'
-													: 'warning'
-											"
-											outline
-											size="sm"
-											dense
-										>
-											{{
-												paymentStatusOptions.find(
-													(item) => item.value === model.payment_status,
-												)?.label
-											}}
-										</q-chip>
-										<q-chip color="primary" outline size="sm" dense>
-											{{
-												orderStatusOptions.find(
-													(item) => item.value === model.status,
-												)?.label
-											}}
-										</q-chip>
-									</div>
 								</q-item-section>
 
 								<q-item-section side>

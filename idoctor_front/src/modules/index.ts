@@ -9,6 +9,7 @@ import { SupplierRoutes } from "./Supplier/routes";
 import { PartRoutes } from "./Part/routes";
 import { RoleRoutes } from "./Role/routes";
 import { OrderRoutes } from "./Order/routes";
+import { OrderPartRoutes } from "./OrderPart/routes";
 
 registerRoutes(
 	emptyRoute,
@@ -37,6 +38,7 @@ registerRoutes(
 
 	// Order sort 7
 	...OrderRoutes(7),
+	...OrderPartRoutes(7),
 
 	// Languages sort 10
 	LanguageGroupRoutes(10),

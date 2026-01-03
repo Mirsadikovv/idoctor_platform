@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { ProblemService, type ProblemUpdateType, type ProblemType } from "../service";
+import { OrderPartService, type OrderPartUpdateType, type OrderPartType } from "@/service";
 import Form from "@/components/quasar/form/Form.vue";
 import Button from "@/components/quasar/btn/Button.vue";
 import Input from "@/components/quasar/form/Input.vue";
+import Autocomplete from "@/components/quasar/form/Autocomplete.vue";
+import { ref } from "vue";
 import Title from "@/components/Title.vue";
 import PageLoading from "@/components/PageLoading.vue";
 import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
-import { formNumber, formRequired } from "@/common/validator";
-import { ref } from "vue";
+import { formRequired, formNumber } from "@/common/validator";
+import { searchParts, searchSuppliers } from "../utils";
 
 export interface Props {
 	id: number;
@@ -19,38 +21,33 @@ export interface Props {
 
 const { id } = defineProps<Props>();
 
+const orderModel = ref<Partial<OrderPartType>>({});
 const router = useRouter();
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-const problemModel = ref<ProblemType>({
-	id: 0,
-	name: "",
-	price: 0,
-	created_at: "",
-});
-
-async function getProblemByID() {
-	const data = await ProblemService.getByID(+id);
-	if (data) {
-		problemModel.value = data;
-	}
-}
-
-async function save(model: ProblemUpdateType) {
-	const response = await ProblemService.update(+id, model);
+async function save(model: OrderPartUpdateType) {
+	const response = await OrderPartService.update(+id, model);
 
 	if (!response) return false;
 
 	router.push({
-		name: "PROBLEM_PAGE",
+		name: "ORDER_PART_PAGE",
 	});
 	return true;
+}
+
+async function getByID() {
+	const response = await OrderPartService.getByID(+id);
+
+	if (!response) return;
+
+	orderModel.value = response;
 }
 </script>
 
 <template>
-	<PageLoading :find="getProblemByID" #="{ loading }">
+	<PageLoading :find="getByID" #="{ loading }">
 		<LoadingSkeleton v-if="loading" />
 
 		<q-layout view="hHh Lpr lff" v-else>
@@ -65,32 +62,56 @@ async function save(model: ProblemUpdateType) {
 						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
 						<q-breadcrumbs>
 							<q-breadcrumbs-el
-								:label="$tl('problem_list')"
-								icon="medical_services"
-								:to="{ name: 'PROBLEM_PAGE' }"
+								:label="$tl('order_part_list')"
+								icon="assignment"
+								:to="{ name: 'ORDER_PART_PAGE' }"
 							/>
 						</q-breadcrumbs>
 					</div>
-					<Form v-model="problemModel" :save="save">
+					<Form v-model="orderModel" :save="save">
 						<template #title>
-							<Title class="mb-5">{{ $tl("edit_problem") }}</Title>
+							<Title class="mb-5">{{ $tl("edit_order_part") }}</Title>
 						</template>
 
-						<template #name="{ model }">
-							<Input
-								v-model="model.name"
-								label="Problem Name"
-								class="col-lg-6 col-md-6 col-12"
+						<template #supplier_id="{ model }">
+							<Autocomplete
+								v-model="model.supplier_id"
+								label="Supplier"
+								class="col-lg-4 col-md-6 col-12"
 								:rules="[formRequired()]"
+								:find="searchSuppliers"
+								option-label="name"
+								option-value="id"
 							/>
 						</template>
+
+						<template #part_id="{ model }">
+							<Autocomplete
+								v-model="model.part_id"
+								label="part_id"
+								class="col-lg-4 col-md-6 col-12"
+								:rules="[formRequired()]"
+								:find="searchParts"
+								option-label="name"
+								option-value="id"
+							/>
+						</template>
+
 						<template #price="{ model }">
 							<Input
 								v-model.number="model.price"
-								label="Price"
+								label="price"
+								class="col-12"
 								:rules="[formRequired(), formNumber()]"
-								:min="0"
-								class="col-lg-6 col-md-6 col-12"
+							/>
+						</template>
+
+						<template #income_price="{ model }">
+							<Input
+								v-model.number="model.income_price"
+								label="income_price"
+								class="col-12"
+								:rules="[formRequired(), formNumber()]"
 							/>
 						</template>
 
@@ -108,8 +129,7 @@ async function save(model: ProblemUpdateType) {
 				:languages="$lang.languages"
 				:current-language-id="$lang._currentLang?.id"
 				:show-add-button="true"
-				:add-button-route="{ name: 'PROBLEM_CREATE' }"
-				add-button-icon="medical_services"
+				:add-button-route="{ name: 'ORDER_PART_CREATE' }"
 				@toggle-drawer="toggleLeftDrawer"
 				@go-to-profile="toggleLeftDrawer"
 				@set-lang="setLang"

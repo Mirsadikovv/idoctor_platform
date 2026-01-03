@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { RoleService, type RoleType, type RoleTypePartialType } from "@/service";
+import {
+	RoleService,
+	type PermissionType,
+	type RoleType,
+	type RoleTypePartialType,
+} from "@/service";
 import Form from "@/components/quasar/form/Form.vue";
 import Button from "@/components/quasar/btn/Button.vue";
 import Input from "@/components/quasar/form/Input.vue";
@@ -10,20 +15,33 @@ import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
 import { formRequired } from "@/common/validator";
+import Autocomplete from "@/components/quasar/form/Autocomplete.vue";
+import { searchPermission } from "../utils";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
 const role = ref<RoleTypePartialType>({});
+const permissions = ref<Partial<PermissionType>[]>([]);
 
 async function save(model: RoleType) {
+	const _permissions: Record<string, string[]> = {};
+
+	permissions.value.forEach((p) => {
+		_permissions[String(p.path)] = [];
+	});
+
+	permissions.value.forEach((p) => {
+		_permissions[p.path!].push(p.method!);
+	});
+
 	const role = {
 		name: model.name,
 		description: model.description,
 	};
 
-	const response = await RoleService.createOrUpdate(role);
+	const response = await RoleService.create(role);
 
 	if (!response) {
 		return false;
@@ -44,7 +62,7 @@ async function save(model: RoleType) {
 				:style="{
 					height: 'calc(var(--app-height, 100vh) - 150px)',
 				}"
-				class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+				class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 			>
 				<div class="flex! gap-x-4 items-center mb-3">
 					<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
@@ -75,6 +93,18 @@ async function save(model: RoleType) {
 							v-model="model.description"
 							label="description"
 							class="col-lg-6 col-md-6 col-12"
+						/>
+					</template>
+
+					<template #permissions>
+						<Autocomplete
+							use-chips
+							class="col-12 max-h-400px overflow-auto"
+							v-model="permissions"
+							:option-label="(p) => `${p.method} => ${p.path}`"
+							:find="searchPermission"
+							label="permissions"
+							multiple
 						/>
 					</template>
 

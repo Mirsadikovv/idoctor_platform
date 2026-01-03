@@ -17,6 +17,7 @@ export * from "@module/Supplier/service";
 export * from "@module/Part/service";
 
 export * from "@module/Order/service";
+export * from "@module/OrderPart/service";
 
 export * from "@module/Media/service/media.service";
 

@@ -12,6 +12,7 @@ export type User = {
 	gender: "male" | "female";
 	phoneNumber: string;
 	roleId: number;
+	role: "admin" | "user" | "master";
 	telegramId: number;
 	telegramUsername: string;
 	languageCode: string;

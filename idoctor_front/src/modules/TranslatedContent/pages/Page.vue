@@ -62,20 +62,20 @@ async function find(query: string) {
 					:style="{
 						height: 'calc(var(--app-height, 100vh) - 150px)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 				>
 					<ResponsiveTable :loading="loading" :models="models" :pick="pikers" hasOrder>
 						<template #language:thead> </template>
 						<template #language="{ model }">
-							<q-chip color="secondary" text-color="white"
-								>{{ model?.language?.name }}
+							<q-chip color="secondary" text-color="white">
+								{{ model?.language?.name }}
 							</q-chip>
 						</template>
 
 						<template #key:thead> </template>
 						<template #key="{ model }">
 							<router-link
-								:to="{ name: 'TRANSLATED_CONTENT_VIEW', params: { id: model.key } }"
+								:to="{ name: 'TRANSLATE_UPDATE', params: { id: model.key } }"
 								class="text-primary text-decoration-none"
 							>
 								{{ model.key }}

@@ -51,7 +51,7 @@ async function page(query: string = "") {
 					:style="{
 						height: 'calc(var(--app-height, 100vh) - 150px)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 				>
 					<ResponsiveTable :models="languagePage" hasOrder>
 						<template #name:thead> </template>

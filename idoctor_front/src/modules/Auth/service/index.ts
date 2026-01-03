@@ -17,6 +17,11 @@ export interface AuthToken {
 	token: string;
 }
 
+export interface AuthTelegram {
+	role: string;
+	token: string;
+}
+
 class AuthService {
 	@Try({
 		async onError(err) {
@@ -30,6 +35,7 @@ class AuthService {
 		const { data } = await api.post<AuthToken>("/auth/sign-in", authUser);
 		return data;
 	}
+
 	@Try({
 		async onError(err) {
 			(await import("@/common/Notify")).ErrorNotify(
@@ -38,9 +44,17 @@ class AuthService {
 			);
 		},
 	})
-	async signUp(user: User) {
-		await api.post("/auth/sign-up", user);
-		return true;
+	async signInTelegram(tgID: string) {
+		const { data } = await api.post<AuthTelegram>(
+			"/auth/sign-in-telegram",
+			{},
+			{
+				headers: {
+					telegram_id: tgID,
+				},
+			},
+		);
+		return data;
 	}
 
 	@Try({

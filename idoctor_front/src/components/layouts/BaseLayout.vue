@@ -408,7 +408,7 @@ const SideList = buildSidebar();
 						'padding-left': 'max(var(--tg-safe-area-inset-left), 1rem)',
 						'padding-right': 'max(var(--tg-safe-area-inset-right), 1rem)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 				>
 					<router-view />
 				</q-page>

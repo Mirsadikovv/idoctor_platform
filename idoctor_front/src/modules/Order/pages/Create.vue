@@ -13,13 +13,12 @@ import { useAuthStore } from "@/store/auth-store";
 import { formRequired, formNumber } from "@/common/validator";
 import {
 	searchClients,
-	searchMasters,
-	searchProblems,
-	searchParts,
 	orderStatusOptions,
 	paymentStatusOptions,
 	paymentTypeOptions,
 } from "../utils";
+import DatePicker from "@/components/quasar/form/DatePicker.vue";
+import { parseDate } from "@/common";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -30,8 +29,14 @@ const orderModel = ref<Partial<OrderCreateType>>({
 	problem_ids: [],
 });
 
-async function save(model: OrderCreateType) {
-	const response = await OrderService.create(model);
+async function save(model: Partial<OrderCreateType>) {
+	model.deadline = parseDate(model.deadline, "DD-MM-YYYY")?.toISOString();
+
+	const master = authStore.user?.id;
+	const response = await OrderService.create({
+		...model,
+		master_id: master,
+	});
 
 	if (!response) return false;
 
@@ -50,7 +55,7 @@ async function save(model: OrderCreateType) {
 				:style="{
 					height: 'calc(var(--app-height, 100vh) - 150px)',
 				}"
-				class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+				class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 			>
 				<div class="flex! gap-x-4 items-center mb-3">
 					<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
@@ -68,51 +73,30 @@ async function save(model: OrderCreateType) {
 						<Title class="mb-5">{{ $tl("create_order") }}</Title>
 					</template>
 
-					<template #client_id="{ model }">
-						<Autocomplete
-							v-model="model.client_id"
-							label="Client"
-							class="col-12"
-							:find="searchClients"
-							option-label="username"
-							option-value="id"
+					<template #client_name="{ model }">
+						<Input
+							v-model="model.client_name"
+							label="client_name"
+							class="col-lg-6 col-md-6 col-12"
+							:rules="[formRequired()]"
 						/>
 					</template>
 
-					<template #master_id="{ model }">
-						<Autocomplete
-							v-model="model.master_id"
-							label="Master"
-							class="col-12"
-							:find="searchMasters"
-							option-label="username"
-							option-value="id"
+					<template #client_phone="{ model }">
+						<Input
+							v-model="model.client_phone"
+							label="client_phone"
+							class="col-lg-6 col-md-6 col-12"
+							:rules="[formRequired()]"
 						/>
 					</template>
 
-					<template #problem_ids="{ model }">
-						<Autocomplete
-							v-model="model.problem_ids"
-							label="Problems"
-							class="col-12"
-							:find="searchProblems"
-							option-label="name"
-							option-value="id"
-							multiple
-							use-chips
-						/>
-					</template>
-
-					<template #part_ids="{ model }">
-						<Autocomplete
-							v-model="model.part_ids"
-							label="Parts"
-							class="col-12"
-							:find="searchParts"
-							option-label="name"
-							option-value="id"
-							multiple
-							use-chips
+					<template #deadline="{ model }">
+						<DatePicker
+							v-model="model.deadline"
+							:rules="[formRequired($tl('this_field_is_required'))]"
+							label="deadline"
+							class="col-lg-6 col-md-6 col-12"
 						/>
 					</template>
 
@@ -120,7 +104,7 @@ async function save(model: OrderCreateType) {
 						<Input
 							v-model.number="model.price"
 							label="Price"
-							class="col-12"
+							class="col-lg-6 col-md-6 col-12"
 							:rules="[formRequired(), formNumber()]"
 						/>
 					</template>
@@ -134,7 +118,7 @@ async function save(model: OrderCreateType) {
 								}
 							"
 							label="Status"
-							class="col-12"
+							class="col-lg-6 col-md-6 col-12"
 							option-label="label"
 							option-value="value"
 							:rules="[formRequired()]"
@@ -152,7 +136,7 @@ async function save(model: OrderCreateType) {
 							label="Payment Status"
 							option-label="label"
 							option-value="value"
-							class="col-12"
+							class="col-lg-6 col-md-6 col-12"
 							:rules="[formRequired()]"
 						/>
 					</template>
@@ -166,10 +150,21 @@ async function save(model: OrderCreateType) {
 								}
 							"
 							label="Payment Type"
-							class="col-12"
+							class="col-lg-6 col-md-6 col-12"
 							option-label="label"
 							option-value="value"
 							:rules="[formRequired()]"
+						/>
+					</template>
+
+					<template #client_id="{ model }">
+						<Autocomplete
+							v-model="model.client_id"
+							label="Client"
+							class="col-lg-6 col-md-6 col-12"
+							:find="searchClients"
+							option-label="username"
+							option-value="id"
 						/>
 					</template>
 

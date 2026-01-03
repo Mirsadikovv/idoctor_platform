@@ -105,7 +105,7 @@
 					<!-- Logout Mobile -->
 					<q-item
 						clickable
-						@click="$emit('showLogoutConfirm', true)"
+						@click="mobileLogoutConfirm = true"
 						class="telegram-menu-item rounded-lg my-1 transition-all duration-200 min-h-48px bg-red-50 border border-red-100 hover:bg-red-100! active:bg-red-150!"
 						v-close-popup
 					>
@@ -154,10 +154,41 @@
 				</q-card>
 			</ButtonDialog>
 		</q-toolbar>
+
+		<!-- Mobile Logout Confirmation Dialog -->
+		<q-dialog v-model="mobileLogoutConfirm" persistent>
+			<q-card class="min-w-300px w-400px rounded-xl overflow-hidden">
+				<q-card-section class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+					<div class="text-2xl font-bold">{{ $tl("logout_confirm") }}</div>
+					<div class="text-lg opacity-90 mt-1">{{ $tl("are_you_sure") }}?</div>
+				</q-card-section>
+
+				<q-card-actions align="center" class="flex gap-3 p-4">
+					<q-btn
+						no-caps
+						outline
+						color="secondary"
+						class="flex-1 py-2 px-4"
+						:label="$tl('no')"
+						v-close-popup
+					/>
+					<q-btn
+						no-caps
+						outline
+						color="negative"
+						class="flex-1 py-2 px-4"
+						:label="$tl('yes')"
+						v-close-popup
+						@click="emit('logout')"
+					/>
+				</q-card-actions>
+			</q-card>
+		</q-dialog>
 	</q-footer>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
 import type { LanguageType } from "@/service";
 
@@ -180,11 +211,13 @@ withDefaults(defineProps<Props>(), {
 	centerActions: true,
 });
 
-defineEmits<{
+const emit = defineEmits<{
 	toggleDrawer: [];
 	goToProfile: [];
 	setLang: [language: LanguageType];
 	showLogoutConfirm: [show: boolean];
 	logout: [];
 }>();
+
+const mobileLogoutConfirm = ref(false);
 </script>

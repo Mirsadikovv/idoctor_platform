@@ -2,50 +2,26 @@ import { Try } from "@/common";
 import { api } from "@/plugins/axios.plugin";
 import type { IdType, PageDataType } from "@/service";
 
-export type OrderType = {
+export type OrderPartType = {
 	id: number;
-	client_id?: number;
-	client_name: string;
-	client_phone: string;
-
-	master_id?: number;
-
-	part_ids?: number[];
-	problem_ids?: number[];
+	income_price: number;
+	order_id: number;
+	part_id: number;
 	price: number;
-	status: string;
-	payment_status: string;
-	payment_type: string;
-
-	deadline: string;
-	created_at: string;
-	deleted_at?: string;
-
-	value?: string | number;
-	label?: string;
+	supplier_id: number;
 };
 
-export type OrderCreateType = Omit<
-	OrderType,
-	"id" | "created_at" | "deleted_at" | "value" | "label"
->;
+export type OrderPartCreateType = Omit<OrderPartType, "id">;
 
-export type OrderUpdateType = Omit<
-	OrderType,
-	"id" | "created_at" | "deleted_at" | "value" | "label"
->;
+export type OrderPartUpdateType = Omit<OrderPartType, "id">;
 
-export type OrderPartialType = Partial<OrderType>;
-export type OrderPageData = PageDataType<OrderType>;
+export type OrderPartPartialType = Partial<OrderPartType>;
+export type OrderPartPageData = PageDataType<OrderPartType>;
 
-export type OrderSearchParams = {
-	client_id?: number;
-	master_id?: number;
-	min_price?: number;
-	max_price?: number;
-	status?: string;
-	payment_status?: string;
-	payment_type?: string;
+export type OrderPartSearchParams = {
+	order_id?: number;
+	part_id?: number;
+	supplier_id?: number;
 	include_deleted?: boolean;
 	only_deleted?: boolean;
 	page?: number;
@@ -53,7 +29,7 @@ export type OrderSearchParams = {
 	limit?: number;
 };
 
-class OrderService {
+class OrderPartService {
 	@Try({
 		async onError(err) {
 			(await import("@/common/Notify")).ErrorNotify(
@@ -61,15 +37,10 @@ class OrderService {
 			);
 		},
 	})
-	async page(params: OrderSearchParams = {}) {
-		const searchParams = new URLSearchParams();
-		Object.entries(params).forEach(([key, value]) => {
-			if (value !== undefined) {
-				searchParams.append(key, String(value));
-			}
-		});
-
-		const { data } = await api.get<OrderPageData>(`/order/page?${searchParams}`);
+	async page(params: string, orderId: string | number) {
+		const { data } = await api.get<OrderPartPageData>(
+			`/order-part/page?order_id=${orderId}&${params}`,
+		);
 		return data;
 	}
 
@@ -81,7 +52,7 @@ class OrderService {
 		},
 	})
 	async pageWithDelete(params: string) {
-		const { data } = await api.get<OrderPageData>(`/order/page?${params}`);
+		const { data } = await api.get<OrderPartPageData>(`/order-part/page?${params}`);
 		return data;
 	}
 
@@ -93,7 +64,7 @@ class OrderService {
 		},
 	})
 	async getByID(id: number) {
-		const { data } = await api.get<OrderType>(`/order/${id}`);
+		const { data } = await api.get<OrderPartType>(`/order-part/${id}`);
 		return data;
 	}
 
@@ -104,7 +75,7 @@ class OrderService {
 			);
 		},
 	})
-	async search(params: OrderSearchParams = {}) {
+	async search(params: OrderPartSearchParams = {}) {
 		const searchParams = new URLSearchParams();
 		Object.entries(params).forEach(([key, value]) => {
 			if (value !== undefined) {
@@ -112,7 +83,7 @@ class OrderService {
 			}
 		});
 
-		const { data } = await api.get<OrderType[]>(`/order/search?${searchParams}`);
+		const { data } = await api.get<OrderPartType[]>(`/order-part/search?${searchParams}`);
 		return data;
 	}
 
@@ -123,8 +94,8 @@ class OrderService {
 			);
 		},
 	})
-	async create(order: Partial<OrderCreateType>) {
-		const { data } = await api.post<IdType>(`/order`, order);
+	async create(order: OrderPartCreateType) {
+		const { data } = await api.post<IdType>(`/order-part`, order);
 		return data;
 	}
 
@@ -135,8 +106,8 @@ class OrderService {
 			);
 		},
 	})
-	async update(id: number, order: Partial<OrderUpdateType>) {
-		await api.put(`/order/${id}`, order);
+	async update(id: number, order: OrderPartUpdateType) {
+		await api.put(`/order-part/${id}`, order);
 		return true;
 	}
 
@@ -148,7 +119,7 @@ class OrderService {
 		},
 	})
 	async delete(id: number) {
-		await api.delete(`/order/${id}`);
+		await api.delete(`/order-part/${id}`);
 		return true;
 	}
 
@@ -160,11 +131,11 @@ class OrderService {
 		},
 	})
 	async restore(id: number) {
-		await api.delete(`/order/${id}`);
+		await api.delete(`/order-part/${id}`);
 		return true;
 	}
 }
 
-const orderService = new OrderService();
+const orderService = new OrderPartService();
 
-export { orderService as OrderService };
+export { orderService as OrderPartService };

@@ -1,29 +1,36 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { SupplierService, type SupplierCreateType } from "../service";
+import { OrderPartService, type OrderPartCreateType } from "@/service";
 import Form from "@/components/quasar/form/Form.vue";
 import Button from "@/components/quasar/btn/Button.vue";
 import Input from "@/components/quasar/form/Input.vue";
+import { ref } from "vue";
 import Title from "@/components/Title.vue";
 import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
-import { formRequired } from "@/common/validator";
-import { ref } from "vue";
+import { formRequired, formNumber } from "@/common/validator";
+import Autocomplete from "@/components/quasar/form/Autocomplete.vue";
+import { searchParts, searchSuppliers } from "../utils";
+interface Props {
+	orderId: number;
+}
+
+const { orderId } = defineProps<Props>();
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-const supplierModel = ref<Partial<SupplierCreateType>>({});
+const orderModel = ref<Partial<OrderPartCreateType>>({});
 
-async function save(model: SupplierCreateType) {
-	const response = await SupplierService.create(model);
+async function save(model: OrderPartCreateType) {
+	const response = await OrderPartService.create({ ...model, order_id: orderId });
 
 	if (!response) return false;
 
 	router.push({
-		name: "SUPPLIER_PAGE",
+		name: "ORDER_PART_PAGE",
 	});
 
 	return true;
@@ -43,24 +50,55 @@ async function save(model: SupplierCreateType) {
 					<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
 					<q-breadcrumbs>
 						<q-breadcrumbs-el
-							:label="$tl('supplier_list')"
-							icon="business"
-							:to="{ name: 'SUPPLIER_PAGE' }"
+							:label="$tl('order_part_list')"
+							:to="{ name: 'ORDER_PART_PAGE' }"
 						/>
-						<q-breadcrumbs-el :label="$tl('page_for_create')" />
 					</q-breadcrumbs>
 				</div>
-				<Form v-model="supplierModel" :save="save">
+				<Form v-model="orderModel" :save="save">
 					<template #title>
-						<Title class="mb-5">{{ $tl("create_supplier") }}</Title>
+						<Title class="mb-5">{{ $tl("create_order") }}</Title>
 					</template>
 
-					<template #name="{ model }">
-						<Input
-							v-model="model.name"
-							label="Supplier Name"
-							class="col-lg-6 col-md-6 col-12"
+					<template #supplier_id="{ model }">
+						<Autocomplete
+							v-model="model.supplier_id"
+							label="Supplier"
+							class="col-lg-4 col-md-6 col-12"
 							:rules="[formRequired()]"
+							:find="searchSuppliers"
+							option-label="name"
+							option-value="id"
+						/>
+					</template>
+
+					<template #part_id="{ model }">
+						<Autocomplete
+							v-model="model.part_id"
+							label="part_id"
+							class="col-lg-4 col-md-6 col-12"
+							:rules="[formRequired()]"
+							:find="searchParts"
+							option-label="name"
+							option-value="id"
+						/>
+					</template>
+
+					<template #price="{ model }">
+						<Input
+							v-model.number="model.price"
+							label="price"
+							class="col-12"
+							:rules="[formRequired(), formNumber()]"
+						/>
+					</template>
+
+					<template #income_price="{ model }">
+						<Input
+							v-model.number="model.income_price"
+							label="income_price"
+							class="col-12"
+							:rules="[formRequired(), formNumber()]"
 						/>
 					</template>
 

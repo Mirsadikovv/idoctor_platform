@@ -98,6 +98,22 @@ class RoleService {
 			);
 		},
 	})
+	async create(role: Partial<RoleCreateType>) {
+		const { data } = await api.post<IdType>(`/role`, role);
+
+		return data;
+	}
+	@Try({
+		async onSuccess(result) {
+			(await import("@/common/Notify")).SuccesNotify(result.statusText);
+		},
+		async onError(err) {
+			(await import("@/common/Notify")).ErrorNotify(
+				// @ts-ignore
+				err?.response?.data.message || err.message,
+			);
+		},
+	})
 	async createOrUpdate(role: Partial<RoleCreateType>) {
 		const { data } = await api.put<IdType>(`/role`, role);
 

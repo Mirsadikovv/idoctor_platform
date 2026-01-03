@@ -84,7 +84,7 @@ const SideList = buildSidebar();
 					:style="{
 						height: 'calc(var(--app-height, 100vh) - 150px)',
 					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-20"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 				>
 					<q-scroll-area
 						class="h-full bg-transparent p-0"
@@ -230,6 +230,38 @@ const SideList = buildSidebar();
 					</ButtonDialog>
 				</q-toolbar>
 			</q-footer>
+
+			<!-- Mobile Logout Confirmation Dialog -->
+			<q-dialog v-model="confirm" persistent>
+				<q-card class="min-w-300px w-400px rounded-xl overflow-hidden">
+					<q-card-section
+						class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6"
+					>
+						<div class="text-2xl font-bold">{{ $tl("logout_confirm") }}</div>
+						<div class="text-lg opacity-90 mt-1">{{ $tl("are_you_sure") }}?</div>
+					</q-card-section>
+
+					<q-card-actions align="center" class="flex gap-3 p-4">
+						<q-btn
+							no-caps
+							outline
+							color="secondary"
+							class="flex-1 py-2 px-4 border-2 border-blue-500 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+							:label="$tl('no')"
+							v-close-popup
+						/>
+						<q-btn
+							no-caps
+							outline
+							color="negative"
+							class="flex-1 py-2 px-4"
+							:label="$tl('yes')"
+							v-close-popup
+							@click="logout()"
+						/>
+					</q-card-actions>
+				</q-card>
+			</q-dialog>
 		</q-layout>
 	</PageLoading>
 </template>

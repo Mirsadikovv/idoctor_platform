@@ -1,18 +1,25 @@
 <script setup lang="ts">
+import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
 import { ref } from "vue";
-import { ProblemService, type ProblemPageData } from "../service";
+import { OrderPartService, type OrderPartPageData } from "@/service";
+import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import PageLoading from "@/components/PageLoading.vue";
 import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 import AppFooter from "@/components/AppFooter.vue";
-import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
-import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
+import Title from "@/components/Title.vue";
+
+export interface Props {
+	orderId: number | string;
+}
+
+const { orderId } = defineProps<Props>();
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-const problemPage = ref<ProblemPageData>({
+const orderPage = ref<OrderPartPageData>({
 	data: [],
 	totalRows: 0,
 	currentPage: 0,
@@ -21,29 +28,25 @@ const problemPage = ref<ProblemPageData>({
 });
 
 const pick = {
-	id: false,
-	name: true,
+	id: true,
+	client_name: true,
+	master_name: true,
+	problem_names: true,
+	part_names: true,
 	price: true,
+	status: true,
+	payment_status: true,
 	created_at: true,
 };
 
 const pikers = ref({});
 
 async function page(query: string = "") {
-	const params = new URLSearchParams(query);
-	const searchParams = {
-		page: params.get("page") ? +params.get("page")! : undefined,
-		perpage: params.get("perpage") ? +params.get("perpage")! : undefined,
-		name: params.get("name") || undefined,
-		min_price: params.get("min_price") ? +params.get("min_price")! : undefined,
-		max_price: params.get("max_price") ? +params.get("max_price")! : undefined,
-	};
-
-	const response = await ProblemService.page(searchParams);
+	const response = await OrderPartService.page(query, orderId);
 
 	if (!response) return;
 
-	problemPage.value = response;
+	orderPage.value = response;
 }
 </script>
 
@@ -59,16 +62,27 @@ async function page(query: string = "") {
 					}"
 					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
 				>
-					<ResponsiveTable :models="problemPage" hasOrder :loading="loading">
-						<template #name:thead>
-							{{ $tl("problem_name") }}
-						</template>
-						<template #name="{ model }">
+					<Title class="mb-5 justify-between">
+						<div>
+							{{ $tl("order_parts") }}
+						</div>
+
+						<q-btn
+							flat
+							color="white"
+							class="bg-secondary"
+							:label="$tl('back-to-order')"
+							:to="{ name: 'ORDER_EDIT', params: { id: orderId } }"
+						/>
+					</Title>
+					<ResponsiveTable :models="orderPage" hasOrderPart>
+						<template #id:thead>{{ $tl("id") }}</template>
+						<template #id="{ model }">
 							<router-link
-								:to="{ name: 'PROBLEM_VIEW', params: { id: model.id } }"
+								:to="{ name: 'ORDER_PART_EDIT', params: { id: model.id } }"
 								class="text-primary text-decoration-none"
 							>
-								{{ model.name }}
+								#{{ model.id }}
 							</router-link>
 						</template>
 
@@ -76,14 +90,14 @@ async function page(query: string = "") {
 							{{ $tl("price") }}
 						</template>
 						<template #price="{ model }">
-							{{ model.price.toLocaleString() }} сум
+							{{ model.price?.toLocaleString() }} сум
 						</template>
 
-						<template #created_at:thead>
-							{{ $tl("created_at") }}
+						<template #income_price:thead>
+							{{ $tl("income_price") }}
 						</template>
-						<template #created_at="{ model }">
-							{{ new Date(model.created_at).toLocaleDateString() }}
+						<template #income_price="{ model }">
+							{{ model.income_price?.toLocaleString() }} сум
 						</template>
 
 						<template #tfoot="{ totalPages }">
@@ -94,12 +108,12 @@ async function page(query: string = "") {
 								@page="fetch"
 							/>
 						</template>
-						<!-- Кастомный мобильный вид для медицинских проблем -->
+						<!-- Кастомный мобильный вид для заказов -->
 						<template #card="{ model, orderNumber }">
 							<q-item
-								class="problem-item-telegram"
+								class="order-item-telegram"
 								clickable
-								:to="{ name: 'PROBLEM_EDIT', params: { id: model.id } }"
+								:to="{ name: 'ORDER_PART_EDIT', params: { id: model.id } }"
 							>
 								<q-item-section avatar v-if="orderNumber">
 									<q-avatar color="primary" text-color="white" size="md">
@@ -109,13 +123,18 @@ async function page(query: string = "") {
 
 								<q-item-section>
 									<q-item-label class="text-weight-bold text-h6">
-										{{ model.name }}
+										{{ $tl("order") }} #{{ model.id }}
 									</q-item-label>
-									<q-item-label caption class="text-body2">
-										{{ $tl("price") }}: {{ model.price.toLocaleString() }} сум
+
+									<q-item-label caption class="text-body2" v-if="model.price">
+										{{ model.price?.toLocaleString() }} сум
 									</q-item-label>
-									<q-item-label caption class="text-body2">
-										{{ new Date(model.created_at).toLocaleDateString() }}
+									<q-item-label
+										caption
+										class="text-body2"
+										v-if="model.income_price"
+									>
+										{{ model.income_price?.toLocaleString() }} сум
 									</q-item-label>
 								</q-item-section>
 
@@ -133,8 +152,8 @@ async function page(query: string = "") {
 				:languages="$lang.languages"
 				:current-language-id="$lang._currentLang?.id"
 				:show-add-button="true"
-				:add-button-route="{ name: 'PROBLEM_CREATE' }"
-				add-button-icon="medical_services"
+				:add-button-route="{ name: 'ORDER_PART_CREATE', params: { orderId } }"
+				add-button-icon="add_circle"
 				@toggle-drawer="toggleLeftDrawer"
 				@go-to-profile="toggleLeftDrawer"
 				@set-lang="setLang"
@@ -146,4 +165,32 @@ async function page(query: string = "") {
 
 <style scoped>
 @import "@/styles/telegram-app.scss";
+.order-item-telegram {
+	max-height: 120px;
+	min-height: 90px;
+	background: white;
+	padding: 12px;
+	transition: all 0.2s ease;
+	cursor: pointer;
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.02);
+		border-color: rgba(0, 0, 0, 0.12);
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	&:active {
+		transform: translateY(0);
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	}
+
+	.q-item__section--avatar {
+		padding-right: 16px;
+	}
+
+	.q-item__section--side {
+		padding-left: 8px;
+	}
+}
 </style>

@@ -110,7 +110,7 @@
                     {
                         "type": "integer",
                         "description": "Telegram ID",
-                        "name": "telegram_id",
+                        "name": "X-Id",
                         "in": "header"
                     }
                 ],
@@ -236,6 +236,9 @@
                     "type": "string"
                 },
                 "phoneNumber": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string"
                 },
                 "roleId": {

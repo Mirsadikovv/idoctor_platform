@@ -489,6 +489,9 @@
                 "phoneNumber": {
                     "type": "string"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "roleId": {
                     "type": "integer"
                 },

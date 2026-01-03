@@ -94,6 +94,19 @@ func (h *partHandler) Search(c echo.Context) error {
 			"parts.supplier_id",
 			"parts.created_at",
 			"parts.deleted_at",
+			`JSONB_BUILD_OBJECT(
+				'id', devices.id,
+				'name', devices.name,
+				'brand_name', devices.brand_name,
+				'created_at', devices.created_at,
+				'deleted_at', devices.deleted_at
+			) AS device`,
+			`JSONB_BUILD_OBJECT(
+				'id', suppliers.id,
+				'name', suppliers.name,
+				'created_at', suppliers.created_at,
+				'deleted_at', suppliers.deleted_at
+			) AS supplier`,
 		).Order("parts.id DESC")
 	}
 

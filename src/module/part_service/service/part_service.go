@@ -41,7 +41,7 @@ func (s *partService) Find(ctx context.Context, filter pg.Filter) ([]part_dto.Pa
 		tx = filter(tx)
 	}
 
-	if err := tx.Preload("Device").Preload("Supplier").Find(&parts).Error; err != nil {
+	if err := tx.Find(&parts).Error; err != nil {
 		return nil, err
 	}
 

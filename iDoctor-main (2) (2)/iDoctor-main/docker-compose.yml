@@ -1,0 +1,30 @@
+networks:
+    traefik-network:
+        external: true
+
+services:
+    idoctor_dev_dashboard:
+        container_name: idoctor-dev_dashboard
+        restart: always
+        build:
+            context: .
+            args:
+                VITE_APP_TITLE: ${APP_TITLE}
+                VITE_TOKEN_NAME: ${TOKEN_NAME}
+                VITE_LANG_NAME: ${LANG_NAME}
+                VITE_API_URL: ${API_URL}
+
+        networks:
+            - traefik-network
+        environment:
+            VITE_APP_TITLE: ${APP_TITLE}
+            VITE_TOKEN_NAME: ${TOKEN_NAME}
+            VITE_LANG_NAME: ${LANG_NAME}
+            VITE_API_URL: ${API_URL}
+
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.idoctor_dev_dashboard.rule=Host(`idoctor.uz`)"
+            - "traefik.http.routers.idoctor_dev_dashboard.entrypoints=web"
+            - "traefik.http.services.idoctor_dev_dashboard.loadbalancer.server.port=5173"
+            - "traefik.docker.network=traefik-network"

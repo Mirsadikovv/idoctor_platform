@@ -1,0 +1,30 @@
+name: DEV
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: [ubuntu-latest]
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: docker build
+              env:
+                  APP_TITLE: ${{vars.DEV_APP_TITLE}}
+                  TOKEN_NAME: ${{vars.DEV_TOKEN_NAME}}
+                  LANG_NAME: ${{vars.DEV_LANG_NAME}}
+                  API_URL: ${{vars.DEV_API_URL}}
+                  EIMZO_DOMAIN: ${{vars.DEV_EIMZO_DOMAIN}}
+                  EIMZO_API_KEY: ${{vars.DEV_EIMZO_API_KEY}}
+
+                  ONEID_BASE_URL_REDIRECT: ${{vars.DEV_ONEID_BASE_URL_REDIRECT}}
+                  ONEID_REDIRECT_URI: ${{vars.DEV_ONEID_REDIRECT_URI}}
+                  ONEID_CLIENT_ID: ${{vars.DEV_ONEID_CLIENT_ID}}
+                  ONEID_SCOPE: ${{secrets.DEV_ONEID_SCOPE}}
+                  ONEID_STATE: ${{vars.DEV_ONEID_STATE}}
+              run: |
+                  #   docker compose -f docker-compose.yml down -v || true
+                    docker compose -f docker-compose.yml up --build -d --force-recreate

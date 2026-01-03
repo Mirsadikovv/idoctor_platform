@@ -1,0 +1,24 @@
+FROM  node:22-alpine3.19 AS builder
+
+WORKDIR /app
+COPY package.json ./
+RUN yarn install --frozen-lockfile
+
+COPY . ./
+
+ARG VITE_APP_TITLE
+ARG VITE_TOKEN_NAME
+ARG VITE_LANG_NAME
+ARG VITE_API_URL
+
+ENV VITE_APP_TITLE=$VITE_APP_TITLE
+ENV VITE_TOKEN_NAME=$VITE_TOKEN_NAME
+ENV VITE_LANG_NAME=$VITE_LANG_NAME
+ENV VITE_API_URL=$VITE_API_URL
+
+
+RUN yarn build
+
+EXPOSE 5173
+
+CMD ["yarn", "preview", "--host"]

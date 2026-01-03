@@ -4,6 +4,7 @@ files
 *.env.dev
 .mcp.json
 Makefile.local
+.env
 
 .sql
 .claude

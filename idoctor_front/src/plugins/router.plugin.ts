@@ -91,24 +91,14 @@ export async function routerPlugin(app: App<unknown>) {
 export async function normalaizeRoute(router: Router) {
 	const authStore = useAuthStore();
 
-	Notify.create({
-		type: "info",
-		message: "DEBUG: Starting normalaizeRoute function",
-		timeout: 20000,
-	});
-
 	router.clearRoutes();
-	Notify.create({
-		type: "info",
-		message: "DEBUG: Router routes cleared",
-		timeout: 20000,
-	});
 
 	if (!authStore.hasToken) {
 		Notify.create({
 			type: "warning",
 			message: "DEBUG: No auth token found, checking Telegram",
 			timeout: 20000,
+			actions: [{ icon: "close", color: "white" }],
 		});
 
 		if (TelegramWebApp.isAvailable()) {
@@ -116,6 +106,7 @@ export async function normalaizeRoute(router: Router) {
 				type: "positive",
 				message: "DEBUG: Telegram Web App is available",
 				timeout: 20000,
+				actions: [{ icon: "close", color: "white" }],
 			});
 
 			TelegramWebApp.initialize();
@@ -125,8 +116,9 @@ export async function normalaizeRoute(router: Router) {
 			const telegramId = TelegramWebApp.getTelegramId();
 			Notify.create({
 				type: "info",
-				message: `DEBUG: Telegram ID: ${telegramId}`,
+				message: `DEBUG: Telegram ID: ${telegramId || "not found"}`,
 				timeout: 20000,
+				actions: [{ icon: "close", color: "white" }],
 			});
 
 			if (!telegramId) {
@@ -134,38 +126,26 @@ export async function normalaizeRoute(router: Router) {
 					type: "negative",
 					message: "DEBUG: No Telegram ID found, redirecting to auth",
 					timeout: 20000,
+					actions: [{ icon: "close", color: "white" }],
 				});
 				authStore.removeSession();
 				return router.addRoute(AuthLayoutRoute);
 			}
 
-			localStorage.setItem("telegram_user_id", telegramId.toString());
+			const res = await AuthService.signInTelegram(telegramId.toString());
 			Notify.create({
-				type: "info",
-				message: "DEBUG: Telegram ID saved to localStorage",
+				type: "positive",
+				message: "DEBUG: Telegram sign-in successful",
 				timeout: 20000,
+				actions: [{ icon: "close", color: "white" }],
 			});
-
-			try {
-				const res = await AuthService.signInTelegram(telegramId.toString());
-				Notify.create({
-					type: "positive",
-					message: "DEBUG: Telegram sign-in successful",
-					timeout: 20000,
-				});
-				authStore.setToken(res.token);
-			} catch (error) {
-				Notify.create({
-					type: "negative",
-					message: `DEBUG: Telegram sign-in failed: ${error}`,
-					timeout: 20000,
-				});
-			}
+			authStore.setToken(res.token);
 		} else {
 			Notify.create({
 				type: "warning",
 				message: "DEBUG: Telegram Web App not available",
 				timeout: 20000,
+				actions: [{ icon: "close", color: "white" }],
 			});
 		}
 
@@ -174,95 +154,51 @@ export async function normalaizeRoute(router: Router) {
 				type: "negative",
 				message: "DEBUG: Still no token, redirecting to auth layout",
 				timeout: 20000,
+				actions: [{ icon: "close", color: "white" }],
 			});
 			authStore.removeSession();
 			return router.addRoute(AuthLayoutRoute);
 		}
-	} else {
-		Notify.create({
-			type: "positive",
-			message: "DEBUG: Auth token found, proceeding",
-			timeout: 20000,
-		});
 	}
 
-	try {
-		Notify.create({
-			type: "info",
-			message: "DEBUG: Fetching user info...",
-			timeout: 20000,
-		});
-		const user = await AuthService.me();
+	const user = await AuthService.me();
 
-		if (!user) {
-			Notify.create({
-				type: "negative",
-				message: "DEBUG: User fetch failed, redirecting to auth",
-				timeout: 20000,
-			});
-			authStore.removeSession();
-			return router.addRoute(AuthLayoutRoute);
-		}
-
-		Notify.create({
-			type: "positive",
-			message: `DEBUG: User fetched successfully: ${user.username || user.role || "Unknown"}`,
-			timeout: 20000,
-		});
-
-		authStore.setUser(user);
-		router.addRoute(ProgileRoute);
-		Notify.create({
-			type: "info",
-			message: "DEBUG: Profile route added",
-			timeout: 20000,
-		});
-
-		const flatRoutes = flattenRoutes(routers()).filter((p) => p.name);
-		Notify.create({
-			type: "info",
-			message: `DEBUG: Flat routes prepared, count: ${flatRoutes.length}`,
-			timeout: 20000,
-		});
-
-		// FIX_ME: || import.meta.env.PROD
-		// if (import.meta.env.DEV) {
-		const layout: RouteRecordRaw = {
-			path: "/:lang?/admin",
-			props: true,
-			component: () => import("@layout/EmptyLayout.vue"),
-			children: flatRoutes,
-		};
-
-		router.addRoute(layout);
-		Notify.create({
-			type: "positive",
-			message: "DEBUG: Admin layout routes added successfully",
-			timeout: 20000,
-		});
-		// } else {
-		// 	const children = Object.keys(user.pages)
-		// 		.map((routeName: string) => flatRoutes.find((route) => route.name === routeName)!)
-		// 		.filter((route) => !!route);
-
-		// 	const layout: RouteRecordRaw = {
-		// 		path: "/:lang?/admin",
-		// 		props: true,
-		// 		component: () => import("@layout/BaseLayout.vue"),
-		// 		children: [...children, emptyRoute],
-		// 	};
-
-		// 	router.addRoute(layout);
-		// }
-	} catch (error) {
-		Notify.create({
-			type: "negative",
-			message: `DEBUG: Error in user flow: ${error}`,
-			timeout: 20000,
-		});
+	if (!user) {
 		authStore.removeSession();
 		return router.addRoute(AuthLayoutRoute);
 	}
+
+	authStore.setUser(user);
+
+	router.addRoute(ProgileRoute);
+
+	const flatRoutes = flattenRoutes(routers()).filter((p) => p.name);
+
+	// FIX_ME: || import.meta.env.PROD
+	// if (import.meta.env.DEV) {
+	const layout: RouteRecordRaw = {
+		path: "/:lang?/admin",
+		props: true,
+		component: () => import("@layout/EmptyLayout.vue"),
+		children: flatRoutes,
+	};
+
+	router.addRoute(layout);
+
+	// } else {
+	// 	const children = Object.keys(user.pages)
+	// 		.map((routeName: string) => flatRoutes.find((route) => route.name === routeName)!)
+	// 		.filter((route) => !!route);
+
+	// 	const layout: RouteRecordRaw = {
+	// 		path: "/:lang?/admin",
+	// 		props: true,
+	// 		component: () => import("@layout/BaseLayout.vue"),
+	// 		children: [...children, emptyRoute],
+	// 	};
+
+	// 	router.addRoute(layout);
+	// }
 }
 
 export async function normalaizeLanguage() {

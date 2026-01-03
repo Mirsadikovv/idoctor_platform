@@ -8,11 +8,11 @@ import (
 )
 
 type UserInfo struct {
-	Id         int64   `json:"id"`
-	FirstName  string  `json:"first_name"`
-	LastName   string  `json:"last_name"`
-	MiddleName string  `json:"middle_name"`
-	Username   string  `json:"username"`
+	Id          int64   `json:"id"`
+	FirstName   string  `json:"first_name"`
+	LastName    string  `json:"last_name"`
+	MiddleName  string  `json:"middle_name"`
+	Username    string  `json:"username"`
 	PhoneNumber *string `json:"phone_number,omitempty"`
 } // @Name UserInfo
 
@@ -80,4 +80,5 @@ type OrderParams struct {
 	OnlyDeleted    *bool    `query:"only_deleted" json:"only_deleted"`
 	StartDate      *string  `query:"start_date" json:"start_date"`
 	EndDate        *string  `query:"end_date" json:"end_date"`
+	ClientPhone    *string  `query:"client_phone" json:"client_phone"`
 } // @Name OrderParams

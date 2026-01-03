@@ -192,6 +192,10 @@ func (h *orderHandler) Page(c echo.Context) error {
 			tx = tx.Unscoped()
 		}
 
+		if params.ClientPhone != nil {
+			tx = tx.Where("client_phone = ?", *params.ClientPhone)
+		}
+
 		return tx.Select(
 			"orders.id",
 			"orders.client_id",

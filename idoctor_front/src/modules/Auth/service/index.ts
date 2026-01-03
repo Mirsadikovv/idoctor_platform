@@ -50,7 +50,7 @@ class AuthService {
 			{},
 			{
 				headers: {
-					telegram_id: tgID,
+					"X-Id": tgID,
 				},
 			},
 		);

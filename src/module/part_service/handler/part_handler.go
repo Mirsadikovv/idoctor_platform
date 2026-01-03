@@ -195,7 +195,6 @@ func (h *partHandler) FindById(c echo.Context) error {
 	filter := func(tx *gorm.DB) *gorm.DB {
 		return tx.Preload("Device").
 			Preload("Supplier").
-			Preload("Master").
 			Where("id = ?", id)
 	}
 

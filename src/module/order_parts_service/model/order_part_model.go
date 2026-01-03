@@ -1,10 +1,11 @@
 package order_part_model
 
 import (
+	"time"
+
 	order_model "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/model"
 	part_model "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/model"
 	supplier_model "github.com/Mirsadikovv/idoctor_platform/src/module/supplier_service/model"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -21,7 +22,7 @@ type OrderPart struct {
 	Order       *order_model.Order       `json:"order,omitempty" gorm:"foreignKey:OrderId;references:Id"`
 	Part        *part_model.Part         `json:"part,omitempty" gorm:"foreignKey:PartId;references:Id"`
 	Supplier    *supplier_model.Supplier `json:"supplier,omitempty" gorm:"foreignKey:SupplierId;references:ID"`
-}
+} // @name OrderPart
 
 func (OrderPart) TableName() string {
 	return "order_parts"

@@ -18,15 +18,6 @@ type SupplierInfo struct {
 	Name string `json:"name"`
 } // @Name SupplierInfo
 
-type MasterInfo struct {
-	Id          int64   `json:"id"`
-	FirstName   string  `json:"first_name"`
-	LastName    string  `json:"last_name"`
-	MiddleName  string  `json:"middle_name"`
-	Username    string  `json:"username"`
-	PhoneNumber *string `json:"phone_number,omitempty"`
-} // @Name MasterInfo
-
 type PartCreate struct {
 	Name       string `json:"name" validate:"required"`
 	DeviceId   int64  `json:"device_id" validate:"required"`
@@ -46,10 +37,8 @@ type Part struct {
 	Name        string           `json:"name"`
 	DeviceId    int64            `json:"device_id"`
 	SupplierId  int64            `json:"supplier_id"`
-	MasterId    int64            `json:"master_id"`
 	Device      *json.RawMessage `json:"device,omitempty"`
 	Supplier    *json.RawMessage `json:"supplier,omitempty"`
-	Master      *json.RawMessage `json:"master,omitempty"`
 	IncomePrice float64          `json:"income_price"`
 	Price       float64          `json:"price"`
 	CreatedAt   *time.Time       `json:"created_at"`

@@ -8,7 +8,6 @@ import (
 	part_dto "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/dto"
 	part_model "github.com/Mirsadikovv/idoctor_platform/src/module/part_service/model"
 	supplier_model "github.com/Mirsadikovv/idoctor_platform/src/module/supplier_service/model"
-	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
 	"github.com/Mirsadikovv/shared/pg"
 	"github.com/Mirsadikovv/shared/request"
@@ -42,7 +41,7 @@ func (s *partService) Find(ctx context.Context, filter pg.Filter) ([]part_dto.Pa
 		tx = filter(tx)
 	}
 
-	if err := tx.Preload("Device").Preload("Supplier").Preload("Master").Find(&parts).Error; err != nil {
+	if err := tx.Preload("Device").Preload("Supplier").Find(&parts).Error; err != nil {
 		return nil, err
 	}
 
@@ -142,20 +141,6 @@ func convertSupplierToInfo(supplier *supplier_model.Supplier) *part_dto.Supplier
 	return &part_dto.SupplierInfo{
 		Id:   supplier.ID,
 		Name: supplier.Name,
-	}
-}
-
-func convertMasterToInfo(master *user_model.User) *part_dto.MasterInfo {
-	if master == nil {
-		return nil
-	}
-	return &part_dto.MasterInfo{
-		Id:          master.Id,
-		FirstName:   master.FirstName,
-		LastName:    master.LastName,
-		MiddleName:  master.MiddleName,
-		Username:    master.Username,
-		PhoneNumber: master.PhoneNumber,
 	}
 }
 

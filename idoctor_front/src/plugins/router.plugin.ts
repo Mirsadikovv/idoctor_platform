@@ -9,7 +9,6 @@ import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from
 import { OnError, OnRequest } from "./axios.plugin";
 import { ProgileRoute } from "@/modules/Auth/router";
 import { flattenRoutes } from "@/common";
-import { TelegramWebApp } from "@/common/telegram";
 import { Notify } from "quasar";
 
 export async function routerPlugin(app: App<unknown>) {
@@ -101,7 +100,9 @@ export async function normalaizeRoute(router: Router) {
 			actions: [{ icon: "close", color: "white" }],
 		});
 
-		if (TelegramWebApp.isAvailable()) {
+		let tg = window?.Telegram?.WebApp;
+		let userId = tg?.initDataUnsafe?.user?.id;
+		if (tg) {
 			Notify.create({
 				type: "positive",
 				message: "DEBUG: Telegram Web App is available",
@@ -109,19 +110,14 @@ export async function normalaizeRoute(router: Router) {
 				actions: [{ icon: "close", color: "white" }],
 			});
 
-			TelegramWebApp.initialize();
-			console.log(TelegramWebApp.initialize());
-
-			// Получаем Telegram ID пользователя
-			const telegramId = TelegramWebApp.getTelegramId();
 			Notify.create({
 				type: "info",
-				message: `DEBUG: Telegram ID: ${telegramId || "not found"}`,
+				message: `DEBUG: Telegram ID: ${userId || "not found"}`,
 				timeout: 20000,
 				actions: [{ icon: "close", color: "white" }],
 			});
 
-			if (!telegramId) {
+			if (!userId) {
 				Notify.create({
 					type: "negative",
 					message: "DEBUG: No Telegram ID found, redirecting to auth",
@@ -132,7 +128,7 @@ export async function normalaizeRoute(router: Router) {
 				return router.addRoute(AuthLayoutRoute);
 			}
 
-			const res = await AuthService.signInTelegram(telegramId.toString());
+			const res = await AuthService.signInTelegram(userId.toString());
 			Notify.create({
 				type: "positive",
 				message: "DEBUG: Telegram sign-in successful",

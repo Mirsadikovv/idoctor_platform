@@ -1,6 +1,6 @@
 export class TelegramWebApp {
 	static isAvailable(): boolean {
-		return !!window?.Telegram?.WebApp;
+		return typeof window !== "undefined" && !!(window.Telegram && window.Telegram.WebApp);
 	}
 
 	static get webApp() {
@@ -16,9 +16,7 @@ export class TelegramWebApp {
 	}
 
 	static getTelegramId(): number | null {
-		let tg = window?.Telegram?.WebApp;
-		let userId = tg?.initDataUnsafe?.user?.id;
-		return userId ?? null;
+		return this.getUserInfo()?.id ?? null;
 	}
 
 	static initialize({ expand = false } = {}) {

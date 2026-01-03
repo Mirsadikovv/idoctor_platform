@@ -9,7 +9,7 @@ import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from
 import { OnError, OnRequest } from "./axios.plugin";
 import { ProgileRoute } from "@/modules/Auth/router";
 import { flattenRoutes } from "@/common";
-import { Notify } from "quasar";
+import { TelegramWebApp } from "@/common/telegram";
 
 export async function routerPlugin(app: App<unknown>) {
 	// Инициализируем Telegram Web App если доступен
@@ -93,65 +93,25 @@ export async function normalaizeRoute(router: Router) {
 	router.clearRoutes();
 
 	if (!authStore.hasToken) {
-		Notify.create({
-			type: "warning",
-			message: "DEBUG: No auth token found, checking Telegram",
-			timeout: 20000,
-			actions: [{ icon: "close", color: "white" }],
-		});
+		if (TelegramWebApp.isAvailable()) {
+			TelegramWebApp.initialize();
 
-		let tg = window?.Telegram?.WebApp;
-		let userId = tg?.initDataUnsafe?.user?.id;
-		if (tg) {
-			Notify.create({
-				type: "positive",
-				message: "DEBUG: Telegram Web App is available",
-				timeout: 20000,
-				actions: [{ icon: "close", color: "white" }],
-			});
+			// Получаем Telegram ID пользователя
+			const telegramId = TelegramWebApp.getTelegramId();
 
-			Notify.create({
-				type: "info",
-				message: `DEBUG: Telegram ID: ${userId || "not found"}`,
-				timeout: 20000,
-				actions: [{ icon: "close", color: "white" }],
-			});
-
-			if (!userId) {
-				Notify.create({
-					type: "negative",
-					message: "DEBUG: No Telegram ID found, redirecting to auth",
-					timeout: 20000,
-					actions: [{ icon: "close", color: "white" }],
-				});
+			if (!telegramId) {
 				authStore.removeSession();
 				return router.addRoute(AuthLayoutRoute);
 			}
 
-			const res = await AuthService.signInTelegram(userId.toString());
-			Notify.create({
-				type: "positive",
-				message: "DEBUG: Telegram sign-in successful",
-				timeout: 20000,
-				actions: [{ icon: "close", color: "white" }],
-			});
+			localStorage.setItem("telegram_user_id", telegramId.toString());
+
+			const res = await AuthService.signInTelegram(telegramId.toString());
+
 			authStore.setToken(res.token);
-		} else {
-			Notify.create({
-				type: "warning",
-				message: "DEBUG: Telegram Web App not available",
-				timeout: 20000,
-				actions: [{ icon: "close", color: "white" }],
-			});
 		}
 
 		if (!authStore.hasToken) {
-			Notify.create({
-				type: "negative",
-				message: "DEBUG: Still no token, redirecting to auth layout",
-				timeout: 20000,
-				actions: [{ icon: "close", color: "white" }],
-			});
 			authStore.removeSession();
 			return router.addRoute(AuthLayoutRoute);
 		}
@@ -165,7 +125,6 @@ export async function normalaizeRoute(router: Router) {
 	}
 
 	authStore.setUser(user);
-
 	router.addRoute(ProgileRoute);
 
 	const flatRoutes = flattenRoutes(routers()).filter((p) => p.name);

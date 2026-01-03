@@ -162,7 +162,7 @@ func (a *authHandler) Me(ctx echo.Context) error {
 // @ID           sign-in-telegram
 // @Accept       json
 // @Produce      json
-// @Param        telegram_id header int false "Telegram ID"
+// @Param        X-Id header int false "Telegram ID"
 // @Success      200 {object} auth_dto.TelegramRole "Successful operation"
 // @Failure      400 {object} response.HttpSuccess "Bad request"
 // @Failure      500 {object} response.HttpSuccess "Internal server error"
@@ -173,7 +173,7 @@ func (a *authHandler) SignInTelegram(ctx echo.Context) error {
 
 	var telegramId *int64
 	{
-		telegramIdHeader := ctx.Request().Header.Get("telegram_id")
+		telegramIdHeader := ctx.Request().Header.Get("X-Id")
 
 		if telegramIdHeader != "" {
 			var id int64

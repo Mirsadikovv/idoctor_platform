@@ -77,13 +77,13 @@ export const orderStatusOptions = [
 	{ label: "CANCELLED", value: "CANCELLED" },
 ];
 
-export const paymentStatusOptions = [
+export const paymentTypeOptions = [
 	{ label: "CASH", value: "CASH" },
 	{ label: "CARD", value: "CARD" },
 	{ label: "ONLINE", value: "ONLINE" },
 ];
 
-export const paymentTypeOptions = [
+export const paymentStatusOptions = [
 	{ label: "PENDING", value: "PENDING" },
 	{ label: "PAID", value: "PAID" },
 	{ label: "REFUNDED", value: "REFUNDED" },

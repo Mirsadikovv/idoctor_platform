@@ -26,7 +26,7 @@ func SeedRoles(db *gorm.DB) {
 		},
 		{
 			ID:          3,
-			Name:        "client",
+			Name:        "user",
 			Description: "Клиент системы с доступом к открытым частям системы",
 			Pages:       sharedutil.JsonObject{},
 			Permissions: sharedutil.JsonObject{},

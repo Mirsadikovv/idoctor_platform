@@ -169,7 +169,7 @@ func (h *orderHandler) Page(c echo.Context) error {
 				switch roleName {
 				case "master":
 					tx = tx.Where("orders.master_id = ?", authUser.Id)
-				case "client":
+				case "user":
 					tx = tx.Where("orders.client_id = ?", authUser.Id)
 				case "admin":
 				}

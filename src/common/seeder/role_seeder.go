@@ -24,10 +24,11 @@ func SeedRoles(db *gorm.DB) {
 			Pages:       sharedutil.JsonObject{},
 			Permissions: sharedutil.JsonObject{
 				// Auth endpoints
-				"/api/v1/auth/me":      []string{"POST"},
+				"/api/v1/auth/me":       []string{"POST"},
 				"/api/v1/auth/sign-out": []string{"POST"},
 
 				// Order endpoints - master can view and update assigned orders
+				"/api/v1/order":        []string{"POST"},
 				"/api/v1/order/page":   []string{"GET"},
 				"/api/v1/order/search": []string{"GET"},
 				"/api/v1/order/:id":    []string{"GET", "PUT"},
@@ -67,8 +68,8 @@ func SeedRoles(db *gorm.DB) {
 			Pages:       sharedutil.JsonObject{},
 			Permissions: sharedutil.JsonObject{
 				// Auth endpoints
-				"/api/v1/auth/me":              []string{"POST"},
-				"/api/v1/auth/sign-out":        []string{"POST"},
+				"/api/v1/auth/me":               []string{"POST"},
+				"/api/v1/auth/sign-out":         []string{"POST"},
 				"/api/v1/auth/sign-in-telegram": []string{"POST"},
 
 				// Order endpoints - user can view own orders and create new ones
@@ -92,7 +93,6 @@ func SeedRoles(db *gorm.DB) {
 				"/api/v1/problem/page":   []string{"GET"},
 				"/api/v1/problem/search": []string{"GET"},
 				"/api/v1/problem/:id":    []string{"GET"},
-
 			},
 		},
 	}

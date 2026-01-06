@@ -276,6 +276,7 @@ func (h *userHandler) GetByID(ctx echo.Context) error {
 				"users.date_of_birth",
 				"users.gender",
 				"users.role_id",
+				"roles.name AS role",
 				"organizations.soato_id AS soato_id",
 				"organizations.id AS org_id",
 				"roles.pages AS pages",

@@ -30,6 +30,18 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
+html,
+body {
+	overscroll-behavior: none;
+	touch-action: manipulation;
+}
+input,
+textarea,
+select {
+	font-size: 16px;
+	line-height: 1.4;
+}
+
 input,
 textarea,
 [contenteditable] {

@@ -159,7 +159,25 @@ func (h *userHandler) Page(ctx echo.Context) error {
 
 		tx = params.OrderParams.Apply(tx, allowedSortFields, "users.created_at desc")
 
-		return tx
+		return tx.Select(
+			"users.id",
+			"users.username",
+			"users.role_id",
+			"roles.name as role",
+			"users.first_name",
+			"users.last_name",
+			"users.middle_name",
+			"users.date_of_birth",
+			"users.gender",
+			"roles.pages",
+			"users.telegram_id",
+			"users.telegram_username",
+			"users.phone_number",
+			"users.language_code",
+			"users.last_visit",
+			"users.created_at",
+			"users.blocked_at",
+		).Joins("INNER JOIN roles ON roles.id = users.role_id")
 	}
 
 	userPage, err := h.userService.Page(req.Context(), req.NewPaginate(), filter)

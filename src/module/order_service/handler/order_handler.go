@@ -4,6 +4,7 @@ import (
 	auth_middleware "github.com/Mirsadikovv/idoctor_platform/src/module/auth_service/middleware"
 	order_dto "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/dto"
 	order_service "github.com/Mirsadikovv/idoctor_platform/src/module/order_service/service"
+	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
 	"github.com/Mirsadikovv/shared/logger"
 	"github.com/Mirsadikovv/shared/request"
@@ -145,6 +146,9 @@ func (h *orderHandler) Search(c echo.Context) error {
 func (h *orderHandler) Page(c echo.Context) error {
 	req := request.Request(c)
 
+	reqWithUser := request.RequestWithData[user_model.User](c)
+	authUser := reqWithUser.AuthUser()
+
 	var params order_dto.OrderParams
 	{
 		if err := req.BindQuery(&params); err != nil {
@@ -153,6 +157,25 @@ func (h *orderHandler) Page(c echo.Context) error {
 	}
 
 	tx := func(tx *gorm.DB) *gorm.DB {
+
+		if authUser != nil {
+			var roleName string
+			err := h.db.Table("roles").
+				Select("name").
+				Where("id = ?", authUser.RoleId).
+				Scan(&roleName).Error
+
+			if err == nil {
+				switch roleName {
+				case "master":
+					tx = tx.Where("orders.master_id = ?", authUser.Id)
+				case "client":
+					tx = tx.Where("orders.client_id = ?", authUser.Id)
+				case "admin":
+				}
+			}
+		}
+
 		if params.ClientId != nil {
 			tx = tx.Where("client_id = ?", *params.ClientId)
 		}

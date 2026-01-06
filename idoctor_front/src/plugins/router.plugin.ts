@@ -7,8 +7,8 @@ import { useLanguageStore } from "@/store/language-store";
 import type { App } from "vue";
 import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from "vue-router";
 import { OnError, OnRequest } from "./axios.plugin";
-import { ProgileRoute } from "@/modules/Auth/router";
-import { flattenRoutes } from "@/common";
+import { emptyRoute, ProgileRoute } from "@/modules/Auth/router";
+import { admin, client, flattenRoutes, master } from "@/common";
 import { TelegramWebApp } from "@/common/telegram";
 
 export async function routerPlugin(app: App<unknown>) {
@@ -34,11 +34,11 @@ export async function routerPlugin(app: App<unknown>) {
 			router.push({ name: "LOGIN_AUTH" });
 		}
 	});
+	const languageStore = useLanguageStore();
 
 	await normalaizeRoute(router);
-	await normalaizeLanguage();
 
-	const languageStore = useLanguageStore();
+	await normalaizeLanguage();
 
 	router.afterEach((to, _from, failuer) => {
 		if (failuer) {
@@ -89,6 +89,7 @@ export async function routerPlugin(app: App<unknown>) {
 
 export async function normalaizeRoute(router: Router) {
 	const authStore = useAuthStore();
+	const languageStore = useLanguageStore();
 
 	router.clearRoutes();
 
@@ -124,35 +125,63 @@ export async function normalaizeRoute(router: Router) {
 		return router.addRoute(AuthLayoutRoute);
 	}
 
-	authStore.setUser(user);
+	let userWithPages = { ...user };
+
+	if (user.role === "admin") {
+		userWithPages = { ...user, pages: [...admin] };
+		authStore.setUser({ ...user, pages: [...admin] });
+	}
+	if (user.role === "master") {
+		userWithPages = { ...user, pages: [...master] };
+		authStore.setUser({ ...user, pages: [...master] });
+	}
+	if (user.role === "user") {
+		userWithPages = { ...user, pages: [...client] };
+		authStore.setUser({ ...user, pages: [...client] });
+	}
+
 	router.addRoute(ProgileRoute);
 
 	const flatRoutes = flattenRoutes(routers()).filter((p) => p.name);
 
 	// FIX_ME: || import.meta.env.PROD
 	// if (import.meta.env.DEV) {
+	// 	const layout: RouteRecordRaw = {
+	// 		path: "/:lang?/admin",
+	// 		props: true,
+	// 		component: () => import("@layout/EmptyLayout.vue"),
+	// 		children: flatRoutes,
+	// 	};
+
+	// 	router.addRoute(layout);
+
+	// 	await router.push({
+	// 		name: "PAGE_PROFILE",
+	// 		params: {
+	// 			lang: languageStore.currentLang?.name,
+	// 		},
+	// 	});
+	// } else {
+
+	const children = userWithPages.pages
+		.map((routeName: string) => flatRoutes.find((route) => route.name === routeName)!)
+		.filter((route) => !!route);
+
 	const layout: RouteRecordRaw = {
 		path: "/:lang?/admin",
 		props: true,
 		component: () => import("@layout/EmptyLayout.vue"),
-		children: flatRoutes,
+		children: [...children, emptyRoute],
 	};
 
 	router.addRoute(layout);
 
-	// } else {
-	// 	const children = Object.keys(user.pages)
-	// 		.map((routeName: string) => flatRoutes.find((route) => route.name === routeName)!)
-	// 		.filter((route) => !!route);
-
-	// 	const layout: RouteRecordRaw = {
-	// 		path: "/:lang?/admin",
-	// 		props: true,
-	// 		component: () => import("@layout/BaseLayout.vue"),
-	// 		children: [...children, emptyRoute],
-	// 	};
-
-	// 	router.addRoute(layout);
+	await router.push({
+		name: "PAGE_PROFILE",
+		params: {
+			lang: languageStore.currentLang?.name,
+		},
+	});
 	// }
 }
 

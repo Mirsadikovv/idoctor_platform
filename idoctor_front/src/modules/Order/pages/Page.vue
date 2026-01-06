@@ -105,11 +105,20 @@ async function page(query: string = "") {
 						<template #edit="{ model }">
 							<div class="text-center">
 								<IconBtn
+									v-if="$canPage('ORDER_EDIT')"
 									:to="{
 										name: 'ORDER_EDIT',
 										params: { id: model.id },
 									}"
 									icon="edit"
+								/>
+								<IconBtn
+									v-if="$canPage('ORDER_VIEW')"
+									:to="{
+										name: 'ORDER_VIEW',
+										params: { id: model.id },
+									}"
+									icon="visibility"
 								/>
 							</div>
 						</template>
@@ -127,7 +136,10 @@ async function page(query: string = "") {
 							<q-item
 								class="order-item-telegram"
 								clickable
-								:to="{ name: 'ORDER_EDIT', params: { id: model.id } }"
+								:to="{
+									name: $canPage('ORDER_EDIT') ? 'ORDER_EDIT' : 'ORDER_VIEW',
+									params: { id: model.id },
+								}"
 							>
 								<q-item-section avatar v-if="orderNumber">
 									<q-avatar color="primary" text-color="white" size="md">

@@ -9,6 +9,7 @@ import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
 import Title from "@/components/Title.vue";
+import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 export interface Props {
 	orderId: number | string;
@@ -100,6 +101,27 @@ async function page(query: string = "") {
 							{{ model.income_price?.toLocaleString() }} сум
 						</template>
 
+						<template #edit="{ model }">
+							<div class="text-center">
+								<IconBtn
+									v-if="$canPage('ORDER_PART_EDIT')"
+									:to="{
+										name: 'ORDER_PART_EDIT',
+										params: { id: model.id },
+									}"
+									icon="edit"
+								/>
+								<IconBtn
+									v-if="$canPage('ORDER_PART_VIEW')"
+									:to="{
+										name: 'ORDER_PART_VIEW',
+										params: { id: model.id },
+									}"
+									icon="visibility"
+								/>
+							</div>
+						</template>
+
 						<template #tfoot="{ totalPages }">
 							<TablePaginate
 								v-model:pikers="pikers"
@@ -113,7 +135,10 @@ async function page(query: string = "") {
 							<q-item
 								class="order-item-telegram"
 								clickable
-								:to="{ name: 'ORDER_PART_EDIT', params: { id: model.id } }"
+								:to="{
+									name: $canPage('ORDER_PART_EDIT') ? 'ORDER_PART_EDIT' : 'ORDER_PART_VIEW',
+									params: { id: model.id },
+								}"
 							>
 								<q-item-section avatar v-if="orderNumber">
 									<q-avatar color="primary" text-color="white" size="md">

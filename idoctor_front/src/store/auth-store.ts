@@ -36,25 +36,26 @@ export const useAuthStore = defineStore("auth", {
 			this.removeUser();
 		},
 		page(pagename: string) {
-			const { pages } = this.user || {};
-			return pages?.[pagename] || {};
+			if (!this.user) return {};
+			const { pages } = this.user || [];
+			return pages?.includes(pagename);
 		},
 		canPage(pagename: string) {
 			const { pages } = this.user || {};
-			return pages ? pagename in pages : false;
+			return pages?.includes(pagename);
 		},
-		can(pagename: string, ...key: string[]) {
+		can(_pagename: string, ..._key: string[]) {
 			// TODO: FIX ME
 
 			return true;
 
-			const keys = this.page(pagename) || [];
+			// const keys = this.page(pagename) || [];
 
-			if (!keys || !key.length) return false;
+			// if (!keys || !key.length) return false;
 
-			if (!key.length) return true;
+			// if (!key.length) return true;
 
-			return keys?.some((k: string) => key.includes(k));
+			// return keys?.some((k: string) => key.includes(k));
 		},
 	},
 	getters: {
@@ -82,12 +83,12 @@ export const useAuthStore = defineStore("auth", {
 
 			return [];
 		},
-		permissions(state) {
-			return state.user?.role?.permissions || [];
+		permissions(_state) {
+			return [];
 		},
 
-		len(state) {
-			return state.user?.role?.permissions?.length || -1;
+		len(_state) {
+			return -1;
 		},
 	},
 });

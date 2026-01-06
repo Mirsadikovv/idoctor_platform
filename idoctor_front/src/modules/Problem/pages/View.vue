@@ -1,123 +1,94 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ProblemService, type ProblemType } from "../service";
-import { ref } from "vue";
-import { useQuasar } from "quasar";
-import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
-import EditProblem from "./Edit.vue";
+
+import AppFooter from "@/components/AppFooter.vue";
+import { useAuthStore } from "@/store/auth-store";
+import { useAppNavigation } from "@/composables/useAppNavigation";
+import PageLoading from "@/components/PageLoading.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 
 export interface Props {
-	id: number;
+	id: number | string;
 }
-
-const router = useRouter();
-const $q = useQuasar();
 const { id } = defineProps<Props>();
 
-const model = ref<ProblemType>({} as ProblemType);
+const router = useRouter();
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-async function fetchProblem() {
-	const response = await ProblemService.getByID(+id);
-	if (!response) return;
-	model.value = response;
-}
+const problemModel = ref<ProblemType>({} as ProblemType);
 
-async function deleteProblem() {
-	const response = await ProblemService.delete(+id);
-	if (!response) return false;
-	
-	router.push({ name: "PROBLEM_PAGE" });
-	return true;
-}
-
-function confirmDelete() {
-	$q.dialog({
-		title: 'Подтверждение',
-		message: 'Вы уверены, что хотите удалить эту проблему?',
-		cancel: true,
-		persistent: true
-	}).onOk(() => {
-		deleteProblem();
-	});
-}
-
-if (+id > 0) {
-	fetchProblem();
-}
+const loadProblem = async () => {
+	const data = await ProblemService.getByID(+id);
+	problemModel.value = data;
+};
 </script>
 
 <template>
-	<div class="flex! gap-x-4 items-center mb-6">
-		<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
-		<q-breadcrumbs>
-			<q-breadcrumbs-el
-				:label="$tl('problem_list')"
-				icon="medical_services"
-				:to="{ name: 'PROBLEM_PAGE' }"
-			/>
-			<q-breadcrumbs-el :label="model.name || $tl('problem_view_title')" />
-		</q-breadcrumbs>
-		<q-space />
-		
-		<div class="flex gap-2" v-if="model.id">
-			<ButtonDialog
-				:label="$tl('edit_problem')"
-				icon="edit"
-				color="primary"
-				:fetch="fetchProblem"
-			>
-				<EditProblem :id="model.id" :fetch="fetchProblem" />
-			</ButtonDialog>
-			
-			<q-btn
-				icon="delete"
-				color="negative"
-				flat
-				round
-				@click="confirmDelete"
-			>
-				<q-tooltip>{{ $tl('remove_problem') }}</q-tooltip>
-			</q-btn>
-		</div>
-	</div>
+	<PageLoading :find="loadProblem" #="{ loading }">
+		<LoadingSkeleton v-if="loading" />
 
-	<div v-if="model.id" class="q-pa-md">
-		<q-card class="q-mb-lg">
-			<q-card-section>
-				<div class="text-h6 q-mb-md flex items-center">
-					<q-icon name="medical_services" class="q-mr-sm" color="red" />
-					{{ $tl('problem_details') }}
-				</div>
-				
-				<q-list>
-					<q-item>
-						<q-item-section>
-							<q-item-label overline>{{ $tl('problem_name') }}</q-item-label>
-							<q-item-label class="text-h6">{{ model.name }}</q-item-label>
-						</q-item-section>
-					</q-item>
-					
-					<q-item v-if="model.price">
-						<q-item-section>
-							<q-item-label overline>{{ $tl('price') }}</q-item-label>
-							<q-item-label class="text-h6 text-weight-bold text-positive">
-								{{ model.price.toLocaleString() }} сум
-							</q-item-label>
-						</q-item-section>
-					</q-item>
-					
-					<q-item v-if="model.created_at">
-						<q-item-section>
-							<q-item-label overline>{{ $tl('created_at') }}</q-item-label>
-							<q-item-label>{{ new Date(model.created_at).toLocaleDateString() }}</q-item-label>
-						</q-item-section>
-					</q-item>
-				</q-list>
-			</q-card-section>
-		</q-card>
-	</div>
-	
-	<div v-else class="flex justify-center q-pa-xl">
-		<q-spinner color="primary" size="3em" />
-	</div>
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
+					<div class="flex! gap-x-4 items-center mb-3">
+						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
+						<q-breadcrumbs>
+							<q-breadcrumbs-el
+								:label="$tl('problem_list')"
+								icon="medical_services"
+								:to="{ name: 'PROBLEM_PAGE' }"
+							/>
+						</q-breadcrumbs>
+						<q-space />
+					</div>
+
+					<q-markup-table separator="cell" flat bordered>
+						<tbody>
+							<tr>
+								<td class="font-bold text-left">{{ $tl("problem_name") }}</td>
+								<td>{{ problemModel?.name }}</td>
+							</tr>
+							<tr v-if="problemModel?.price">
+								<td class="font-bold text-left">{{ $tl("price") }}</td>
+								<td class="text-positive font-bold">
+									{{ problemModel?.price?.toLocaleString() }} сум
+								</td>
+							</tr>
+							<tr v-if="problemModel?.created_at">
+								<td class="font-bold text-left">{{ $tl("created_at") }}</td>
+								<td>
+									{{ new Date(problemModel?.created_at).toLocaleDateString() }}
+								</td>
+							</tr>
+						</tbody>
+					</q-markup-table>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'PROBLEM_CREATE' }"
+				add-button-icon="add"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
+			/>
+		</q-layout>
+	</PageLoading>
 </template>
+
+<style scoped>
+@import "@/styles/telegram-app.scss";
+</style>

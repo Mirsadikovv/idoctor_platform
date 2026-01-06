@@ -1,3 +1,38 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
+import type { LanguageType } from "@/service";
+
+interface Props {
+	username?: string;
+	languages?: LanguageType[];
+	currentLanguageId?: number;
+	showAddButton?: boolean;
+	addButtonRoute?: any;
+	addButtonIcon?: string;
+	showBackButton?: boolean;
+	backButtonRoute?: object;
+	centerActions?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+	showAddButton: false,
+	addButtonIcon: "add_circle",
+	showBackButton: false,
+	centerActions: true,
+});
+
+const emit = defineEmits<{
+	toggleDrawer: [];
+	goToProfile: [];
+	setLang: [language: LanguageType];
+	showLogoutConfirm: [show: boolean];
+	logout: [];
+}>();
+
+const mobileLogoutConfirm = ref(false);
+</script>
+
 <template>
 	<q-footer class="clean-header shadow-lg border-b border-white/20">
 		<q-toolbar class="h-18 gap-x-3 clean-toolbar bg-transparent text-white px-6">
@@ -22,7 +57,7 @@
 					flat
 				/>
 				<q-btn
-					v-if="showAddButton"
+					v-if="showAddButton || $canPage(addButtonRoute?.name || '')"
 					size="lg"
 					:icon="addButtonIcon"
 					:to="addButtonRoute"
@@ -186,38 +221,3 @@
 		</q-dialog>
 	</q-footer>
 </template>
-
-<script setup lang="ts">
-import { ref } from "vue";
-import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
-import type { LanguageType } from "@/service";
-
-interface Props {
-	username?: string;
-	languages?: LanguageType[];
-	currentLanguageId?: number;
-	showAddButton?: boolean;
-	addButtonRoute?: object;
-	addButtonIcon?: string;
-	showBackButton?: boolean;
-	backButtonRoute?: object;
-	centerActions?: boolean;
-}
-
-withDefaults(defineProps<Props>(), {
-	showAddButton: false,
-	addButtonIcon: "add_circle",
-	showBackButton: false,
-	centerActions: true,
-});
-
-const emit = defineEmits<{
-	toggleDrawer: [];
-	goToProfile: [];
-	setLang: [language: LanguageType];
-	showLogoutConfirm: [show: boolean];
-	logout: [];
-}>();
-
-const mobileLogoutConfirm = ref(false);
-</script>

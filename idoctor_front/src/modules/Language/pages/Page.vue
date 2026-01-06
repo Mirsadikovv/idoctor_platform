@@ -11,6 +11,7 @@ import AppFooter from "@/components/AppFooter.vue";
 import IconDialog from "@/components/quasar/dialog/IconDialog.vue";
 import EditLang from "@module/Language/pages/Edit.vue";
 import ConfirmDialog from "@module/Language/components/ConfirmDialog.vue";
+import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
@@ -87,7 +88,7 @@ async function page(query: string = "") {
 						<template #edit="{ model }">
 							<div class="text-center">
 								<IconDialog
-									v-if="!model.deletedAt"
+									v-if="!model.deletedAt && $canPage('LANGUAGE_EDIT')"
 									icon="edit"
 									:style="'width: 40%;'"
 									:fetch="fetch"
@@ -97,8 +98,17 @@ async function page(query: string = "") {
 									<EditLang :id="model.id" :fetch="fetch" />
 								</IconDialog>
 
+								<IconBtn
+									v-if="$canPage('LANGUAGE_VIEW')"
+									:to="{
+										name: 'LANGUAGE_VIEW',
+										params: { id: model.id },
+									}"
+									icon="visibility"
+								/>
+
 								<IconDialog
-									v-if="model.deletedAt"
+									v-if="model.deletedAt && $canPage('LANGUAGE_EDIT')"
 									icon="sync"
 									iconColor="positive"
 									tooltipText="restore_lang"
@@ -111,7 +121,7 @@ async function page(query: string = "") {
 									/>
 								</IconDialog>
 								<IconDialog
-									v-if="!model.deletedAt"
+									v-if="!model.deletedAt && $canPage('LANGUAGE_DELETE')"
 									icon="delete"
 									iconColor="negative"
 									tooltipText="remove_lang"
@@ -127,7 +137,10 @@ async function page(query: string = "") {
 							<q-item
 								class="language-item-telegram"
 								clickable
-								:to="{ name: 'LANGUAGE_EDIT', params: { id: model.id } }"
+								:to="{
+									name: $canPage('LANGUAGE_EDIT') ? 'LANGUAGE_EDIT' : 'LANGUAGE_VIEW',
+									params: { id: model.id },
+								}"
 							>
 								<q-item-section avatar v-if="orderNumber">
 									<q-avatar color="primary" text-color="white" size="md">

@@ -15,6 +15,7 @@ import {
 import { useLanguageStore } from "@/store/language-store";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
+import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
@@ -85,6 +86,27 @@ async function find(query: string) {
 						<template #value:thead> </template>
 						<template #value></template>
 
+						<template #edit="{ model }">
+							<div class="text-center">
+								<IconBtn
+									v-if="$canPage('TRANSLATE_UPDATE')"
+									:to="{
+										name: 'TRANSLATE_UPDATE',
+										params: { id: model.key },
+									}"
+									icon="edit"
+								/>
+								<IconBtn
+									v-if="$canPage('TRANSLATE_VIEW')"
+									:to="{
+										name: 'TRANSLATE_VIEW',
+										params: { id: model.key },
+									}"
+									icon="visibility"
+								/>
+							</div>
+						</template>
+
 						<template #tfoot="{ totalPages }">
 							<TablePaginate
 								v-model:pikers="pikers"
@@ -98,7 +120,10 @@ async function find(query: string) {
 							<q-item
 								class="translatedcontent-item-telegram"
 								clickable
-								:to="{ name: 'TRANSLATE_UPDATE', params: { id: model.key } }"
+								:to="{
+									name: $canPage('TRANSLATE_UPDATE') ? 'TRANSLATE_UPDATE' : 'TRANSLATE_VIEW',
+									params: { id: model.key },
+								}"
 							>
 								<q-item-section avatar v-if="orderNumber">
 									<q-avatar color="primary" text-color="white" size="md">

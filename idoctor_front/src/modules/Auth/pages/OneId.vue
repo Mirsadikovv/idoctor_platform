@@ -23,9 +23,6 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 		const authData = await AuthService.signIn(formData);
 		authStore.setToken(authData.token);
 
-		const user = await AuthService.me();
-		authStore.setUser(user);
-
 		await normalaizeRoute(router);
 
 		await normalaizeLanguage();
@@ -132,7 +129,7 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	--tg-hint-color: var(--tg-theme-hint-color, #999999);
 	--tg-button-color: var(--tg-theme-button-color, #3390ec);
 	--tg-button-text-color: var(--tg-theme-button-text-color, #ffffff);
-	
+
 	/* Высота viewport для Telegram Web App */
 	--app-height: var(--tg-viewport-height, 100vh);
 }
@@ -158,7 +155,8 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	align-items: center;
 	justify-content: center;
 	/* Safe area support for Telegram app */
-	padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+	padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0)
+		env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
 }
 
 /* Анимированный фон */
@@ -539,7 +537,7 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	.login-card {
 		animation: none;
 	}
-	
+
 	.icon-inner {
 		animation: none;
 		transform: scale(1);
@@ -551,16 +549,16 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	.orb {
 		animation-duration: 20s; /* Замедление анимации */
 	}
-	
+
 	.gradient-mesh {
 		animation-duration: 30s; /* Замедление фоновой анимации */
 	}
-	
+
 	/* Уменьшение размытия для лучшей производительности */
 	.orb {
 		backdrop-filter: blur(5px);
 	}
-	
+
 	.login-card {
 		backdrop-filter: blur(15px);
 	}
@@ -571,7 +569,7 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	.floating-orbs {
 		display: none; /* Полное отключение орбов на малых экранах */
 	}
-	
+
 	.gradient-mesh {
 		animation: none; /* Статичный фон */
 	}
@@ -605,7 +603,7 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 }
 
 /* Поддержка iOS Safe Area для Telegram */
-@supports(padding: max(0px)) {
+@supports (padding: max(0px)) {
 	.auth-container {
 		padding-left: max(env(safe-area-inset-left), 1rem);
 		padding-right: max(env(safe-area-inset-right), 1rem);
@@ -619,7 +617,7 @@ const handleLogin = async (formData: AuthUser): Promise<boolean> => {
 	.content-wrapper {
 		max-width: 420px;
 	}
-	
+
 	.login-card {
 		padding: 3rem 2.5rem;
 	}

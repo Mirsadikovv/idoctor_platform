@@ -3,10 +3,11 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { UserService, type UserPartial } from "@/service";
 
-import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
-import IconDialog from "@/components/quasar/dialog/IconDialog.vue";
-import EditUser from "./Edit.vue";
-import ConfirmDialog from "../components/ConfirmDialog.vue";
+import AppFooter from "@/components/AppFooter.vue";
+import { useAuthStore } from "@/store/auth-store";
+import { useAppNavigation } from "@/composables/useAppNavigation";
+import PageLoading from "@/components/PageLoading.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 
 export interface Props {
 	id: number | string;
@@ -14,108 +15,83 @@ export interface Props {
 const { id } = defineProps<Props>();
 
 const router = useRouter();
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-let model = ref<UserPartial>({});
+const userModel = ref<UserPartial>({});
 
 const loadUser = async () => {
 	const data = await UserService.findByID(+id);
-	model.value = data;
+	userModel.value = data;
 };
-
-const fetchUser = () => {
-	loadUser();
-};
-
-loadUser();
 </script>
-
 <template>
-	<div class="flex! gap-x-4 items-center mb-6">
-		<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
-		<q-breadcrumbs>
-			<q-breadcrumbs-el
-				:label="$tl('user_list')"
-				:to="{ name: 'PAGE_USER' }"
-				icon="article"
+	<PageLoading :find="loadUser" #="{ loading }">
+		<LoadingSkeleton v-if="loading" />
+
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
+					<div class="flex! gap-x-4 items-center mb-3">
+						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
+						<q-breadcrumbs>
+							<q-breadcrumbs-el
+								:label="$tl('user_list')"
+								icon="article"
+								:to="{ name: 'PAGE_USER' }"
+							/>
+						</q-breadcrumbs>
+					</div>
+					<q-markup-table separator="cell" flat bordered>
+						<tbody>
+							<tr>
+								<td class="font-bold text-left">{{ $tl("fullName") }}</td>
+								<td>
+									{{ userModel?.lastName }}
+									{{ userModel?.firstName }}
+									{{ userModel?.middleName }}
+								</td>
+							</tr>
+							<tr>
+								<td class="font-bold text-left">{{ $tl("gender") }}</td>
+								<td>{{ $tl(userModel?.gender) }}</td>
+							</tr>
+
+							<tr>
+								<td class="font-bold text-left">{{ $tl("username") }}</td>
+								<td>{{ userModel?.username }}</td>
+							</tr>
+
+							<tr>
+								<td class="font-bold text-left">{{ $tl("dateOfBirth") }}</td>
+								<td>{{ userModel?.dateOfBirth }}</td>
+							</tr>
+						</tbody>
+					</q-markup-table>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'USER_CREATE' }"
+				add-button-icon="person_add"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
 			/>
-			<q-breadcrumbs-el :label="$tl('page_for_view')" />
-		</q-breadcrumbs>
-		<q-space />
-		
-		<!-- Кнопки действий -->
-		<div class="flex gap-2" v-if="model.id">
-			<ButtonDialog
-				label="edit_user"
-				icon="edit"
-				color="primary"
-				:fetch="fetchUser"
-			>
-				<EditUser :id="model.id" :fetch="fetchUser" />
-			</ButtonDialog>
-			
-			<IconDialog
-				iconColor="negative"
-				icon="delete"
-				tooltipText="delete_user"
-				withTooltip
-			>
-				<ConfirmDialog :fetch="fetchUser" :id="model.id" :isRemove="true" />
-			</IconDialog>
-		</div>
-	</div>
-	<div class="bg-secondary text-white p-4 mb-4 flex justify-between items-center rounded">
-		<div class="text-xl font-bold">
-			{{ $tl("fullName") }}: {{ model?.lastName }} {{ model?.firstName }}
-			{{ model?.middleName }}
-		</div>
-		<div class="text-xl font-bold">
-			{{ $tl("gender") }}:
-			<q-chip color="white" outline>{{ $tl(model?.gender) }} </q-chip>
-		</div>
-	</div>
-
-	<q-list bordered class="rounded-borders">
-		<q-item>
-			<q-item-section>
-				<q-item-label class="font-bold">{{ $tl("id") }}</q-item-label>
-				<q-item-label caption>{{ model?.id }}</q-item-label>
-			</q-item-section>
-		</q-item>
-
-		<q-separator />
-
-		<q-item>
-			<q-item-section>
-				<q-item-label class="font-bold">{{ $tl("username") }}</q-item-label>
-				<q-item-label caption>{{ model?.username }}</q-item-label>
-			</q-item-section>
-		</q-item>
-
-		<q-separator />
-
-		<q-item>
-			<q-item-section>
-				<q-item-label class="font-bold">{{ $tl("dateOfBirth") }}</q-item-label>
-				<q-item-label caption>{{ model?.dateOfBirth }}</q-item-label>
-			</q-item-section>
-		</q-item>
-
-		<q-separator />
-
-		<q-item>
-			<q-item-section>
-				<q-item-label class="font-bold">{{ $tl("telegramUsername") }}</q-item-label>
-				<q-item-label caption>{{ model?.telegramUsername }}</q-item-label>
-			</q-item-section>
-		</q-item>
-
-		<q-separator />
-
-		<q-item>
-			<q-item-section>
-				<q-item-label class="font-bold">{{ $tl("phoneNumber") }}</q-item-label>
-				<q-item-label caption>{{ model?.phoneNumber }}</q-item-label>
-			</q-item-section>
-		</q-item>
-	</q-list>
+		</q-layout>
+	</PageLoading>
 </template>
+
+<style scoped>
+@import "@/styles/telegram-app.scss";
+</style>

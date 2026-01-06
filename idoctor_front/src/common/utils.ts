@@ -1,6 +1,7 @@
 import ExpansionItem from "@/components/quasar/sidebar/ExpansionItem.vue";
 import Link from "@/components/sidebar/Link.vue";
 import { routers } from "@/router/layout";
+import { useAuthStore } from "@/store/auth-store";
 import { date, QList } from "quasar";
 import { h } from "vue";
 import type { RouteRecordRaw } from "vue-router";
@@ -65,12 +66,12 @@ export function removeEmptyAndToFormData<T extends Record<string, any>>(obj: T):
 export function buildSidebar() {
 	return () => {
 		const flatRoutes = flattenRoutes(routers());
+		const authStore = useAuthStore();
 
 		// Функция проверки доступа к маршруту
 		const hasRouteAccess = (route: RouteRecordRaw): boolean => {
-			return !!route.name;
+			return !!authStore.canPage(String(route.name));
 		};
-
 		// Функция проверки доступа к группе (проверяет, есть ли доступные дочерние элементы)
 		const hasGroupAccess = (groupRoute: RouteRecordRaw): boolean => {
 			if (!groupRoute.children) return false;

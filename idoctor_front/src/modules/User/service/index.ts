@@ -19,6 +19,7 @@ export type User = {
 	lastVisit: string;
 
 	fullName: string;
+	pages: string[];
 };
 
 export type UserCreateType = {

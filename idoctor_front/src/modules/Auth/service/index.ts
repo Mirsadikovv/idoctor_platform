@@ -1,4 +1,4 @@
-import { buildQuery, Try } from "@/common";
+import { admin, buildQuery, client, master, Try } from "@/common";
 import { api } from "@/plugins/axios.plugin";
 import type { User } from "@/service";
 
@@ -83,7 +83,20 @@ class AuthService {
 	})
 	async me() {
 		const { data } = await api.post<User>(`/auth/me`);
-		return data;
+
+		let userWithPages = { ...data };
+
+		if (data.role === "admin") {
+			userWithPages = { ...data, pages: [...admin] };
+		}
+		if (data.role === "master") {
+			userWithPages = { ...data, pages: [...master] };
+		}
+		if (data.role === "user") {
+			userWithPages = { ...data, pages: [...client] };
+		}
+
+		return userWithPages;
 	}
 
 	@Try({

@@ -38,6 +38,7 @@ export type UserCreateType = {
 };
 
 export type UserUpdateType = {
+	roleId?: number;
 	username?: string;
 	password?: string;
 };

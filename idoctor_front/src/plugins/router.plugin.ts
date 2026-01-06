@@ -8,7 +8,7 @@ import type { App } from "vue";
 import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from "vue-router";
 import { OnError, OnRequest } from "./axios.plugin";
 import { emptyRoute, ProgileRoute } from "@/modules/Auth/router";
-import { admin, client, flattenRoutes, master } from "@/common";
+import { flattenRoutes } from "@/common";
 import { TelegramWebApp } from "@/common/telegram";
 
 export async function routerPlugin(app: App<unknown>) {
@@ -125,20 +125,7 @@ export async function normalaizeRoute(router: Router) {
 		return router.addRoute(AuthLayoutRoute);
 	}
 
-	let userWithPages = { ...user };
-
-	if (user.role === "admin") {
-		userWithPages = { ...user, pages: [...admin] };
-		authStore.setUser({ ...user, pages: [...admin] });
-	}
-	if (user.role === "master") {
-		userWithPages = { ...user, pages: [...master] };
-		authStore.setUser({ ...user, pages: [...master] });
-	}
-	if (user.role === "user") {
-		userWithPages = { ...user, pages: [...client] };
-		authStore.setUser({ ...user, pages: [...client] });
-	}
+	authStore.setUser(user);
 
 	router.addRoute(ProgileRoute);
 
@@ -163,7 +150,7 @@ export async function normalaizeRoute(router: Router) {
 	// 	});
 	// } else {
 
-	const children = userWithPages.pages
+	const children = user.pages
 		.map((routeName: string) => flatRoutes.find((route) => route.name === routeName)!)
 		.filter((route) => !!route);
 

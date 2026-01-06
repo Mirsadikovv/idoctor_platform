@@ -12,6 +12,8 @@ import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
 import { formRequired } from "@/common/validator";
 import { ref } from "vue";
+import Autocomplete from "@/components/quasar/form/Autocomplete.vue";
+import { searchRole } from "../utils";
 
 export interface Props {
 	id: number;
@@ -30,6 +32,7 @@ async function getUserByID() {
 	if (userData) {
 		userModel.value = {
 			username: userData.username,
+			roleId: userData.roleId,
 		};
 	}
 }
@@ -71,6 +74,18 @@ async function save(model: UserUpdateType) {
 					<Form v-model="userModel" :save="save">
 						<template #title>
 							<Title class="mb-5">{{ $tl("edit_user_credentials") }}</Title>
+						</template>
+
+						<template #roleId="{ model }">
+							<Autocomplete
+								v-model="model.roleId"
+								:find="searchRole"
+								label="role"
+								class="col-12"
+								:rules="[formRequired()]"
+								option-label="name"
+								option-value="id"
+							/>
 						</template>
 
 						<template #username="{ model }">

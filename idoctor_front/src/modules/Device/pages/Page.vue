@@ -8,6 +8,7 @@ import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
 import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
+import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
@@ -99,6 +100,27 @@ async function page(query: string = "") {
 							</q-chip>
 						</template>
 
+						<template #edit="{ model }">
+							<div class="text-center">
+								<IconBtn
+									v-if="$canPage('DEVICE_EDIT')"
+									:to="{
+										name: 'DEVICE_EDIT',
+										params: { id: model.id },
+									}"
+									icon="edit"
+								/>
+								<IconBtn
+									v-if="$canPage('DEVICE_VIEW')"
+									:to="{
+										name: 'DEVICE_VIEW',
+										params: { id: model.id },
+									}"
+									icon="visibility"
+								/>
+							</div>
+						</template>
+
 						<template #tfoot="{ totalPages }">
 							<TablePaginate
 								v-model:pikers="pikers"
@@ -112,7 +134,10 @@ async function page(query: string = "") {
 							<q-item
 								class="device-item-telegram"
 								clickable
-								:to="{ name: 'DEVICE_EDIT', params: { id: model.id } }"
+								:to="{
+									name: $canPage('DEVICE_EDIT') ? 'DEVICE_EDIT' : 'DEVICE_VIEW',
+									params: { id: model.id },
+								}"
 							>
 								<q-item-section avatar v-if="orderNumber">
 									<q-avatar color="primary" text-color="white" size="md">

@@ -1,166 +1,129 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { OrderService, type OrderType } from "../service";
+
+import AppFooter from "@/components/AppFooter.vue";
+import { useAuthStore } from "@/store/auth-store";
+import { useAppNavigation } from "@/composables/useAppNavigation";
 import PageLoading from "@/components/PageLoading.vue";
-import Title from "@/components/Title.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 
 export interface Props {
-	id: string | number;
+	id: number | string;
 }
-
 const { id } = defineProps<Props>();
 
-const order = ref<OrderType | null>(null);
+const router = useRouter();
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-async function loadOrder() {
-	const orderData = await OrderService.getByID(+id);
-	if (!orderData) return;
+const orderModel = ref<OrderType>({} as OrderType);
 
-	order.value = orderData;
-}
+const loadOrder = async () => {
+	const data = await OrderService.getByID(+id);
+	orderModel.value = data;
+};
 </script>
 
 <template>
-	<PageLoading :find="loadOrder">
-		<div class="q-pa-md">
-			<Title class="mb-6"> {{ $tl("order_details") }} #{{ id }} </Title>
+	<PageLoading :find="loadOrder" #="{ loading }">
+		<LoadingSkeleton v-if="loading" />
 
-			<div v-if="order" class="row q-col-gutter-md">
-				<!-- Order Information -->
-				<div class="col-12 col-md-6">
-					<q-card class="q-pa-md">
-						<q-card-section>
-							<div class="text-h6">{{ $tl("order_information") }}</div>
-						</q-card-section>
-						<q-card-section>
-							<div class="q-mb-sm">
-								<strong>{{ $tl("price") }}:</strong>
-								{{ order.price?.toLocaleString() }} сум
-							</div>
-							<div class="q-mb-sm">
-								<strong>{{ $tl("status") }}:</strong>
-								<q-chip color="primary" outline class="q-ml-sm">
-									{{ order.status }}
-								</q-chip>
-							</div>
-							<div class="q-mb-sm">
-								<strong>{{ $tl("payment_status") }}:</strong>
-								<q-chip
-									:color="
-										order.payment_status === 'paid' ? 'positive' : 'warning'
-									"
-									outline
-									class="q-ml-sm"
-								>
-									{{ order.payment_status }}
-								</q-chip>
-							</div>
-							<div class="q-mb-sm">
-								<strong>{{ $tl("payment_type") }}:</strong>
-								{{ order.payment_type }}
-							</div>
-							<div class="q-mb-sm">
-								<strong>{{ $tl("created_at") }}:</strong>
-								{{ new Date(order.created_at).toLocaleString() }}
-							</div>
-							<div v-if="order.deleted_at" class="q-mb-sm">
-								<strong>{{ $tl("deleted_at") }}:</strong>
-								{{ new Date(order.deleted_at).toLocaleString() }}
-							</div>
-						</q-card-section>
-					</q-card>
-				</div>
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
+					<div class="flex! gap-x-4 items-center mb-3">
+						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
+						<q-breadcrumbs>
+							<q-breadcrumbs-el
+								:label="$tl('order_list')"
+								icon="receipt"
+								:to="{ name: 'ORDER_PAGE' }"
+							/>
+						</q-breadcrumbs>
+						<q-btn
+							flat
+							color="white"
+							class="bg-secondary"
+							:label="$tl('order_parts')"
+							:to="{ name: 'ORDER_PART_PAGE', params: { orderId: id } }"
+						/>
+					</div>
 
-				<!-- People Information -->
-				<!-- <div class="col-12 col-md-6">
-					<q-card class="q-pa-md">
-						<q-card-section>
-							<div class="text-h6">{{ $tl("people") }}</div>
-						</q-card-section>
-						<q-card-section>
-							<div class="q-mb-sm">
-								<strong>{{ $tl("client") }}:</strong>
-								<div v-if="client" class="q-mt-xs">
-									<div v-if="client.phoneNumber" class="text-caption">
-										{{ client.phoneNumber }}
-									</div>
-								</div>
-								<span v-else-if="order.client_id">ID: {{ order.client_id }}</span>
-								<span v-else>{{ $tl("not_assigned") }}</span>
-							</div>
-							<div class="q-mb-sm">
-								<strong>{{ $tl("master") }}:</strong>
-								<div v-if="master" class="q-mt-xs">
-									<div v-if="master.phoneNumber" class="text-caption">
-										{{ master.phoneNumber }}
-									</div>
-								</div>
-								<span v-else-if="order.master_id">ID: {{ order.master_id }}</span>
-								<span v-else>{{ $tl("not_assigned") }}</span>
-							</div>
-						</q-card-section>
-					</q-card>
-				</div> -->
-
-				<!-- Problems -->
-				<!-- <div class="col-12 col-md-6">
-					<q-card class="q-pa-md">
-						<q-card-section>
-							<div class="text-h6">{{ $tl("problems") }}</div>
-						</q-card-section>
-						<q-card-section>
-							<div v-if="problems.length > 0">
-								<div v-for="problem in problems" :key="problem.id" class="q-mb-sm">
-									<q-chip color="orange" outline>
-										{{ problem.name }}
+					<q-markup-table separator="cell" flat bordered>
+						<tbody>
+							<tr>
+								<td class="font-bold text-left">{{ $tl("order_id") }}</td>
+								<td>#{{ orderModel?.id }}</td>
+							</tr>
+							<tr v-if="orderModel?.price">
+								<td class="font-bold text-left">{{ $tl("price") }}</td>
+								<td class="text-positive font-bold">
+									{{ orderModel?.price?.toLocaleString() }} сум
+								</td>
+							</tr>
+							<tr v-if="orderModel?.status">
+								<td class="font-bold text-left">{{ $tl("status") }}</td>
+								<td>
+									<q-chip color="primary" text-color="white">
+										{{ orderModel?.status }}
 									</q-chip>
-									<div class="text-caption">
-										{{ problem.price?.toLocaleString() }} сум
-									</div>
-								</div>
-							</div>
-							<div v-else-if="order.problem_ids?.length">
-								<div
-									v-for="problemId in order.problem_ids"
-									:key="problemId"
-									class="q-mb-sm"
-								>
-									ID: {{ problemId }}
-								</div>
-							</div>
-							<div v-else>
-								{{ $tl("no_problems_assigned") }}
-							</div>
-						</q-card-section>
-					</q-card>
-				</div> -->
-
-				<!-- Parts -->
-				<!-- <div class="col-12 col-md-6">
-					<q-card class="q-pa-md">
-						<q-card-section>
-							<div class="text-h6">{{ $tl("parts") }}</div>
-						</q-card-section>
-						<q-card-section>
-							<div v-if="parts.length > 0">
-								<div v-for="part in parts" :key="part.id" class="q-mb-sm">
-									<q-chip color="blue" outline>
-										{{ part.name }}
+								</td>
+							</tr>
+							<tr v-if="orderModel?.payment_status">
+								<td class="font-bold text-left">{{ $tl("payment_status") }}</td>
+								<td>
+									<q-chip
+										:color="
+											orderModel?.payment_status === 'paid'
+												? 'positive'
+												: 'warning'
+										"
+										text-color="white"
+									>
+										{{ orderModel?.payment_status }}
 									</q-chip>
-								</div>
-							</div>
-							<div v-else-if="order.part_ids?.length">
-								<div v-for="partId in order.part_ids" :key="partId" class="q-mb-sm">
-									ID: {{ partId }}
-								</div>
-							</div>
-							<div v-else>
-								{{ $tl("no_parts_assigned") }}
-							</div>
-						</q-card-section>
-					</q-card>
-				</div> -->
-			</div>
-		</div>
+								</td>
+							</tr>
+							<tr v-if="orderModel?.payment_type">
+								<td class="font-bold text-left">{{ $tl("payment_type") }}</td>
+								<td>{{ orderModel?.payment_type }}</td>
+							</tr>
+							<tr v-if="orderModel?.created_at">
+								<td class="font-bold text-left">{{ $tl("created_at") }}</td>
+								<td>{{ new Date(orderModel?.created_at).toLocaleDateString() }}</td>
+							</tr>
+							<tr v-if="orderModel?.deleted_at">
+								<td class="font-bold text-left">{{ $tl("deleted_at") }}</td>
+								<td>{{ new Date(orderModel?.deleted_at).toLocaleDateString() }}</td>
+							</tr>
+						</tbody>
+					</q-markup-table>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'ORDER_CREATE' }"
+				add-button-icon="add"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
+			/>
+		</q-layout>
 	</PageLoading>
 </template>
+
+<style scoped>
+@import "@/styles/telegram-app.scss";
+</style>

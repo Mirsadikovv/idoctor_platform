@@ -1,121 +1,93 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { RoleService, type RoleType } from "@/service";
-import { ref } from "vue";
-import { useQuasar } from "quasar";
-import ButtonDialog from "@/components/quasar/dialog/ButtonDialog.vue";
-import EditRole from "./Edit.vue";
+
+import AppFooter from "@/components/AppFooter.vue";
+import { useAuthStore } from "@/store/auth-store";
+import { useAppNavigation } from "@/composables/useAppNavigation";
+import PageLoading from "@/components/PageLoading.vue";
+import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 
 export interface Props {
-	id: number;
+	id: number | string;
 }
-
-const router = useRouter();
-const $q = useQuasar();
 const { id } = defineProps<Props>();
 
-const model = ref<RoleType>({} as RoleType);
+const router = useRouter();
+const authStore = useAuthStore();
+const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
 
-async function fetchRole() {
-	const response = await RoleService.getByID(+id);
-	if (!response) return;
-	model.value = response;
-}
+const roleModel = ref<RoleType>({} as RoleType);
 
-async function deleteRole() {
-	const response = await RoleService.delete(+id);
-	if (!response) return false;
-	
-	router.push({ name: "PAGE_ROLE" });
-	return true;
-}
-
-function confirmDelete() {
-	$q.dialog({
-		title: 'Подтверждение',
-		message: 'Вы уверены, что хотите удалить эту роль?',
-		cancel: true,
-		persistent: true
-	}).onOk(() => {
-		deleteRole();
-	});
-}
-
-if (+id > 0) {
-	fetchRole();
-}
+const loadRole = async () => {
+	const data = await RoleService.getByID(+id);
+	roleModel.value = data;
+};
 </script>
 
 <template>
-	<div class="flex! gap-x-4 items-center mb-6">
-		<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
-		<q-breadcrumbs>
-			<q-breadcrumbs-el
-				:label="$tl('roles_page')"
-				icon="article"
-				:to="{ name: 'PAGE_ROLE' }"
-			/>
-			<q-breadcrumbs-el :label="model.name || $tl('view_role')" />
-		</q-breadcrumbs>
-		<q-space />
-		
-		<div class="flex gap-2" v-if="model.id">
-			<ButtonDialog
-				:label="$tl('edit_role')"
-				icon="edit"
-				color="primary"
-				:fetch="fetchRole"
-			>
-				<EditRole :id="model.id" :fetch="fetchRole" />
-			</ButtonDialog>
-			
-			<q-btn
-				icon="delete"
-				color="negative"
-				flat
-				round
-				@click="confirmDelete"
-			>
-				<q-tooltip>{{ $tl('delete_role') }}</q-tooltip>
-			</q-btn>
-		</div>
-	</div>
+	<PageLoading :find="loadRole" #="{ loading }">
+		<LoadingSkeleton v-if="loading" />
 
-	<div v-if="model.id" class="q-pa-md">
-		<q-card class="q-mb-lg">
-			<q-card-section>
-				<div class="text-h6 q-mb-md flex items-center">
-					<q-icon name="security" class="q-mr-sm" />
-					{{ $tl('role_details') }}
-				</div>
-				
-				<q-list>
-					<q-item>
-						<q-item-section>
-							<q-item-label overline>{{ $tl('name') }}</q-item-label>
-							<q-item-label class="text-h6">{{ model.name }}</q-item-label>
-						</q-item-section>
-					</q-item>
-					
-					<q-item v-if="model.description">
-						<q-item-section>
-							<q-item-label overline>{{ $tl('description') }}</q-item-label>
-							<q-item-label>{{ model.description }}</q-item-label>
-						</q-item-section>
-					</q-item>
-					
-					<q-item v-if="model.permissions">
-						<q-item-section>
-							<q-item-label overline>{{ $tl('permissions') }}</q-item-label>
-							<q-item-label>{{ $tl('permissions_count') }}: {{ model.permissions?.length || 0 }}</q-item-label>
-						</q-item-section>
-					</q-item>
-				</q-list>
-			</q-card-section>
-		</q-card>
-	</div>
-	
-	<div v-else class="flex justify-center q-pa-xl">
-		<q-spinner color="primary" size="3em" />
-	</div>
+		<q-layout view="hHh Lpr lff" v-else>
+			<q-page-container>
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
+					<div class="flex! gap-x-4 items-center mb-3">
+						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
+						<q-breadcrumbs>
+							<q-breadcrumbs-el
+								:label="$tl('roles_page')"
+								icon="article"
+								:to="{ name: 'PAGE_ROLE' }"
+							/>
+						</q-breadcrumbs>
+						<q-space />
+					</div>
+
+					<q-markup-table separator="cell" flat bordered>
+						<tbody>
+							<tr>
+								<td class="font-bold text-left">{{ $tl("name") }}</td>
+								<td>{{ roleModel?.name }}</td>
+							</tr>
+							<tr v-if="roleModel?.description">
+								<td class="font-bold text-left">{{ $tl("description") }}</td>
+								<td>{{ roleModel?.description }}</td>
+							</tr>
+							<tr v-if="roleModel?.permissions">
+								<td class="font-bold text-left">{{ $tl("permissions") }}</td>
+								<td>
+									{{ $tl("permissions_count") }}:
+									{{ roleModel?.permissions?.length || 0 }}
+								</td>
+							</tr>
+						</tbody>
+					</q-markup-table>
+				</q-page>
+			</q-page-container>
+
+			<AppFooter
+				:username="authStore.user?.username"
+				:languages="$lang.languages"
+				:current-language-id="$lang._currentLang?.id"
+				:show-add-button="true"
+				:add-button-route="{ name: 'ROLE_CREATE' }"
+				add-button-icon="add"
+				@toggle-drawer="toggleLeftDrawer"
+				@go-to-profile="toggleLeftDrawer"
+				@set-lang="setLang"
+				@logout="logout"
+			/>
+		</q-layout>
+	</PageLoading>
 </template>
+
+<style scoped>
+@import "@/styles/telegram-app.scss";
+</style>

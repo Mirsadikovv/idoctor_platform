@@ -6,3 +6,4 @@ export * from "./utils";
 export * from "./permission";
 export * from "./guard";
 export * from "./telegram";
+export * from "./role-pages";

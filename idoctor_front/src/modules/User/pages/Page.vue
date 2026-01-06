@@ -8,6 +8,7 @@ import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
 import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
+import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
@@ -55,12 +56,7 @@ async function page(query: string = "") {
 					<ResponsiveTable :models="userPage" hasOrder :pick="pikers" :loading="loading">
 						<template #fullName:thead>{{ $tl("full_name") }}</template>
 						<template #fullName="{ model }">
-							<router-link
-								:to="{ name: 'USER_VIEW', params: { id: model.id } }"
-								class="text-primary text-decoration-none"
-							>
-								{{ model?.lastName }} {{ model?.firstName }} {{ model?.middleName }}
-							</router-link>
+							{{ model?.lastName }} {{ model?.firstName }} {{ model?.middleName }}
 						</template>
 
 						<template #username:thead>{{ $tl("username") }}</template>
@@ -90,6 +86,27 @@ async function page(query: string = "") {
 							<span v-else>-</span>
 						</template>
 
+						<template #edit="{ model }">
+							<div class="text-center">
+								<IconBtn
+									v-if="$canPage('USER_EDIT')"
+									:to="{
+										name: 'USER_EDIT',
+										params: { id: model.id },
+									}"
+									icon="edit"
+								/>
+								<IconBtn
+									v-if="$canPage('USER_VIEW')"
+									:to="{
+										name: 'USER_VIEW',
+										params: { id: model.id },
+									}"
+									icon="visibility"
+								/>
+							</div>
+						</template>
+
 						<template #tfoot="{ totalPages }">
 							<TablePaginate
 								v-model:pikers="pikers"
@@ -103,7 +120,10 @@ async function page(query: string = "") {
 							<q-item
 								class="user-item-telegram"
 								clickable
-								:to="{ name: 'USER_EDIT', params: { id: model.id } }"
+								:to="{
+									name: $canPage('USER_EDIT') ? 'USER_EDIT' : 'USER_VIEW',
+									params: { id: model.id },
+								}"
 							>
 								<q-item-section avatar v-if="orderNumber">
 									<q-avatar color="primary" text-color="white" size="md">

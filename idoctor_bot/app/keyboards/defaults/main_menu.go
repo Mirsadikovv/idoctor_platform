@@ -9,7 +9,7 @@ const MainMenuKeyboard = `
 			{
 				"text": "%s",
 				"web_app": {
-					"url": "https://mirsadikovv.github.io?user_id=%d"
+					"url": "https://idoctor.tvgo.uz"
 				}
 			}
 		],
@@ -26,9 +26,9 @@ const MainMenuKeyboard = `
 
 var (
 	AppealKeyboardSend = map[string]string{
-		"ru": "Подать заявку📄",
-		"uz": "Murojaat yo'llash📄",
-		"en": "Send an application📄",
+		"ru": "Панель управления📄",
+		"uz": "Panelga kirish📄",
+		"en": "Admin panel📄",
 	}
 
 	AppealKeyboardLanguage = map[string]string{
@@ -41,8 +41,7 @@ var (
 func GetMainMenuKeyboard(lang string, userID int64) string {
 	return fmt.Sprintf(
 		MainMenuKeyboard,
-		lang,
-		userID,
+		AppealKeyboardSend[lang],
 		AppealKeyboardLanguage[lang],
 	)
 }

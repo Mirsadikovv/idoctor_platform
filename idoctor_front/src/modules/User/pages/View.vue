@@ -43,7 +43,7 @@ const loadUser = async () => {
 							<q-breadcrumbs-el
 								:label="$tl('user_list')"
 								icon="article"
-								:to="{ name: 'PAGE_USER' }"
+								:to="{ name: 'USER_PAGE' }"
 							/>
 						</q-breadcrumbs>
 					</div>

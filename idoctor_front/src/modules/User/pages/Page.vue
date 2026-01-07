@@ -9,9 +9,11 @@ import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
 import IconBtn from "@/components/quasar/btn/IconBtn.vue";
+import { useTelegramViewport } from "@/composables/useTelegramViewport";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
+const { containerStyle } = useTelegramViewport();
 
 const userPage = ref<UserPage>({
 	data: [],
@@ -47,12 +49,7 @@ async function page(query: string = "") {
 
 		<q-layout view="hHh Lpr lff" v-else>
 			<q-page-container>
-				<q-page
-					:style="{
-						height: 'calc(var(--app-height, 100vh) - 150px)',
-					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
-				>
+				<q-page :style="containerStyle" class="bg-white text-gray-900 overflow-auto p-4">
 					<ResponsiveTable :models="userPage" hasOrder :pick="pikers" :loading="loading">
 						<template #fullName:thead>{{ $tl("full_name") }}</template>
 						<template #fullName="{ model }">
@@ -69,21 +66,9 @@ async function page(query: string = "") {
 							{{ model?.phoneNumber || "-" }}
 						</template>
 
-						<template #dateOfBirth:thead>{{ $tl("date_of_birth") }}</template>
-						<template #dateOfBirth="{ model }">
-							{{
-								model?.dateOfBirth
-									? new Date(model.dateOfBirth).toLocaleDateString()
-									: "-"
-							}}
-						</template>
-
-						<template #gender:thead>{{ $tl("gender") }}</template>
-						<template #gender="{ model }">
-							<q-chip v-if="model?.gender" color="secondary" outline>
-								{{ $tl(model.gender) }}
-							</q-chip>
-							<span v-else>-</span>
+						<template #role:thead>{{ $tl("role") }}</template>
+						<template #role="{ model }">
+							{{ model?.role || "-" }}
 						</template>
 
 						<template #edit="{ model }">
@@ -145,6 +130,9 @@ async function page(query: string = "") {
 										v-if="model?.phoneNumber"
 									>
 										{{ model?.phoneNumber }}
+									</q-item-label>
+									<q-item-label caption class="text-body2" v-if="model?.role">
+										{{ model?.role }}
 									</q-item-label>
 								</q-item-section>
 

@@ -18,6 +18,19 @@ declare global {
         ready(): void;
         expand(): void;
         close(): void;
+        // Viewport & Layout
+        viewportHeight: number;
+        viewportStableHeight: number;
+        isExpanded: boolean;
+        contentSafeAreaInset: {
+          top: number;
+          bottom: number;
+          left: number;
+          right: number;
+        };
+        // Events
+        onEvent(eventType: string, eventHandler: () => void): void;
+        offEvent(eventType: string, eventHandler: () => void): void;
         MainButton: {
           text: string;
           color: string;

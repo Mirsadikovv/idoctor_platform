@@ -33,6 +33,7 @@ import (
 	role_model "github.com/Mirsadikovv/idoctor_platform/src/module/role_service/model"
 	supplier_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/supplier_service"
 	supplier_model "github.com/Mirsadikovv/idoctor_platform/src/module/supplier_service/model"
+	statistic_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/statistic_service"
 	user_cmd "github.com/Mirsadikovv/idoctor_platform/src/module/user_service"
 	user_model "github.com/Mirsadikovv/idoctor_platform/src/module/user_service/model"
 
@@ -119,6 +120,7 @@ func Exec(env *Env) {
 	part_cmd.Cmd(router, db, log, authMiddleware)
 	problem_cmd.Cmd(router, db, log, authMiddleware)
 	role_cmd.Cmd(router, db, log, authMiddleware)
+	statistic_cmd.Cmd(router, db, log, authMiddleware)
 	supplier_cmd.Cmd(router, db, log, authMiddleware)
 	user_cmd.Cmd(router, db, log, authMiddleware)
 	order_parts_cmd.Cmd(router, db, log, authMiddleware)

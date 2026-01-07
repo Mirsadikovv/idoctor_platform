@@ -59,6 +59,12 @@ func SeedRoles(db *gorm.DB) {
 				"/api/v1/supplier/page":   []string{"GET"},
 				"/api/v1/supplier/search": []string{"GET"},
 				"/api/v1/supplier/:id":    []string{"GET"},
+
+				// Statistics - master can view own statistics
+				"/api/v1/statistics/orders":   []string{"GET"},
+				"/api/v1/statistics/revenue":  []string{"GET"},
+				"/api/v1/statistics/payments": []string{"GET"},
+				"/api/v1/statistics/top-parts": []string{"GET"},
 			},
 		},
 		{

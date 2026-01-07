@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Form from "@/components/quasar/form/Form.vue";
-import { LanguageService, type LanguagePartialType } from "../../Language/service";
+import { LanguageService, type LanguagePartialType } from "../service";
 import { inject, ref } from "vue";
 import Button from "@/components/quasar/btn/Button.vue";
 

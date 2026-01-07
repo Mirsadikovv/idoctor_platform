@@ -141,7 +141,7 @@ class UserService {
 		},
 	})
 	async update(id: number, user: UserUpdateType) {
-		await api.patch(`/user/${id}`, user);
+		await api.patch(`/user/${id}/full-update`, user);
 		return true;
 	}
 

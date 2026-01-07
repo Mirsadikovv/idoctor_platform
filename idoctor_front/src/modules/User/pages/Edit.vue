@@ -43,7 +43,7 @@ async function save(model: UserUpdateType) {
 	if (!response) return false;
 
 	router.push({
-		name: "PAGE_USER",
+		name: "USER_PAGE",
 	});
 	return true;
 }
@@ -67,7 +67,7 @@ async function save(model: UserUpdateType) {
 							<q-breadcrumbs-el
 								:label="$tl('user_list')"
 								icon="article"
-								:to="{ name: 'PAGE_USER' }"
+								:to="{ name: 'USER_PAGE' }"
 							/>
 						</q-breadcrumbs>
 					</div>

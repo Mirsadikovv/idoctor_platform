@@ -7,11 +7,13 @@ import AppFooter from "@/components/AppFooter.vue";
 import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
 import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
+import { useTelegramViewport } from "@/composables/useTelegramViewport";
 import { useAuthStore } from "@/store/auth-store";
 import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
+const { containerStyle } = useTelegramViewport();
 
 const partPage = ref<PartPageData>({
 	data: [],
@@ -57,12 +59,7 @@ async function page(query: string = "") {
 
 		<q-layout view="hHh Lpr lff" v-else>
 			<q-page-container>
-				<q-page
-					:style="{
-						height: 'calc(var(--app-height, 100vh) - 150px)',
-					}"
-					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
-				>
+				<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
 					<ResponsiveTable :models="partPage" hasOrder :loading="loading">
 						<template #name:thead>
 							{{ $tl("part_name") }}

@@ -8,12 +8,14 @@ import { ref } from "vue";
 import Title from "@/components/Title.vue";
 import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
+import { useTelegramViewport } from "@/composables/useTelegramViewport";
 import { useAuthStore } from "@/store/auth-store";
 import { formRequired } from "@/common/validator";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
+const { containerStyle } = useTelegramViewport();
 
 const LanguageModel = ref<LanguagePartialType>({});
 
@@ -33,12 +35,7 @@ async function save(model: LanguageType) {
 <template>
 	<q-layout view="hHh Lpr lff">
 		<q-page-container>
-			<q-page
-				:style="{
-					height: 'calc(var(--app-height, 100vh) - 150px)',
-				}"
-				class="bg-white text-gray-900 overflow-auto p-4 pt-24"
-			>
+			<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
 				<div class="flex! gap-x-4 items-center mb-3">
 					<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
 					<q-breadcrumbs>

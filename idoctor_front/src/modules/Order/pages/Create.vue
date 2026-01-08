@@ -9,6 +9,7 @@ import { ref } from "vue";
 import Title from "@/components/Title.vue";
 import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
+import { useTelegramViewport } from "@/composables/useTelegramViewport";
 import { useAuthStore } from "@/store/auth-store";
 import { formRequired, formNumber } from "@/common/validator";
 import {
@@ -23,6 +24,7 @@ import { parseDate } from "@/common";
 const router = useRouter();
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
+const { containerStyle } = useTelegramViewport();
 
 const orderModel = ref<Partial<OrderCreateType>>({
 	part_ids: [],
@@ -51,12 +53,7 @@ async function save(model: Partial<OrderCreateType>) {
 <template>
 	<q-layout view="hHh Lpr lff">
 		<q-page-container>
-			<q-page
-				:style="{
-					height: 'calc(var(--app-height, 100vh) - 150px)',
-				}"
-				class="bg-white text-gray-900 overflow-auto p-4 pt-24"
-			>
+			<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
 				<div class="flex! gap-x-4 items-center mb-3">
 					<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
 					<q-breadcrumbs>
@@ -119,7 +116,7 @@ async function save(model: Partial<OrderCreateType>) {
 							"
 							label="Status"
 							class="col-lg-6 col-md-6 col-12"
-							option-label="label"
+							:option-label="(opt) => $tl(opt.label)"
 							option-value="value"
 							:rules="[formRequired()]"
 						/>
@@ -134,7 +131,7 @@ async function save(model: Partial<OrderCreateType>) {
 								}
 							"
 							label="Payment Status"
-							option-label="label"
+							:option-label="(opt) => $tl(opt.label)"
 							option-value="value"
 							class="col-lg-6 col-md-6 col-12"
 							:rules="[formRequired()]"
@@ -151,7 +148,7 @@ async function save(model: Partial<OrderCreateType>) {
 							"
 							label="Payment Type"
 							class="col-lg-6 col-md-6 col-12"
-							option-label="label"
+							:option-label="(opt) => $tl(opt.label)"
 							option-value="value"
 							:rules="[formRequired()]"
 						/>

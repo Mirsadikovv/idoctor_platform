@@ -38,9 +38,15 @@ export type UserCreateType = {
 };
 
 export type UserUpdateType = {
-	roleId?: number;
-	username?: string;
-	password?: string;
+	roleId?: number | { id: number; name: string };
+	username: string;
+	password: string;
+	firstName?: string;
+	lastName?: string;
+	middleName?: string;
+	dateOfBirth?: string;
+	gender?: "male" | "female";
+	phoneNumber?: string;
 };
 
 export type UserPartial = Partial<User>;

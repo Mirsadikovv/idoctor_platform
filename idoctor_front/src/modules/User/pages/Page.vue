@@ -10,6 +10,7 @@ import { useAppNavigation } from "@/composables/useAppNavigation";
 import { useAuthStore } from "@/store/auth-store";
 import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 import { useTelegramViewport } from "@/composables/useTelegramViewport";
+import Search from "@/components/quasar/search/Search.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
@@ -49,7 +50,16 @@ async function page(query: string = "") {
 
 		<q-layout view="hHh Lpr lff" v-else>
 			<q-page-container>
-				<q-page :style="containerStyle" class="bg-white text-gray-900 overflow-auto p-4">
+				<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
+					<q-card flat bordered class="q-mb-md bg-white shadow-2xl">
+						<Search
+							label="search"
+							class="col-lg-3 col-md-6 col-sm-12 col-xs-12"
+							query-name="fullname"
+							@search="fetch"
+							input-debounce="500"
+						/>
+					</q-card>
 					<ResponsiveTable :models="userPage" hasOrder :pick="pikers" :loading="loading">
 						<template #fullName:thead>{{ $tl("full_name") }}</template>
 						<template #fullName="{ model }">
@@ -151,7 +161,7 @@ async function page(query: string = "") {
 				:current-language-id="$lang._currentLang?.id"
 				:show-add-button="true"
 				:add-button-route="{ name: 'USER_CREATE' }"
-				add-button-icon="person_add"
+				add-button-icon="add_circle"
 				@toggle-drawer="toggleLeftDrawer"
 				@go-to-profile="toggleLeftDrawer"
 				@set-lang="setLang"

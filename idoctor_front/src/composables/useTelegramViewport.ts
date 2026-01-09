@@ -1,3 +1,4 @@
+
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import { TelegramWebApp } from "@/common/telegram";
 
@@ -28,11 +29,11 @@ export function useTelegramViewport() {
 				// 4. Update CSS variable for global usage
 				document.documentElement.style.setProperty(
 					"--tg-viewport-height",
-					`${viewportHeight.value}px`,
+					`${viewportHeight.value}px`
 				);
 				document.documentElement.style.setProperty(
 					"--tg-content-safe-area-inset-top",
-					`${topInset.value}px`,
+					`${topInset.value}px`
 				);
 			}
 		} else {
@@ -49,12 +50,17 @@ export function useTelegramViewport() {
 	 * topInset (notch) + base padding (e.g. 16px from design)
 	 */
 	const pageTopPaddingPx = computed(() => {
+		// Base padding from design (previously pt-24 was ~96px? No, pt-24 in Tailwind is 6rem = 96px.
+		// Wait, user said "pt-24 — статический отступ".
+		// If pt-24 is from Quasar/standard, 24 * 4 = 96px? Or maybe it's just 24px?
+		// Standard Quasar spacing: q-pt-md is 16px.
+		// "pt-24" looks like Tailwind class. 24 * 0.25rem = 6rem = 96px.
+		// Let's assume we want a base padding of roughly 16px-24px depending on content,
+		// plus the safe area.
+		// The user complained about "static indent from top".
+		// Let's use a safe base like 16px.
 		const basePadding = 16;
-
-		// если есть safe-area (topInset > 0) — добавляем +100px
-		const extraOffset = topInset.value > 0 ? 100 : 0;
-
-		return topInset.value + basePadding + extraOffset;
+		return topInset.value + basePadding;
 	});
 
 	// Style object to apply to the page wrapper

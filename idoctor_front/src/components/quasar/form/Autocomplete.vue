@@ -148,7 +148,6 @@ function updateItems(item: T[]) {
 		@update:model-value="update"
 		@filter="filter"
 		:label="$tl(label)"
-		behavior="menu"
 	>
 		<slote></slote>
 	</q-select>

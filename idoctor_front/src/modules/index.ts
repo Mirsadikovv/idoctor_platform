@@ -10,7 +10,6 @@ import { PartRoutes } from "./Part/routes";
 import { RoleRoutes } from "./Role/routes";
 import { OrderRoutes } from "./Order/routes";
 import { OrderPartRoutes } from "./OrderPart/routes";
-import { StatisticsRoutes } from "./Statistics/routes";
 
 registerRoutes(
 	emptyRoute,
@@ -40,9 +39,6 @@ registerRoutes(
 	// Order sort 7
 	...OrderRoutes(7),
 	...OrderPartRoutes(7),
-
-	// Statistics sort 8
-	...StatisticsRoutes(8),
 
 	// Languages sort 10
 	LanguageGroupRoutes(10),

@@ -7,7 +7,6 @@ import PageLoading from "@/components/PageLoading.vue";
 import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 import AppFooter from "@/components/AppFooter.vue";
 import { useAppNavigation } from "@/composables/useAppNavigation";
-import { useTelegramViewport } from "@/composables/useTelegramViewport";
 import { useAuthStore } from "@/store/auth-store";
 import Title from "@/components/Title.vue";
 import IconBtn from "@/components/quasar/btn/IconBtn.vue";
@@ -20,7 +19,6 @@ const { orderId } = defineProps<Props>();
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
-const { containerStyle } = useTelegramViewport();
 
 const orderPage = ref<OrderPartPageData>({
 	data: [],
@@ -59,7 +57,12 @@ async function page(query: string = "") {
 
 		<q-layout view="hHh Lpr lff" v-else>
 			<q-page-container>
-				<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
 					<Title class="mb-5 justify-between">
 						<div>
 							{{ $tl("order_parts") }}

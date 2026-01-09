@@ -8,7 +8,7 @@ export const client = [
 
 	"ORDER_PART_PAGE",
 	"ORDER_PART_VIEW",
-];
+] as const;
 
 export const master = [
 	"PAGE_EMPTY",
@@ -24,7 +24,7 @@ export const master = [
 	"ORDER_PART_EDIT",
 	"ORDER_PART_PAGE",
 	"ORDER_PART_VIEW",
-];
+] as const;
 
 export const admin = [
 	"404_PAGE",
@@ -84,11 +84,4 @@ export const admin = [
 	"USER_EDIT",
 	"USER_PAGE",
 	"USER_VIEW",
-
-	"STATISTICS_PAGE",
-	"STATISTICS_MASTERS",
-	"STATISTICS_ORDERS",
-	"STATISTICS_PAYMENTS",
-	"STATISTICS_REVENUE",
-	"STATISTICS_TOP_PARTS",
-];
+] as const;

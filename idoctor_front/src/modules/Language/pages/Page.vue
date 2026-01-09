@@ -3,7 +3,6 @@ import ResponsiveTable from "@/components/quasar/table/ResponsiveTable.vue";
 import { ref } from "vue";
 import { LanguageService, type LanguagePageData } from "@/service";
 import { useAppNavigation } from "@/composables/useAppNavigation";
-import { useTelegramViewport } from "@/composables/useTelegramViewport";
 import { useAuthStore } from "@/store/auth-store";
 import TablePaginate from "@/components/quasar/table/TablePaginate.vue";
 import PageLoading from "@/components/PageLoading.vue";
@@ -16,7 +15,6 @@ import IconBtn from "@/components/quasar/btn/IconBtn.vue";
 
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
-const { containerStyle } = useTelegramViewport();
 
 const languagePage = ref<LanguagePageData>({
 	data: [],
@@ -50,7 +48,12 @@ async function page(query: string = "") {
 
 		<q-layout view="hHh Lpr lff" v-else>
 			<q-page-container>
-				<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
 					<ResponsiveTable :models="languagePage" hasOrder>
 						<template #name:thead> </template>
 						<template #name="{ model }">

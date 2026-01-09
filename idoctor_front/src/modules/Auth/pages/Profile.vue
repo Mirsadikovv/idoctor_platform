@@ -8,22 +8,15 @@ import { useRouter } from "vue-router";
 import { useLanguageStore } from "@/store/language-store";
 import { useAuthStore } from "@/store/auth-store";
 import { AuthLayoutRoute } from "@/router";
-import { getAccessibleRoutes, type AccessibleRoute } from "@/common";
-import { useTelegramViewport } from "@/composables/useTelegramViewport";
-import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
-// import { buildSidebar } from "@/common";
+import { buildSidebar } from "@/common";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const languageStore = useLanguageStore();
-const { containerStyle } = useTelegramViewport();
 
-const pages = ref<AccessibleRoute[]>([]);
 const confirm = ref(false);
 
-async function getRoles(_query: string = "") {
-	pages.value = getAccessibleRoutes();
-}
+async function getRoles(_query: string = "") {}
 
 async function setLang(language: LanguageType) {
 	const globalContent = LanguageContentService.getLanguageContents(language.id);
@@ -51,16 +44,48 @@ async function logout() {
 		name: "LOGIN_AUTH",
 	});
 }
+
+const SideList = buildSidebar();
 </script>
 
 <template>
 	<PageLoading :find="getRoles" #="{ loading }">
 		<!-- Скелетон для загрузки -->
-		<LoadingSkeleton v-if="loading" />
+		<div v-if="loading" class="loading-skeleton">
+			<div class="skeleton-header">
+				<div class="skeleton-toolbar">
+					<div class="skeleton-btn skeleton-animate"></div>
+					<div class="skeleton-logo skeleton-animate"></div>
+					<div class="skeleton-spacer"></div>
+					<div class="skeleton-profile skeleton-animate"></div>
+					<div class="skeleton-lang skeleton-animate"></div>
+					<div class="skeleton-btn skeleton-animate"></div>
+				</div>
+			</div>
+			<div class="skeleton-content">
+				<div class="skeleton-sidebar">
+					<div class="skeleton-menu-item skeleton-animate" v-for="n in 8" :key="n"></div>
+				</div>
+				<div class="skeleton-page">
+					<div class="skeleton-page-content">
+						<div
+							class="skeleton-text-line skeleton-animate"
+							v-for="n in 12"
+							:key="n"
+						></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<q-layout view="hHh Lpr lff" v-else>
 			<q-page-container>
-				<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
 					<q-scroll-area
 						class="h-full bg-transparent p-0"
 						visible
@@ -73,24 +98,7 @@ async function logout() {
 						:bar-style="{ width: '0px' }"
 						ref="firstRef"
 					>
-						<div class="flex flex-col gap-3 h-full">
-							<q-item
-								v-for="pageName in pages"
-								:key="pageName.name"
-								clickable
-								@click="router.push({ name: pageName.name })"
-								class="telegram-page-item rounded-xl transition-all duration-200 min-h-56px bg-white border border-gray-200 hover:bg-blue-50! hover:border-blue-300! active:bg-blue-100! shadow-sm hover:shadow-md!"
-							>
-								<q-item-section>
-									<q-item-label class="text-base font-medium text-gray-800!">
-										{{ $tl(pageName.label) }}
-									</q-item-label>
-								</q-item-section>
-								<q-item-section side>
-									<q-icon name="chevron_right" color="gray-400" size="20px" />
-								</q-item-section>
-							</q-item>
-						</div>
+						<SideList />
 					</q-scroll-area>
 				</q-page>
 			</q-page-container>
@@ -305,100 +313,227 @@ textarea,
 	min-width: 0 !important;
 }
 
+/* Desktop Profile Dropdown */
+.clean-desktop-profile {
+	background: rgba(255, 255, 255, 0.15) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	border-radius: 12px !important;
+	backdrop-filter: blur(10px);
+	transition: all 0.2s ease;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.25) !important;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+	}
+}
+
+.desktop-profile-menu {
+	background: rgba(255, 255, 255, 0.98);
+	backdrop-filter: blur(20px);
+	border-radius: 16px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+	padding: 12px;
+}
+
+.desktop-profile-info {
+	background: rgba(59, 130, 246, 0.05);
+	border: 1px solid rgba(59, 130, 246, 0.1);
+	border-radius: 12px;
+	margin-bottom: 8px;
+	padding: 16px 12px;
+}
+
+.desktop-menu-item {
+	border-radius: 8px;
+	margin: 2px 0;
+	min-height: 44px;
+	transition: all 0.2s ease;
+
+	&:hover {
+		transform: translateX(2px);
+	}
+}
+
+/* Language Selector Styles */
+.clean-profile-lang {
+	background: rgba(255, 255, 255, 0.15) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	border-radius: 8px !important;
+	backdrop-filter: blur(10px);
+	transition: all 0.2s ease;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.25) !important;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+	}
+}
+
+.clean-lang-list {
+	background: rgba(255, 255, 255, 0.98);
+	backdrop-filter: blur(20px);
+	border-radius: 12px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 8px;
+}
+
+/* App Logo Animation */
+.app-logo-text {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	letter-spacing: 0.5px;
+	animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+	0% {
+		text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+	}
+	100% {
+		text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+	}
+}
+
+/* ========== Loading Skeleton ========== */
+.loading-skeleton {
+	height: 100vh;
+	background: #f9fafb;
+}
+
+.skeleton-header {
+	height: 72px;
+	background: white;
+	border-bottom: 1px solid #e5e7eb;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skeleton-toolbar {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	padding: 0 24px;
+	gap: 16px;
+}
+
+.skeleton-btn,
+.skeleton-logo,
+.skeleton-profile,
+.skeleton-lang {
+	background: #e5e7eb;
+	border-radius: 8px;
+}
+
+.skeleton-btn {
+	width: 40px;
+	height: 40px;
+}
+.skeleton-logo {
+	width: 120px;
+	height: 40px;
+}
+.skeleton-profile {
+	width: 180px;
+	height: 40px;
+}
+.skeleton-lang {
+	width: 80px;
+	height: 40px;
+}
+.skeleton-spacer {
+	flex: 1;
+}
+
+.skeleton-content {
+	display: flex;
+	height: calc(100vh - 72px);
+}
+
+.skeleton-sidebar {
+	width: 300px;
+	background: #f9fafb;
+	border-right: 1px solid #e5e7eb;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.skeleton-menu-item {
+	height: 48px;
+	background: #e5e7eb;
+	border-radius: 8px;
+}
+
+.skeleton-page {
+	flex: 1;
+	padding: 24px;
+	background: #ffffff;
+}
+
+.skeleton-page-content {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.skeleton-text-line {
+	height: 16px;
+	background: #e5e7eb;
+	border-radius: 4px;
+
+	&:nth-child(odd) {
+		width: 100%;
+	}
+	&:nth-child(even) {
+		width: 85%;
+	}
+	&:nth-child(3n) {
+		width: 70%;
+	}
+}
+
+.skeleton-animate {
+	background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+	background-size: 200% 100%;
+	animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+/* ========== Responsive Design ========== */
+@media screen and (max-width: 768px) {
+	.skeleton-sidebar,
+	.skeleton-profile,
+	.skeleton-lang {
+		display: none;
+	}
+	.skeleton-toolbar {
+		gap: 8px;
+	}
+}
+
 @media screen and (max-width: 480px) {
 	.adapt-padding {
 		padding: 6px !important;
 	}
 }
 
-/* ========== Page Navigation Styles ========== */
-.telegram-page-item {
-	background: rgba(255, 255, 255, 0.95);
-	backdrop-filter: blur(10px);
-	border: 1px solid rgba(0, 0, 0, 0.05) !important;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-	padding: 12px 16px;
-	margin: 0 4px;
-
-	&:hover {
-		background: rgba(59, 130, 246, 0.05) !important;
-		border-color: rgba(59, 130, 246, 0.2) !important;
-		transform: translateY(-1px);
-		box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1) !important;
-	}
-
-	&:active {
-		background: rgba(59, 130, 246, 0.1) !important;
-		transform: translateY(0);
-		box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15) !important;
-	}
-
-	.q-item__section--avatar {
-		color: var(--tg-button-color, #3390ec);
-		transition: all 0.2s ease;
-	}
-
-	&:hover .q-item__section--avatar {
-		transform: translateX(2px);
-	}
-}
-
-/* Mobile-first responsive adjustments */
-@media screen and (max-width: 480px) {
-	.telegram-page-item {
-		min-height: 64px;
-		margin: 0 2px;
-		padding: 16px;
-		border-radius: 16px;
-
-		.q-item__label {
-			font-size: 16px !important;
-			line-height: 1.4;
-		}
-
-		.q-item__section--avatar {
-			min-width: 16px;
-		}
-	}
-}
-
-/* Touch optimizations for mobile */
-@media (hover: none) and (pointer: coarse) {
-	.telegram-page-item {
-		&:hover {
-			transform: none;
-		}
-
-		&:active {
-			background: rgba(59, 130, 246, 0.15) !important;
-			border-color: rgba(59, 130, 246, 0.3) !important;
-		}
-	}
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-	.telegram-page-item {
-		background: rgba(33, 33, 33, 0.95);
-		border-color: rgba(255, 255, 255, 0.1);
-		color: var(--tg-text-color, #ffffff);
-
-		&:hover {
-			background: rgba(59, 130, 246, 0.15) !important;
-			border-color: rgba(59, 130, 246, 0.3) !important;
-		}
-
-		.q-item__label {
-			color: var(--tg-text-color, #ffffff);
-		}
-	}
-}
-
 /* Отключение анимаций на слабых устройствах */
 @media (prefers-reduced-motion: reduce) {
 	.app-logo-text,
-	.skeleton-animate,
-	.telegram-page-item {
+	.skeleton-animate {
 		animation: none;
 	}
 	* {

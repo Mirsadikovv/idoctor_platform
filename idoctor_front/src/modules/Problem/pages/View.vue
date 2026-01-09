@@ -6,7 +6,6 @@ import { ProblemService, type ProblemType } from "../service";
 import AppFooter from "@/components/AppFooter.vue";
 import { useAuthStore } from "@/store/auth-store";
 import { useAppNavigation } from "@/composables/useAppNavigation";
-import { useTelegramViewport } from "@/composables/useTelegramViewport";
 import PageLoading from "@/components/PageLoading.vue";
 import LoadingSkeleton from "@/components/LoadingSkeleton.vue";
 
@@ -18,7 +17,6 @@ const { id } = defineProps<Props>();
 const router = useRouter();
 const authStore = useAuthStore();
 const { toggleLeftDrawer, setLang, logout } = useAppNavigation();
-const { containerStyle } = useTelegramViewport();
 
 const problemModel = ref<ProblemType>({} as ProblemType);
 
@@ -34,7 +32,12 @@ const loadProblem = async () => {
 
 		<q-layout view="hHh Lpr lff" v-else>
 			<q-page-container>
-				<q-page :style="containerStyle" class="bg-gray-100 text-gray-900 overflow-auto p-4">
+				<q-page
+					:style="{
+						height: 'calc(var(--app-height, 100vh) - 150px)',
+					}"
+					class="bg-white text-gray-900 overflow-auto p-4 pt-24"
+				>
 					<div class="flex! gap-x-4 items-center mb-3">
 						<q-btn flat color="accent" icon="arrow_back" @click="router.back()" />
 						<q-breadcrumbs>

@@ -27,7 +27,7 @@ const { containerStyle } = useTelegramViewport();
 const orderModel = ref<Partial<OrderPartCreateType>>({});
 
 async function save(model: OrderPartCreateType) {
-	const response = await OrderPartService.create({ ...model, order_id: orderId });
+	const response = await OrderPartService.create({ ...model, order_id: +orderId });
 
 	if (!response) return false;
 

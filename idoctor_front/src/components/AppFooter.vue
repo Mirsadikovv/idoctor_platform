@@ -35,7 +35,7 @@ const mobileLogoutConfirm = ref(false);
 
 <template>
 	<q-footer class="clean-header shadow-lg border-b border-white/20">
-		<q-toolbar class="h-18 gap-x-3 clean-toolbar bg-transparent text-white px-6">
+		<q-toolbar class="h-18 gap-x-3 clean-toolbar bg-transparent text-white px-6!">
 			<q-btn
 				size="lg"
 				icon="menu"

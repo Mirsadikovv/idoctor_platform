@@ -28,10 +28,30 @@ export async function routerPlugin(app: App<unknown>) {
 
 	OnError(async (error) => {
 		if (error.response?.status === 401) {
-			authStore.removeSession();
-			router.clearRoutes();
-			router.addRoute(AuthLayoutRoute);
-			router.push({ name: "LOGIN_AUTH" });
+			if (TelegramWebApp.isAvailable()) {
+				TelegramWebApp.initialize();
+
+				// Получаем Telegram ID пользователя
+				const telegramId = TelegramWebApp.getTelegramId();
+
+				if (!telegramId) {
+					authStore.removeSession();
+					router.clearRoutes();
+					router.addRoute(AuthLayoutRoute);
+					router.push({ name: "LOGIN_AUTH" });
+				}
+
+				localStorage.setItem("telegram_user_id", telegramId!.toString());
+
+				const res = await AuthService.signInTelegram(telegramId!.toString());
+
+				authStore.setToken(res.token);
+			} else {
+				authStore.removeSession();
+				router.clearRoutes();
+				router.addRoute(AuthLayoutRoute);
+				router.push({ name: "LOGIN_AUTH" });
+			}
 		}
 	});
 	const languageStore = useLanguageStore();
